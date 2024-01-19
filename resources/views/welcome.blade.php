@@ -112,7 +112,7 @@
         </header>
 
         <main class="px-3">
-            <h1>SGT SOLUTION</h1>
+            <h1>SGT SOLUTIONs</h1>
             <p class=" display-5 font-weight-bold text-capitalize" >it is a geospatial firm. SGT was founded with the intention of serving the nation's needs.</p>
             <p class="lead">
                 <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
