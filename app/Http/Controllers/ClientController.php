@@ -81,9 +81,21 @@ class ClientController extends Controller
         $creds = [
             $fieldType => $request->login_id,
             'password' => $request->password,
-        ];
+        ];        
 
         if (auth('client')->attempt($creds)) {
+            $totalRoadCount = mis::distinct('road_name')
+            ->selectRaw('road_name, count(*) as total_road_count')->groupBy('road_name')
+            ->where('workername',auth('client')->name)
+            ->get();
+
+            $streetsNotInSurveyed = mis::whereNotIn('assessment', function ($query) {
+                $query->select('assessment')->from('surveyeds');
+            })
+            ->selectRaw('road_name, COUNT(*) as road_count')
+            ->groupBy('road_name')
+            ->where('workername',auth('client')->name)
+            ->get();
             return redirect()->route('client.home');
         } else {
             session()->flash('fail', 'Incorrect credentials');
