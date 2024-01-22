@@ -174,6 +174,11 @@
                         <span>Survey</span></a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('client.new-assessment') }}">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>New Assessment</span></a>
+                </li>
+                <li class="nav-item">
                     <a type="button" class="nav-link" data-toggle="modal" data-target="#exampleModal">
                         <i class="fas fa-file-invoice"></i>
                         Update Gis

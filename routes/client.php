@@ -29,6 +29,7 @@ Route::prefix('client')->name('client.')->group(function () {
         Route::post('/form-submit', [FormController::class, 'formsubmit'])->name('form-submit');
         Route::post('/gis-update', [FormController::class, 'gisUpdate'])->name('gis-Update');
         Route::post('/gis-images-upload', [ClientController::class, 'storeimg'])->name('gis-images-upload');
+        Route::get('/new-assessment', [ClientController::class, 'newAssessment'])->name('new-assessment');
     });
 });
 

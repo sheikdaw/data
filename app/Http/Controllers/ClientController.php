@@ -81,21 +81,21 @@ class ClientController extends Controller
         $creds = [
             $fieldType => $request->login_id,
             'password' => $request->password,
-        ];        
+        ];
 
         if (auth('client')->attempt($creds)) {
             $totalRoadCount = mis::where('workername', auth('client')->user()->name)
                 ->selectRaw('road_name, count(*) as total_road_count')
                 ->groupBy('road_name')
                 ->get();
-        
+
             $streetsNotInSurveyed = mis::whereNotIn('assessment', function ($query) {
                 $query->select('assessment')->from('surveyeds');
             })
                 ->selectRaw('road_name, COUNT(*) as road_count')
                 ->groupBy('road_name')
                 ->get();
-        
+
             return view('client.home', compact('totalRoadCount', 'streetsNotInSurveyed'));
         }
          else {
@@ -209,7 +209,14 @@ class ClientController extends Controller
         return redirect()->back();
 
     }
-
+    public function newAssessment(Request $request)
+    {
+        if (Auth::guard('client')->check()) {
+            $mis=mis::all();
+                return view('back.page.client.survey-form', compact('mis'));
+        }
+        return view('back.page.client.survey-gis')->with(['status' => 0, 'error' => 'User not authenticated']);
+    }
 
 
 
