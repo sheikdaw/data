@@ -1,6 +1,5 @@
 @extends('back.layout.page-layout')
-@section('pagetitle', isset($pagetitle) ? $pagetitle : 'Surveyed data')
-@section('content')
+
 
 <div class="table-responsive card p-3">
     <table class="table table-bordered">
@@ -25,9 +24,4 @@
     </table>
 </div>
 
-<!-- Display pagination links -->
-<div class="d-flex justify-content-center mt-3">
-    {{ $data->render() }}
-</div>
 
-@endsection

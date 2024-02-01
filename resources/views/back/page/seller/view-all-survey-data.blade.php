@@ -25,5 +25,9 @@
     </table>
 </div>
 
+<!-- Display pagination links -->
+<div class="d-flex justify-content-center mt-3">
+    {{ $data->render() }}
+</div>
 
 @endsection
