@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\PreventBackHistory;
 
-Route::get('/user/{id}', [AdminController::class, 'showqr']);
+Route::get('/gisid/{id}', [AdminController::class, 'showqr']);
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['guest:admin', PreventBackHistory::class])->group(function () {
