@@ -63,8 +63,8 @@ class AdminController extends Controller
             ->selectRaw('road_name, COUNT(*) as road_count')
             ->groupBy('road_name')
             ->get();
-        
-        
+
+
 
         return view('back.page.admin.home', compact('labels', 'values', 'comlabels', 'comvalues', 'totalMisCount', 'totalSueveyCount', 'streetsNotInSurveyed', 'totalRoadCount'));
     }
@@ -274,7 +274,7 @@ class AdminController extends Controller
     public function clientView(){
         $totalclient=Client::all();
         return view('back.page.admin.client-view',compact('totalclient'));
-        
+
     }
     public function clientEdit($id){
         $client = Client::find($id);
@@ -318,8 +318,8 @@ class AdminController extends Controller
     public function getClientProfilePicture(Request $request)
     {
             $client = Client::find($request->x);
-            
-                return response()->json(['status' => 1, 'picture' => $client->picture ?? null]);       
+
+                return response()->json(['status' => 1, 'picture' => $client->picture ?? null]);
 
         return response()->json(['status' => 0, 'msg' => 'User not authenticated']);
     }

@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($data as $item)
+            @foreach($surveys as $item)
                 <tr>
                     <td>{{ $item->ward }}</td>
                     <td>{{ $item->assessment }}</td>
@@ -25,5 +25,9 @@
     </table>
 </div>
 
+<!-- Display pagination links -->
+<div class="d-flex justify-content-center mt-3">
+    {{ $data->render() }}
+</div>
 
 @endsection

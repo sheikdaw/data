@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use AApp\Https\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,3 +18,6 @@ Route::get('/', function () {
 })->name('/');
 Route::view('/example-page', 'example-page');
 Route::view('/example-auth', 'example-auth');
+
+Route::get("/gisis/{id}", [HomeController::class, 'show']);
+
