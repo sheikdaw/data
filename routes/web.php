@@ -19,5 +19,5 @@ Route::get('/', function () {
 Route::view('/example-page', 'example-page');
 Route::view('/example-auth', 'example-auth');
 
-Route::get("/gisis/{id}", [HomeController::class, 'show']);
+Route::get("/gisid/{id}", [HomeController::class, 'show']);
 
