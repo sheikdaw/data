@@ -33,7 +33,7 @@ class AdminController extends Controller
     use ValidatesRequests;
     public function showqr($id){
         $surveys = Surveyed::with('images')
-        ->where($request->property, $request->value)
+        ->where('gisid', $id)
         ->get();
 
 
