@@ -6,24 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->string('gisid');
+            $table->unsignedBigInteger('gisid'); // Adjust to the actual type of gisid
             $table->timestamps();
-            $table->foreign('gisid')->references('gisid')->on('surveyed');
 
+            // Add foreign key constraint
+            $table->foreign('gisid')->references('gisid')->on('surveyed');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('images');
