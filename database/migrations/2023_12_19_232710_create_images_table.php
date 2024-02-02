@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('image');
             $table->string('gisid');
             $table->timestamps();
+            $table->foreign('gisid')->references('gisid')->on('surveyed');
+
         });
     }
 
