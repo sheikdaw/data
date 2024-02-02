@@ -13,7 +13,7 @@
 
     <div class="table-responsive card p-3">
         <table class="table table-bordered">
-            <thead class="thead-dark"> <!-- Use thead-light for a light background -->
+            <thead class="thead-dark">
                 <tr>
                     <th>Ward</th>
                     <th>Assessment</th>
@@ -23,16 +23,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($surveys as $item)
+                @foreach ($surveys as $survey)
                     <tr>
-                        <td>{{ $item->ward }}</td>
-                        <td>{{ $item->assessment }}</td>
-                        <td>{{ $item->road_name }}</td>
+                        <td>{{ $survey->ward }}</td>
+                        <td>{{ $survey->assessment }}</td>
+                        <td>{{ $survey->road_name }}</td>
                         <td>
                             <!-- Display images related to the survey -->
-
-                                <img src="{{ public_path($item->image) }}" alt="" style="width: 150px; height: 150px;">
-
+                            @foreach ($survey->images as $image)
+                                <img src="{{ asset($image->image) }}" alt="" style="width: 150px; height: 150px;">
+                            @endforeach
                         </td>
                         <!-- Display other columns accordingly -->
                     </tr>
