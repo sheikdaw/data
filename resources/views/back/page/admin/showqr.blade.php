@@ -31,7 +31,7 @@
                         <td>
                             <!-- Display images related to the survey -->
                             @foreach ($survey->images as $image)
-                                <img src="{{ public_path($image->image) }}" alt="" style="width: 150px; height: 150px;">
+                                <img src="{{ asset(/images/gis/$image->image) }}" alt="" style="width: 150px; height: 150px;">
                             @endforeach
                         </td>
                         <!-- Display other columns accordingly -->
