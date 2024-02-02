@@ -32,7 +32,7 @@ class AdminController extends Controller
 {
     use ValidatesRequests;
     public function showqr($id){
-        $surveys = DB::table('surveyeds')->where('gisid',$id)->get();
+        $surveys = Surveyed::with('images')->where('gisid',$id)->get();
         return view('back.page.admin.showqr',compact('surveys'));
     }
     public function home()

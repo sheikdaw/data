@@ -29,8 +29,10 @@
                         <td>{{ $item->assessment }}</td>
                         <td>{{ $item->road_name }}</td>
                         <td>
-
-                                <img src="{{ public_path($item->image) }}" alt="" style="width: 150px; height: 150px;">
+                            <!-- Display images related to the survey -->
+                            @foreach($surveys->images as $image)
+                                <img src="{{ public_path($image->image) }}" alt="" style="width: 150px; height: 150px;">
+                            @endforeach
                         </td>
                         <!-- Display other columns accordingly -->
                     </tr>
