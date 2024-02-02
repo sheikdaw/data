@@ -31,17 +31,19 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 class AdminController extends Controller
 {
     use ValidatesRequests;
-    public function showqr($id){
-        $surveys = Surveyed::with('images')
+    public function showqr($id)
+{
+    $surveys = Surveyed::with('images')
         ->where('gisid', $id)
         ->get();
-
 
     $data = [
         'surveys' => $surveys,
     ];
-        return view('back.page.admin.showqr',$data);
-    }
+
+    return view('back.page.admin.showqr', $data);
+}
+
     public function home()
     {
         $totalMisCount = DB::table('mis')->count();
