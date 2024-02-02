@@ -31,6 +31,8 @@
                         <td>
                             <!-- Display images related to the survey -->
 
+                                <img src="{{ public_path($item->images) }}" alt="" style="width: 150px; height: 150px;">
+
                         </td>
                         <!-- Display other columns accordingly -->
                     </tr>
