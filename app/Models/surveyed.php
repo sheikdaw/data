@@ -61,7 +61,7 @@ class surveyed extends Model
         // Add more fields as needed
     ];
     public function images()
-    {
-        return $this->hasMany(image::class, 'gisid', 'gisid');
-    }
+{
+    return $this->hasMany(Image::class);
+}
 }
