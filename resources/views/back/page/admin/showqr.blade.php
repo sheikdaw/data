@@ -15,28 +15,33 @@
         <table class="table table-bordered">
             <thead class="thead-dark"> <!-- Use thead-light for a light background -->
                 <tr>
-                    <th>Ward</th>
+                    <th>ID</th>
                     <th>Assessment</th>
-                    <th>Street Name</th>
-                    <th>Image</th>
+                    <th>Usage</th>
+                    <th>Owner name</th>
+                    <th>Mobile</th>
+                    <th>Floor</th>
+                    <th>Images</th>
                     <!-- Other table headers -->
                 </tr>
             </thead>
             <tbody>
-                @foreach ($surveys as $item)
-                    <tr>
-                        <td>{{ $item->ward }}</td>
-                        <td>{{ $item->assessment }}</td>
-                        <td>{{ $item->road_name }}</td>
-                        <td>
-                            <!-- Display images related to the survey -->
-                            @foreach($surveys->images as $image)
-                                <img src="{{ public_path($image->image) }}" alt="" style="width: 150px; height: 150px;">
-                            @endforeach
-                        </td>
-                        <!-- Display other columns accordingly -->
-                    </tr>
-                @endforeach
+                @foreach($surveys as $survey)
+            <tr>
+                <td>{{ $survey->id }}</td>
+                <td>{{ $survey->assessment }}</td>
+                <td>{{ $survey->building_usage }}</td>
+                <td>{{ $survey->owner_name }}</td>
+                <td>{{ $survey->mobile }}</td>
+                <td>{{ $survey->number_of_floor }}</td>
+                <td>
+                    <!-- Display images related to the survey -->
+                    @foreach($survey->images as $image)
+                        <img src="{{ public_path($image->image) }}" alt="" style="width: 150px; height: 150px;">
+                    @endforeach
+                </td>
+            </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

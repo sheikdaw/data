@@ -32,8 +32,15 @@ class AdminController extends Controller
 {
     use ValidatesRequests;
     public function showqr($id){
-        $surveys = Surveyed::with('images')->where('gisid',$id)->get();
-        return view('back.page.admin.showqr',compact('surveys'));
+        $surveys = Surveyed::with('images')
+        ->where($request->property, $request->value)
+        ->get();
+
+
+    $data = [
+        'surveys' => $surveys,
+    ];
+        return view('back.page.admin.showqr',$data);
     }
     public function home()
     {
