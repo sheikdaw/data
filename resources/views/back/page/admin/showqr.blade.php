@@ -31,7 +31,8 @@
                         <td>
                             <!-- Display images related to the survey -->
                             @foreach ($survey->images as $image)
-                                <img src="{{ asset(public/$image->image) }}" alt="" style="width: 150px; height: 150px;">
+                            <img src="{{ asset('public/' . $image->image) }}" alt="" style="width: 150px; height: 150px;">
+
                             @endforeach
                         </td>
                         <!-- Display other columns accordingly -->
