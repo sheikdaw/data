@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\images;
+use App\Models\image;
 class surveyed extends Model
 {
     use HasFactory;
