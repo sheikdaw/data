@@ -11,11 +11,8 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->unsignedBigInteger('gisid'); // Adjust to the actual type of gisid
+            $table->string('gisid'); // Adjust to the actual type of gisid
             $table->timestamps();
-
-            // Add foreign key constraint
-            $table->foreign('gisid')->references('gisid')->on('surveyed');
         });
     }
 
