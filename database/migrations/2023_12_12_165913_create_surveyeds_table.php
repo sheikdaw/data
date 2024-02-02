@@ -70,6 +70,10 @@ return new class extends Migration
             $table->timestamps();
         });
     }
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'gisid', 'gisid');
+    }
 
     /**
      * Reverse the migrations.
