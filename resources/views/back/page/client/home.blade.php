@@ -55,7 +55,7 @@
         content: "✖";
     }
 </style>
-    <div class="card shadow p-3">
+    <div class="card shadow p-3">ssss
         <div class="row p-2 g-3">
             @foreach($streetsNotInSurveyed as $street)
                 <div class="card col-md-3 mb-3 shadow-lg">
