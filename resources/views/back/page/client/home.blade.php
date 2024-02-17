@@ -124,6 +124,5 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
 @endsection
