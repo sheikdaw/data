@@ -160,7 +160,7 @@
             })
         });
 
-        var geoJsonFilePath = "{{ asset('public/kovai/tesat.json') }}";
+        var geoJsonFilePath = "{{ asset('public/kovai/test.json') }}";
         var pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
         var left = 8566697.42671;
         var bottom = 1233036.89252;
