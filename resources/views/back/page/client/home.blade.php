@@ -316,6 +316,8 @@ function addInteraction() {
                 success: function(response) {
                     console.log(response.message);
                     // Handle success response
+                     // Refresh the map and update JSON data after point addition
+            refreshMapAndData();
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -324,6 +326,30 @@ function addInteraction() {
             });
         });
     }
+}
+function refreshMapAndData() {
+    // Clear the vector source to remove existing features from the map
+    vectorSource.clear();
+
+    // Fetch updated GeoJSON data
+    fetch(geoJsonFilePath)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load GeoJSON file');
+            }
+            return response.json();
+        })
+        .then(geoJsonData => {
+            // Parse the GeoJSON data and add features to the vector source
+            vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
+
+            // Optionally, you can update other parts of your application's UI here
+
+            // You may need to update any other data or UI elements accordingly
+        })
+        .catch(error => {
+            console.error('Error loading files:', error);
+        });
 }
 
 /**
