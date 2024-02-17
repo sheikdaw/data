@@ -1,3 +1,8 @@
+@extends('back.layout.page-layout')
+
+@section('pagetitle', isset($pagetitle) ? $pagetitle : 'Page Title')
+
+@section('content')
 <style>
     .map {
         width: 100%;
@@ -63,6 +68,24 @@
     </select>
     <input class="form-control mr-2 mb-2 mt-2" type="button" value="Undo" id="undo">
 </form>
+<div class="card shadow p-3">
+    <div class="row p-2 g-3">
+        @foreach($streetsNotInSurveyed as $street)
+        <div class="card col-md-3 mb-3 shadow-lg">
+            <div class="card-body">
+                <h5 class="card-title">{{ $street->road_name }}</h5>
+                <p class="card-text">Balance Count: {{ $street->road_count }}</p>
+                @foreach($totalRoadCount as $totalRoad)
+                @if($totalRoad->road_name == $street->road_name)
+                <p class="card-text">Total Count: {{ $totalRoad->total_road_count }}</p>
+                @endif
+                @endforeach
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+
 <div id="map" class="map"></div>
 
 <div id="popup" class="ol-popup">
@@ -293,6 +316,8 @@ function addInteraction() {
                 success: function(response) {
                     console.log(response.message);
                     // Handle success response
+                     // Refresh the map and update JSON data after point addition
+            refreshMapAndData();
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -301,6 +326,30 @@ function addInteraction() {
             });
         });
     }
+}
+function refreshMapAndData() {
+    // Clear the vector source to remove existing features from the map
+    vectorSource.clear();
+
+    // Fetch updated GeoJSON data
+    fetch(geoJsonFilePath)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load GeoJSON file');
+            }
+            return response.json();
+        })
+        .then(geoJsonData => {
+            // Parse the GeoJSON data and add features to the vector source
+            vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
+
+            // Optionally, you can update other parts of your application's UI here
+
+            // You may need to update any other data or UI elements accordingly
+        })
+        .catch(error => {
+            console.error('Error loading files:', error);
+        });
 }
 
 /**
@@ -322,3 +371,4 @@ addInteraction();
             console.error('Error loading files:', error);
         });
 </script>
+@endsection
