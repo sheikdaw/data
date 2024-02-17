@@ -374,7 +374,7 @@ class AdminController extends Controller
         $data['features'] = $features;
 
         // Write the updated JSON data back to the file
-        file_put_contents(public_path('kovai/test.json'), json_encode($data, JSON_PRETTY_PRINT));
+        file_put_contents(public_path('kovai/test1.json'), json_encode($data, JSON_PRETTY_PRINT));
 
         return response()->json(['message' => 'Feature added successfully']);
     }
