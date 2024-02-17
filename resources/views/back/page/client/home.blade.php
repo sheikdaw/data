@@ -1,199 +1,129 @@
 @extends('back.layout.page-layout')
-@section('pagetitle', isset($pagetitle) ? $pagetitle : 'page title')
+
+@section('pagetitle', isset($pagetitle) ? $pagetitle : 'Page Title')
+
 @section('content')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/css/ol.css"
-type="text/css">
 <style>
-.map {
-    width: 100%;
-    height: 600px;
-}
+    .map {
+        width: 100%;
+        height: 600px;
+    }
 
-.ol-popup {
-    position: absolute;
-    background-color: white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #cccccc;
-    bottom: 12px;
-    left: -50px;
-    min-width: 280px;
-}
+    .ol-popup {
+        position: absolute;
+        background-color: white;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        bottom: 12px;
+        left: -50px;
+        min-width: 280px;
+    }
 
-.ol-popup:after,
-.ol-popup:before {
-    top: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
+    .ol-popup:after,
+    .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
 
-.ol-popup:after {
-    border-top-color: white;
-    border-width: 10px;
-    left: 48px;
-    margin-left: -10px;
-}
+    .ol-popup:after {
+        border-top-color: white;
+        border-width: 10px;
+        left: 48px;
+        margin-left: -10px;
+    }
 
-.ol-popup:before {
-    border-top-color: #cccccc;
-    border-width: 11px;
-    left: 48px;
-    margin-left: -11px;
-}
+    .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: -11px;
+    }
 
-.ol-popup-closer {
-    text-decoration: none;
-    position: absolute;
-    top: 2px;
-    right: 8px;
-}
+    .ol-popup-closer {
+        text-decoration: none;
+        position: absolute;
+        top: 2px;
+        right: 8px;
+    }
 
-.ol-popup-closer:after {
-    content: "✖";
-}
+    .ol-popup-closer:after {
+        content: "✖";
+    }
 </style>
-    <div class="card shadow p-3">
-        <div class="row p-2 g-3">
-            @foreach($streetsNotInSurveyed as $street)
-                <div class="card col-md-3 mb-3 shadow-lg">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $street->road_name }}</h5>
-                        <p class="card-text">Balance Count: {{ $street->road_count }}</p>
-                        @foreach($totalRoadCount as $totalRoad)
-                            @if($totalRoad->road_name == $street->road_name)
-                                <p class="card-text">Total Count: {{ $totalRoad->total_road_count }}</p>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div id="map" class="map"></div>
-    <div id="popup" class="ol-popup">
-        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-        <div id="popup-content"></div>
+<form class="form-inline">
+    <label for="type">Geometry type: &nbsp;</label>
+    <select class="form-control mr-2 mb-2 mt-2" id="type">
+        <option value="Point">Point</option>
+        <option value="LineString">LineString</option>
+        <option value="Polygon">Polygon</option>
+        <option value="Circle">Circle</option>
+        <option value="None">None</option>
+    </select>
+    <input class="form-control mr-2 mb-2 mt-2" type="button" value="Undo" id="undo">
+</form>
+<div class="card shadow p-3">
+    <div class="row p-2 g-3">
+        @foreach($streetsNotInSurveyed as $street)
+        <div class="card col-md-3 mb-3 shadow-lg">
+            <div class="card-body">
+                <h5 class="card-title">{{ $street->road_name }}</h5>
+                <p class="card-text">Balance Count: {{ $street->road_count }}</p>
+                @foreach($totalRoadCount as $totalRoad)
+                @if($totalRoad->road_name == $street->road_name)
+                <p class="card-text">Total Count: {{ $totalRoad->total_road_count }}</p>
+                @endif
+                @endforeach
+            </div>
+        </div>
+        @endforeach
     </div>
-                </div>
-                <script type="text/javascript"
-                src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
-                <script type="text/javascript">
-                    // Path to your GeoJSON file
-                    var geoJsonFilePath = "{{asset('public/kovai/test.json')}}";
-                    // Path to your PNG file
-                    var pngFilePath = "{{asset('public/kovai/final.png')}}";
+</div>
 
-                    // Load the GeoJSON file using fetch API
-                    var geoJsonPromise = fetch(geoJsonFilePath)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to load GeoJSON file');
-                            }
-                            return response.json();
-                        });
+<div id="map" class="map"></div>
 
-                    // Load the PNG file using fetch API
-                    var pngPromise = fetch(pngFilePath)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to load PNG file');
-                            }
-                            return response.blob();
-                        });
+<div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+</div>
 
-                    // Once both files are loaded, proceed with processing
-                    Promise.all([geoJsonPromise, pngPromise])
-                        .then(responses => {
-                            var geoJsonData = responses[0];
-                            var pngBlob = responses[1];
-
-                            var pngDataUrl = URL.createObjectURL(pngBlob);
-
-                            // Convert GeoJSON data to OpenLayers feature objects
-                            var features = (new ol.format.GeoJSON()).readFeatures(geoJsonData);
-
-                            // Create a vector source
-                            var vectorSource = new ol.source.Vector({
-                                features: features
-                            });
-
-                            // Create a vector layer
-                            var vectorLayer = new ol.layer.Vector({
-                                source: vectorSource
-                            });
-
-                            var imageLayer = new ol.layer.Image({
-                    source: new ol.source.ImageStatic({
-                        url: "{{asset('public/kovai/final.png')}}", // Adjust the path to the converted image
-                        projection: 'EPSG:3857', // Assuming Web Mercator projection
-                        imageExtent: ol.extent.createEmpty() // Specify the extent if needed
-                    })
-                });
-
-                            // Create the map
-                            var map = new ol.Map({
-                                target: 'map',
-                                layers: [
-                                    new ol.layer.Tile({
-                                        source: new ol.source.OSM()
-                                    }),
-                                    vectorLayer
-                                ],
-                                view: new ol.View({
-                                    center: ol.proj.fromLonLat([77.039639, 20.245615]), // Center map at desired coordinates
-                                    zoom: 6 // Set desired zoom level
-                                })
-                            });
-
-                            // Popup
-                            var popup = new ol.Overlay({
-                                element: document.getElementById('popup'),
-                                autoPan: true,
-                                autoPanAnimation: {
-                                    duration: 250
-                                }
-                            });
-                            map.addOverlay(popup);
-                            var properties_color_change = feature.getProperties();
-
-
-                            // Display popup on click
-                            map.on('click', function(event) {
-                                var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-                                    return feature;
-                                });
-
-                                if (feature) {
-                                    var properties = feature.getProperties();
-                                    var content = '<h4>Feature Properties</h4>';
-                                    content += '<ul>';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
-                                        }
-                                    }
-                                    content += '</ul>';
-                                    popup.setPosition(event.coordinate);
-                                    document.getElementById('popup-content').innerHTML = content;
-                                } else {
-                                    popup.setPosition(undefined);
-                                }
-                            });
-
-                            // Close popup
-                            document.getElementById('popup-closer').onclick = function() {
-                                popup.setPosition(undefined);
-                                return false;
-                            };
-
-
-                        })
-                        .catch(error => {
-                            console.error('Error loading files:', error);
-                        });
-                </script>
-            @endforeach
+<div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="featureModalLabel">Feature Properties</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>Feature Properties</h4>
+                <ul id="featurePropertiesList">
+                    <!-- Feature properties will be displayed here -->
+                </ul>
+                <hr>
+                <h4>Feature Form</h4>
+                <form id="featureForm" method="post" action="{{ route('client.Survey-Form-Point') }}">
+                    @csrf <!-- CSRF token for security -->
+                    <div class="mb-3">
+                        <label for="gisIdInput" class="form-label">Gis id</label>
+                        <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="assessment" class="form-label">Assessment no</label>
+                        <input type="text" class="form-control" id="assessment" name="assessment">
+                    </div>
+                    <!-- Add more form fields as needed -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
 @endsection
