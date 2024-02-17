@@ -291,7 +291,7 @@
                 let draw; // global so we can remove it later
 
                 function addInteraction() {
-                    const value = typeSelect.value;
+                    let value = typeSelect.value;
                     if (value !== 'None') {
                         draw = new ol.interaction.Draw({
                             source: vectorSource,
@@ -302,8 +302,8 @@
                             const feature = event.feature;
                             const geometry = feature.getGeometry();
                             const coordinates = geometry.getCoordinates();
-
-                            // Send an Ajax request to Laravel route to add the feature to JSON
+                            if (value == 'Point') {
+                                 // Send an Ajax request to Laravel route to add the feature to JSON
                             $.ajax({
                                 url: '/add-feature',
                                 type: 'POST', // Use POST method
@@ -317,6 +317,7 @@
                                 contentType: 'application/json', // Set content type to JSON
                                 success: function(response) {
                                     console.log(response.message);
+                                    typeSelect.value="None"
                                     // Handle success response
                                     // Refresh the map and update JSON data after point addition
                                     // refreshMapAndData();
@@ -326,6 +327,8 @@
                                     // Handle error response
                                 }
                             });
+                            }
+
                         });
                     }
                 }
