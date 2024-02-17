@@ -336,9 +336,9 @@ class AdminController extends Controller
 
         return response()->json(['status' => 0, 'msg' => 'User not authenticated']);
     }
-    
-    
-    
+
+
+
    public function addFeature(Request $request)
     {
         $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
@@ -363,7 +363,7 @@ class AdminController extends Controller
             "properties" => [
                 "FID" => count($features), // Using the same ID as 'id' for simplicity
                 "Id" => 0,
-                "GIS_ID" => $primaryGisId
+                "GIS_ID" => count($features)+1
             ]
         ];
 
@@ -375,7 +375,7 @@ class AdminController extends Controller
 
         // Write the updated JSON data back to the file
         file_put_contents(public_path('kovai/test.json'), json_encode($data, JSON_PRETTY_PRINT));
-        
+
         return response()->json(['message' => 'Feature added successfully']);
     }
 }
