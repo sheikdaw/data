@@ -265,119 +265,77 @@
                 });
 
                 map.on('click', function(event) {
-                    if (document.getElementById('type').value == 'None') {
-                        var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-                            return feature;
-                        });
-
-                        if (feature) {
-                            var properties = feature.getProperties();
-                            var content = '';
-                            for (var key in properties) {
-                                if (key !== 'geometry') {
-                                    content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
-                                }
-                            }
-                            document.getElementById('featurePropertiesList').innerHTML = content;
-                            document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                            $('#featureModal').modal('show');
-                        } else {
-                            $('#featureModal').modal('hide');
-                        }
-                    }
-                });
-                const typeSelect = document.getElementById('type');
-
-                let draw; // global so we can remove it later
-
-                function addInteraction() {
-                    let value = typeSelect.value;
-                    if (value !== 'None') {
-                        draw = new ol.interaction.Draw({
-                            source: vectorSource,
-                            type: typeSelect.value,
-                        });
-                        map.addInteraction(draw);
-                        draw.on('drawend', function(event) {
-                            const feature = event.feature;
-                            const geometry = feature.getGeometry();
-                            const coordinates = geometry.getCoordinates();
-                            if (value == 'Point') {
-                                 // Send an Ajax request to Laravel route to add the feature to JSON
-                            $.ajax({
-                                url: '/add-feature',
-                                type: 'POST', // Use POST method
-                                data: JSON.stringify({
-                                    '_token': '{{ csrf_token() }}',
-                                    'longitude': coordinates[0],
-                                    'latitude': coordinates[1],
-                                    'gis_id': feature
-                                    .getId() // Assuming you're setting an ID for the feature
-                                }),
-                                contentType: 'application/json', // Set content type to JSON
-                                success: function(response) {
-                                    console.log(response.message);
-                                    typeSelect.value="None"
-                                    // Handle success response
-                                    // Refresh the map and update JSON data after point addition
-                                    // refreshMapAndData();
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error(error);
-                                    // Handle error response
-                                }
-                            });
-                            }
-
-                        });
-                    }
+    const type = document.getElementById('type').value;
+    if (type === 'None') {
+        const feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+            return feature;
+        });
+        if (feature) {
+            const properties = feature.getProperties();
+            let content = '';
+            for (let key in properties) {
+                if (key !== 'geometry') {
+                    content += `<li><strong>${key}:</strong> ${properties[key]}</li>`;
                 }
+            }
+            document.getElementById('featurePropertiesList').innerHTML = content;
+            document.getElementById('gisIdInput').value = properties['GIS_ID'];
+            $('#featureModal').modal('show');
+        } else {
+            $('#featureModal').modal('hide');
+        }
+    }
+});
 
-                // function refreshMapAndData() {
-                //     // Clear the vector source to remove existing features from the map
-                //     vectorSource.clear();
+const typeSelect = document.getElementById('type');
+let draw;
 
-                //     // Fetch updated GeoJSON data
-                //     fetch(geoJsonFilePath)
-                //         .then(response => {
-                //             if (!response.ok) {
-                //                 throw new Error('Failed to load GeoJSON file');
-                //             }
-                //             return response.json();
-                //         })
-                //         .then(geoJsonData => {
-                //             // Parse the GeoJSON data and add features to the vector source
-                //             vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
-                //             features.forEach(function(feature) {
-                //                 var properties = feature.getProperties();
-                //                 if (gisIdSet.has(properties['GIS_ID'])) {
-                //                     feature.setStyle(completeStyle);
-                //                 } else {
-                //                     feature.setStyle(clickedStyle);
-                //                 }
-                //             });
-                //             // Optionally, you can update other parts of your application's UI here
-
-                //             // You may need to update any other data or UI elements accordingly
-                //         })
-                //         .catch(error => {
-                //             console.error('Error loading files:', error);
-                //         });
-                // }
-
-                /**
-                 * Handle change event.
-                 */
-                typeSelect.onchange = function() {
-                    map.removeInteraction(draw);
-                    addInteraction();
-                };
-
-                document.getElementById('undo').addEventListener('click', function() {
-                    draw.removeLastPoint();
+function addInteraction() {
+    const value = typeSelect.value;
+    if (value !== 'None') {
+        draw = new ol.interaction.Draw({
+            source: vectorSource,
+            type: value,
+        });
+        map.addInteraction(draw);
+        draw.on('drawend', function(event) {
+            const feature = event.feature;
+            const geometry = feature.getGeometry();
+            const coordinates = geometry.getCoordinates();
+            if (value === 'Point') {
+                $.ajax({
+                    url: '/add-feature',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        '_token': '{{ csrf_token() }}',
+                        'longitude': coordinates[0],
+                        'latitude': coordinates[1],
+                        'gis_id': feature.getId()
+                    }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        console.log(response.message);
+                        typeSelect.value = 'None';
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
                 });
+            }
+        });
+    }
+}
 
-                addInteraction();
+typeSelect.onchange = function() {
+    map.removeInteraction(draw);
+    addInteraction();
+};
+
+document.getElementById('undo').addEventListener('click', function() {
+    draw.removeLastPoint();
+});
+
+addInteraction();
 
             })
             .catch(error => {
