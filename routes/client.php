@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FormController;
 use App\Http\Middleware\PreventBackHistory;
-
+Route::post('/add-feature', [AdminController::class, 'addFeature']);
 Route::prefix('client')->name('client.')->group(function () {
     Route::middleware(['guest:client', PreventBackHistory::class])->group(function () {
         Route::view('/login', 'back.page.client.auth.login')->name('login');
@@ -22,6 +23,7 @@ Route::prefix('client')->name('client.')->group(function () {
         Route::get('/admin/get-profile-picture', [ClientController::class, 'getProfilePicture'])->name('get-profile-picture');
         Route::view('/survey-gis', 'back.page.client.survey-gis')->name('Survey-Gis');
         Route::post('/survey-form', [ClientController::class, 'surveyForm'])->name('Survey-Form');
+        Route::post('/survey-formpoint', [ClientController::class, 'surveyFormPoint'])->name('Survey-Form-Point');
         Route::post('/form-property', [FormController::class, 'property'])->name('form-property');
         Route::post('/form-address', [FormController::class, 'address'])->name('form-address');
         Route::post('/form-floor', [FormController::class, 'floor'])->name('form-floor');

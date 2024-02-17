@@ -21,3 +21,6 @@ Route::view('/example-auth', 'example-auth');
 
 
 
+Route::get('/map', function () {
+    return view('map');
+})->name('map');

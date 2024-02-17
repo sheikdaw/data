@@ -336,9 +336,9 @@ class AdminController extends Controller
 
         return response()->json(['status' => 0, 'msg' => 'User not authenticated']);
     }
-
-
-
+    
+    
+    
    public function addFeature(Request $request)
     {
         $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
@@ -375,7 +375,7 @@ class AdminController extends Controller
 
         // Write the updated JSON data back to the file
         file_put_contents(public_path('kovai/test.json'), json_encode($data, JSON_PRETTY_PRINT));
-
+        
         return response()->json(['message' => 'Feature added successfully']);
     }
 }

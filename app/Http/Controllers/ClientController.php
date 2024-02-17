@@ -42,8 +42,9 @@ class ClientController extends Controller
             ->selectRaw('road_name, count(*) as road_count')
           ->groupBy('road_name')
           ->get();
+          $surveyed = Surveyed::all();
 
-          return view('back.page.client.home', compact('streetsNotInSurveyed', 'totalRoadCount'));
+          return view('back.page.client.home', compact('streetsNotInSurveyed', 'totalRoadCount','surveyed'));
     }
     public function loginHandler(Request $request)
     {
@@ -84,23 +85,11 @@ class ClientController extends Controller
         ];
 
         if (auth('client')->attempt($creds)) {
-            $totalRoadCount = mis::where('workername', auth('client')->user()->name)
-                ->selectRaw('road_name, count(*) as total_road_count')
-                ->groupBy('road_name')
-                ->get();
-
-            $streetsNotInSurveyed = mis::whereNotIn('assessment', function ($query) {
-                $query->select('assessment')->from('surveyeds');
-            })
-                ->selectRaw('road_name, COUNT(*) as road_count')
-                ->groupBy('road_name')
-                ->get();
-
-            return view('client.home', compact('totalRoadCount', 'streetsNotInSurveyed'));
+           return redirect()->route('client.home');
         }
          else {
             session()->flash('fail', 'Incorrect credentials');
-            return redirect()->route('client.login');
+            return redirect()->route('back.page.client.login');
         }
     }
     //log out
@@ -182,6 +171,34 @@ class ClientController extends Controller
         }
         return view('back.page.client.survey-gis')->with(['status' => 0, 'error' => 'User not authenticated']);
     }
+    //retrived
+   public function surveyFormPoint(Request $request)
+{
+    if (Auth::guard('client')->check()) {
+        $userName = Auth::guard('client')->user()->name;
+        $data = mis::where('assessment', $request->input('assessment'))->where('workername', $userName)->first();
+        $surveydata = surveyed::where('assessment', $request->input('assessment'))->first();
+        $mis = mis::all();
+        $id = $request->input('gisid');
+        if ($data) {
+            if ($surveydata) {
+                return view('back.page.client.survey-gis')->with(['status' => 0, 'error' => 'Bill Already Survey']);
+            } else {
+                // Assigning $id to $data['gisid']
+                $data['gisid'] = $id;
+                // Passing $data, $mis, and $id to the view
+                return view('back.page.client.survey-form', compact('data', 'mis', 'id'));
+               //dd($data);
+
+            }
+        } else {
+            return view('back.page.client.survey-gis')->with(['status' => 0, 'error' => 'No data found for the specified assessment']);
+        }
+    }
+    return view('back.page.client.survey-gis')->with(['status' => 0, 'error' => 'User not authenticated']);
+}
+
+
     public function storeimg(Request $request)
     {
 
