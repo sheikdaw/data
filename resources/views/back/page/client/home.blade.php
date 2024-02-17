@@ -285,12 +285,10 @@
                 }
                 }
             });
-// Get the select element for drawing type
 const typeSelect = document.getElementById('type');
-let draw; // global variable to hold the drawing interaction
-let vectorSource; // global variable to hold the vector source for features
+let draw; // global so we can remove it later
+let vectorSource; // Define vectorSource in the global scope
 
-// Function to add interaction for drawing features on the map
 function addInteraction() {
     const value = typeSelect.value;
     if (value !== 'None') {
@@ -298,25 +296,23 @@ function addInteraction() {
             source: vectorSource,
             type: typeSelect.value,
         });
-        map.addInteraction(draw); // Add the drawing interaction to the map
-
-        // Listen for the 'drawend' event when drawing is completed
+        map.addInteraction(draw);
         draw.on('drawend', function(event) {
             const feature = event.feature;
             const geometry = feature.getGeometry();
             const coordinates = geometry.getCoordinates();
 
-            // Send an AJAX request to Laravel route to add the feature to JSON
+            // Send an Ajax request to Laravel route to add the feature to JSON
             $.ajax({
                 url: '/add-feature',
-                type: 'POST',
+                type: 'POST', // Use POST method
                 data: JSON.stringify({
                     '_token': '{{ csrf_token() }}',
                     'longitude': coordinates[0],
                     'latitude': coordinates[1],
                     'gis_id': feature.getId() // Assuming you're setting an ID for the feature
                 }),
-                contentType: 'application/json',
+                contentType: 'application/json', // Set content type to JSON
                 success: function(response) {
                     console.log(response.message);
                     // Handle success response
@@ -332,7 +328,6 @@ function addInteraction() {
     }
 }
 
-// Function to refresh the map and update JSON data after point addition
 function refreshMapAndData() {
     // Clear the vector source to remove existing features from the map
     vectorSource.clear();
@@ -349,7 +344,7 @@ function refreshMapAndData() {
             // Parse the GeoJSON data and add features to the vector source
             vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
 
-            // Optionally, update other parts of your application's UI here
+            // Optionally, you can update other parts of your application's UI here
 
             // You may need to update any other data or UI elements accordingly
         })
@@ -358,26 +353,25 @@ function refreshMapAndData() {
         });
 }
 
-// Initialize the vector source before calling addInteraction
+// Ensure vectorSource is initialized before calling addInteraction
 vectorSource = new ol.source.Vector();
 
 // Call addInteraction function to start drawing interaction
 addInteraction();
 
-// Event listener for change event on the drawing type select element
+/**
+ * Handle change event.
+ */
 typeSelect.onchange = function() {
-    map.removeInteraction(draw); // Remove existing interaction
-    addInteraction(); // Add new interaction based on the selected type
+    map.removeInteraction(draw);
+    addInteraction();
 };
 
-// Event listener for 'click' event on the 'undo' button
 document.getElementById('undo').addEventListener('click', function() {
-    draw.removeLastPoint(); // Remove the last drawn point
+    draw.removeLastPoint();
 });
 
-// Call addInteraction initially to set up drawing interaction
 addInteraction();
-
 
         })
         .catch(error => {
