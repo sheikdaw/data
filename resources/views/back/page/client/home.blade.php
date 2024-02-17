@@ -319,7 +319,7 @@
                                     console.log(response.message);
                                     // Handle success response
                                     // Refresh the map and update JSON data after point addition
-                                    // refreshMapAndData();
+                                    refreshMapAndData();
                                 },
                                 error: function(xhr, status, error) {
                                     console.error(error);
@@ -330,37 +330,37 @@
                     }
                 }
 
-                // function refreshMapAndData() {
-                //     // Clear the vector source to remove existing features from the map
-                //     vectorSource.clear();
+                function refreshMapAndData() {
+                    // Clear the vector source to remove existing features from the map
+                    vectorSource.clear();
 
-                //     // Fetch updated GeoJSON data
-                //     fetch(geoJsonFilePath)
-                //         .then(response => {
-                //             if (!response.ok) {
-                //                 throw new Error('Failed to load GeoJSON file');
-                //             }
-                //             return response.json();
-                //         })
-                //         .then(geoJsonData => {
-                //             // Parse the GeoJSON data and add features to the vector source
-                //             vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
-                //             features.forEach(function(feature) {
-                //                 var properties = feature.getProperties();
-                //                 if (gisIdSet.has(properties['GIS_ID'])) {
-                //                     feature.setStyle(completeStyle);
-                //                 } else {
-                //                     feature.setStyle(clickedStyle);
-                //                 }
-                //             });
-                //             // Optionally, you can update other parts of your application's UI here
+                    // Fetch updated GeoJSON data
+                    fetch(geoJsonFilePath)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to load GeoJSON file');
+                            }
+                            return response.json();
+                        })
+                        .then(geoJsonData => {
+                            // Parse the GeoJSON data and add features to the vector source
+                            vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
+                            features.forEach(function(feature) {
+                                var properties = feature.getProperties();
+                                if (gisIdSet.has(properties['GIS_ID'])) {
+                                    feature.setStyle(completeStyle);
+                                } else {
+                                    feature.setStyle(clickedStyle);
+                                }
+                            });
+                            // Optionally, you can update other parts of your application's UI here
 
-                //             // You may need to update any other data or UI elements accordingly
-                //         })
-                //         .catch(error => {
-                //             console.error('Error loading files:', error);
-                //         });
-                // }
+                            // You may need to update any other data or UI elements accordingly
+                        })
+                        .catch(error => {
+                            console.error('Error loading files:', error);
+                        });
+                }
 
                 /**
                  * Handle change event.
