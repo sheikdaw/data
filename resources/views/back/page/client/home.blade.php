@@ -285,9 +285,9 @@
                 }
                 }
             });
-const typeSelect = document.getElementById('type');
+           const typeSelect = document.getElementById('type');
+
 let draw; // global so we can remove it later
-let vectorSource; // Define vectorSource in the global scope
 
 function addInteraction() {
     const value = typeSelect.value;
@@ -316,8 +316,8 @@ function addInteraction() {
                 success: function(response) {
                     console.log(response.message);
                     // Handle success response
-                    // Refresh the map and update JSON data after point addition
-                    refreshMapAndData();
+                     // Refresh the map and update JSON data after point addition
+            refreshMapAndData();
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -327,7 +327,6 @@ function addInteraction() {
         });
     }
 }
-
 function refreshMapAndData() {
     // Clear the vector source to remove existing features from the map
     vectorSource.clear();
@@ -352,12 +351,6 @@ function refreshMapAndData() {
             console.error('Error loading files:', error);
         });
 }
-
-// Ensure vectorSource is initialized before calling addInteraction
-vectorSource = new ol.source.Vector();
-
-// Call addInteraction function to start drawing interaction
-addInteraction();
 
 /**
  * Handle change event.
