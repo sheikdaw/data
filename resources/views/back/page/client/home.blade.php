@@ -345,14 +345,7 @@
                         .then(geoJsonData => {
                             // Parse the GeoJSON data and add features to the vector source
                             vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
-                            features.forEach(function(feature) {
-                                var properties = feature.getProperties();
-                                if (gisIdSet.has(properties['GIS_ID'])) {
-                                    feature.setStyle(completeStyle);
-                                } else {
-                                    feature.setStyle(clickedStyle);
-                                }
-                            });
+
                             // Optionally, you can update other parts of your application's UI here
 
                             // You may need to update any other data or UI elements accordingly
