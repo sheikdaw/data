@@ -23,7 +23,7 @@ class FormController extends Controller
                 'ward' => 'required|regex:/^[0-9]+$/',
                 'owner_name' => 'required|regex:/^[A-Za-z.,]+$/',
                 'present_owner' => 'required|regex:/^[A-Za-z.,]+$/|min:3',
-                'water_tax' => 'required|regex:/^[A-Za-z\/,]+$/|min:4',
+                'water_tax' => 'required|regex:/^[0-9]+$/|min:4',
                 'building_location' => 'required|regex:/^[A-Za-z0-9-]+$/',
                 'mobile' => 'required|numeric',
                 'gisid' => 'required',
@@ -32,7 +32,7 @@ class FormController extends Controller
                 'number_of_floor' => 'required|numeric',
                 // Add more rules for other fields
             ];
-            
+
             // Additional rules based on condition
             if ($request->type == 'New Bill') {
                 $rules += [
@@ -46,7 +46,7 @@ class FormController extends Controller
                     'aadhar' => 'required',
                 ];
             }
-            
+
 
             $validator = Validator::make($request->all(), $rules);
 
@@ -58,13 +58,13 @@ class FormController extends Controller
            $existingProperty = Surveyed::where('gisid', $request->gisid)->first();
 
             if ($existingProperty) {
-                
+
                 $errors = [];
 
                 if ($existingProperty->number_of_floor != $request->number_of_floor) {
                     $errors['number_of_floor'] = 'value Mismatch';
                 }
-                
+
                 if ($existingProperty->number_of_floor != $request->number_of_shop) {
                     $errors['number_of_shop'] = 'value Mismatch';
                 }
@@ -87,7 +87,7 @@ class FormController extends Controller
                 else{
                     return response()->json(['success' => true]);
                 }
-                
+
             } else {
                 return response()->json(['success' => true]);
             }
@@ -139,16 +139,16 @@ class FormController extends Controller
             'remarks.*' => 'required',
             // Add more rules for other fields
         ];
-    
+
         $validator = Validator::make($request->all(), $rules);
-    
+
         if ($validator->fails()) {
             return response()->json(['error' => true, 'errors' => $validator->errors()]);
         }
-    
+
         $floorCount = count($request->input('floor'));
         $existingProperty = Surveyed::where('gisid', $request->gisid)->first();
-    
+
         if ($existingProperty) {
             $errors = [];
             for ($i = 0; $i < $floorCount; $i++) {
@@ -157,7 +157,7 @@ class FormController extends Controller
                     $errors['floor'] = $i;
                 }
             }
-    
+
             if (!empty($errors)) {
                 return response()->json(['error' => true, 'msg' => 'Fields mismatch', 'errors' => $errors, 'errorsId' => $floorCount]);
             } else {
@@ -167,78 +167,79 @@ class FormController extends Controller
             return response()->json(['success' => true]);
         }
     }
-    
-    
+
+
 
 
     //establishment data validate
     public function establishment(Request $request)
     {
+        return response()->json(['success' => true]);
         // Define validation rules
-        $rules = [
-            'shop_name.*' => 'required',
-            'shop_owner_name.*' => 'required',
-            'shop_mobile.*' => 'required',
-            'shop_floor.*' => 'required',
+        // $rules = [
+        //     'shop_name.*' => 'required',
+        //     'shop_owner_name.*' => 'required',
+        //     'shop_mobile.*' => 'required',
+        //     'shop_floor.*' => 'required',
 
-            // Add more rules for other fields
-        ];
+        //     // Add more rules for other fields
+        // ];
 
-        $validator = Validator::make($request->all(), $rules);
+        // $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => true, 'errors' => $validator->errors()]);
-        }
-        $floorCount = count($request->input('floor'));
-        $shopfloorCount = count($request->input('shop_floor'));
-        // If validation passes, continue with your logic to store the data.
-        $existingProperty = Surveyed::where('gisid', $request->gisid)->first();
-    
-        if ($existingProperty) {
-            $errors = [];
-            for ($i = 0; $i < $shopfloorCount; $i++) {
-                // Check if the current floor exceeds the previous count
-                if ($existingProperty->number_of_floor < $request->input('shop_floor')[$i]) {
-                    $errors['shop_floor'] = $i;
-                }
-            }
-    
-            if (!empty($errors)) {
-                return response()->json(['error' => true, 'msg' => 'Fields mismatch', 'errors' => $errors, 'errorsId' => $shopfloorCount]);
-            } else {
-                $floorCount = count($request->input('floor'));
-                $shopfloorCount = count($request->input('shop_floor'));
-                $x=0;
-                for ($i=0; $i < $floorCount; $i++) { 
-                    for ($j=0; $j < $shopfloorCount ; $j++) { 
-                         if ($request->input('floor')[$i] == $request->input('shop_floor')[$j]) {
-                             $x++;
-                         }
-                    }
-                 }
-                 if ($x != $shopfloorCount ) {
-                     return response()->json(['error' => true,'flr'=> true]);
-                 }else{
-                     return response()->json(['success' => true]);
-                 }
-            }
-        } else {
-            $floorCount = count($request->input('floor'));
-        $shopfloorCount = count($request->input('shop_floor'));
-         $x=0;
-            for ($i=0; $i < $floorCount; $i++) { 
-               for ($j=0; $j < $shopfloorCount ; $j++) { 
-                    if ($request->input('floor')[$i] == $request->input('shop_floor')[$j]) {
-                        $x++;
-                    }
-               }
-            }
-            if ($x != $shopfloorCount ) {
-                return response()->json(['error' => true,'flr'=> true]);
-            }else{
-                return response()->json(['success' => true]);
-            }
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['error' => true, 'errors' => $validator->errors()]);
+        // }
+        // $floorCount = count($request->input('floor'));
+        // $shopfloorCount = count($request->input('shop_floor'));
+        // // If validation passes, continue with your logic to store the data.
+        // $existingProperty = Surveyed::where('gisid', $request->gisid)->first();
+
+        // if ($existingProperty) {
+        //     $errors = [];
+        //     for ($i = 0; $i < $shopfloorCount; $i++) {
+        //         // Check if the current floor exceeds the previous count
+        //         if ($existingProperty->number_of_floor < $request->input('shop_floor')[$i]) {
+        //             $errors['shop_floor'] = $i;
+        //         }
+        //     }
+
+        //     if (!empty($errors)) {
+        //         return response()->json(['error' => true, 'msg' => 'Fields mismatch', 'errors' => $errors, 'errorsId' => $shopfloorCount]);
+        //     } else {
+        //         $floorCount = count($request->input('floor'));
+        //         $shopfloorCount = count($request->input('shop_floor'));
+        //         $x=0;
+        //         for ($i=0; $i < $floorCount; $i++) {
+        //             for ($j=0; $j < $shopfloorCount ; $j++) {
+        //                  if ($request->input('floor')[$i] == $request->input('shop_floor')[$j]) {
+        //                      $x++;
+        //                  }
+        //             }
+        //          }
+        //          if ($x != $shopfloorCount ) {
+        //              return response()->json(['error' => true,'flr'=> true]);
+        //          }else{
+        //              return response()->json(['success' => true]);
+        //          }
+        //     }
+        // } else {
+        //     $floorCount = count($request->input('floor'));
+        // $shopfloorCount = count($request->input('shop_floor'));
+        //  $x=0;
+        //     for ($i=0; $i < $floorCount; $i++) {
+        //        for ($j=0; $j < $shopfloorCount ; $j++) {
+        //             if ($request->input('floor')[$i] == $request->input('shop_floor')[$j]) {
+        //                 $x++;
+        //             }
+        //        }
+        //     }
+        //     if ($x != $shopfloorCount ) {
+        //         return response()->json(['error' => true,'flr'=> true]);
+        //     }else{
+        //         return response()->json(['success' => true]);
+        //     }
+        // }
     }
     public function formSubmit(Request $request)
     {
@@ -311,27 +312,28 @@ class FormController extends Controller
                 'eb_connection' => $request->input('eb_connection'),
                 'ugd' => $request->input('ugd'),
                 'workername' => Auth::guard('client')->user()->name,
-            ];
+            ];Surveyed::create($surveyedData);
+              return response()->json(['success' => true, 'message' => 'Data has been stored successfully.']);
 
-            if ($request->input('floor_usage')[$i] == "COMMERCIAL") {
-                for ($j = 0; $j < $establishmentCount; $j++) {
-                    if ($request->input('floor')[$i] == $request->input('shop_floor')[$j]) {
-                        $mixedSurveyedData = $surveyedData; // Clone the common data
-                        $mixedSurveyedData['shop_floor'] = $request->input('shop_floor')[$j];
-                        $mixedSurveyedData['shop_name'] = $request->input('shop_name')[$j];
-                        $mixedSurveyedData['shop_owner_name'] = $request->input('shop_owner_name')[$j];
-                        $mixedSurveyedData['license'] = $request->input('license')[$j];
-                        $mixedSurveyedData['professional_tax'] = $request->input('professional_tax')[$j];
-                        $mixedSurveyedData['shop_category'] = $request->input('shop_category')[$j];
-                        $mixedSurveyedData['shop_mobile'] = $request->input('shop_mobile')[$j];
-                        $mixedSurveyedData['establishment_remarks'] = $request->input('establishment_remarks')[$j];
-                        Surveyed::create($mixedSurveyedData);
-                    }
-                }
-            } else {
-                Surveyed::create($surveyedData);
-                return response()->json(['success' => true, 'message' => 'Data has been stored successfully.']);
-            }
+            // if ($request->input('floor_usage')[$i] == "COMMERCIAL") {
+            //     for ($j = 0; $j < $establishmentCount; $j++) {
+            //         if ($request->input('floor')[$i] == $request->input('shop_floor')[$j]) {
+            //             $mixedSurveyedData = $surveyedData; // Clone the common data
+            //             $mixedSurveyedData['shop_floor'] = $request->input('shop_floor')[$j];
+            //             $mixedSurveyedData['shop_name'] = $request->input('shop_name')[$j];
+            //             $mixedSurveyedData['shop_owner_name'] = $request->input('shop_owner_name')[$j];
+            //             $mixedSurveyedData['license'] = $request->input('license')[$j];
+            //             $mixedSurveyedData['professional_tax'] = $request->input('professional_tax')[$j];
+            //             $mixedSurveyedData['shop_category'] = $request->input('shop_category')[$j];
+            //             $mixedSurveyedData['shop_mobile'] = $request->input('shop_mobile')[$j];
+            //             $mixedSurveyedData['establishment_remarks'] = $request->input('establishment_remarks')[$j];
+            //             Surveyed::create($mixedSurveyedData);
+            //         }
+            //     }
+            // } else {
+            //     Surveyed::create($surveyedData);
+            //     return response()->json(['success' => true, 'message' => 'Data has been stored successfully.']);
+            // }
         }
 
         return response()->json(['success' => true, 'message' => 'Data has been stored successfully.']);
@@ -341,7 +343,7 @@ class FormController extends Controller
         $rules = [
             'gisid' => 'required',
             'property' => 'required',
-            'value' => 'required',               
+            'value' => 'required',
             // Add more validation rules for other fields as needed
         ];
 
@@ -357,7 +359,7 @@ class FormController extends Controller
         } else {
             return response()->json(['error' => true,'msg'=>$request->property, 'errors' => $validator->errors()]);
         }
-        
+
     }
 
 }
