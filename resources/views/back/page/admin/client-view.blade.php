@@ -2,7 +2,7 @@
 @section('pagetitle', isset($pagetitle) ? $pagetitle : 'Client view')
 @section('content')
 <div class="card p-3">
-    <a href="{{route('admin.Add-Client')}}" class="btn">Add Surveyeo</a>
+    <a href="{{route('admin.Add-Client')}}" class="btn">Add Surveyer</a>
     <div class="row">
         @foreach ($totalclient as $client)
         <div class="card p-3 m-2">
