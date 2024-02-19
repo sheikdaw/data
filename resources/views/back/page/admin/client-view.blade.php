@@ -2,6 +2,7 @@
 @section('pagetitle', isset($pagetitle) ? $pagetitle : 'Client view')
 @section('content')
 <div class="card p-3">
+    <a href="{{route.Add-Client}}" class="btn">Add Surveyeo</a>
     <div class="row">
         @foreach ($totalclient as $client)
         <div class="card p-3 m-2">
@@ -14,7 +15,7 @@
                     <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
-        </div>            
+        </div>
         @endforeach
     </div>
 </div>
