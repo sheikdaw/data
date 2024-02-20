@@ -1,7 +1,7 @@
 @extends('back.layout.page-layout')
 
 @section('pagetitle', isset($pagetitle) ? $pagetitle : 'Page Title')
-
+<livewire:scripts /><livewire:styles />
 @section('content')
 <style>.map {
     width: 100%;
