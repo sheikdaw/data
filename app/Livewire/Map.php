@@ -18,6 +18,6 @@ class Map extends Component
     public function render()
     {
         // Pass the $surveyed data to the view
-        return view('livewire.map', ['surveyed' => $this->surveyed]);
+        return view('livewire.Map', ['surveyed' => $this->surveyed]);
     }
 }

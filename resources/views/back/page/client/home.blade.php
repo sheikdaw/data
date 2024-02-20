@@ -20,5 +20,5 @@
             @endforeach
         </div>
     </div>
-@livewire('map')
+@livewire('Map')
 @endsection
