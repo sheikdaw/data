@@ -105,6 +105,8 @@
         </div>
     </div>
 </div>
+<button wire:click="addFeature">Add Feature</button>
+
 @push('script')
 
 
@@ -274,44 +276,23 @@
                 let draw; // global so we can remove it later
 
                 function addInteraction() {
-                    const value = typeSelect.value;
-                    if (value !== 'None') {
-                        draw = new ol.interaction.Draw({
-                            source: vectorSource,
-                            type: typeSelect.value,
-                        });
-                        map.addInteraction(draw);
-                        draw.on('drawend', function(event) {
-                            const feature = event.feature;
-                            const geometry = feature.getGeometry();
-                            const coordinates = geometry.getCoordinates();
+    const value = typeSelect.value;
+    if (value !== 'None') {
+        draw = new ol.interaction.Draw({
+            source: vectorSource,
+            type: typeSelect.value,
+        });
+        map.addInteraction(draw);
+        draw.on('drawend', function(event) {
+            const feature = event.feature;
+            const geometry = feature.getGeometry();
+            const coordinates = geometry.getCoordinates();
 
-                            // Send an Ajax request to Laravel route to add the feature to JSON
-                            $.ajax({
-                                url: '/add-feature',
-                                type: 'POST', // Use POST method
-                                data: JSON.stringify({
-                                    '_token': '{{ csrf_token() }}',
-                                    'longitude': coordinates[0],
-                                    'latitude': coordinates[1],
-                                    'gis_id': feature
-                                    .getId() // Assuming you're setting an ID for the feature
-                                }),
-                                contentType: 'application/json', // Set content type to JSON
-                                success: function(response) {
-                                    console.log(response.message);
-                                    // Handle success response
-                                    // Refresh the map and update JSON data after point addition
-                                    refreshMapAndData();
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error(error);
-                                    // Handle error response
-                                }
-                            });
-                        });
-                    }
-                }
+            // Instead of emitting, directly call Livewire method
+            Livewire.components['client-map'].addFeature(coordinates[0], coordinates[1], feature.getId());
+        });
+    }
+}
 
                 function refreshMapAndData() {
                     // Clear the vector source to remove existing features from the map
