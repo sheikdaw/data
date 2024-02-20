@@ -1,9 +1,6 @@
 <?php
 
-// app/Http/Livewire/ClientMap.php
-
-namespace App\Http\Livewire;
-
+namespace App\Livewire;
 use App\Models\Surveyed;
 use Livewire\Component;
 
@@ -17,20 +14,23 @@ class ClientMap extends Component
 
     protected $listeners = ['addFeature'];
 
+
     public function mount()
     {
         // Fetch surveyed data and assign it to the property
         $this->point = asset('public/kovai/test.json');
         $this->surveyed = Surveyed::all();
     }
-
-    public function addFeature($longitude, $latitude, $gisId)
+    public function addFeature($request)
     {
         // Load existing JSON data
         $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
 
         // Assuming 'features' is an existing array in your JSON data
         $features = $data['features'];
+
+        // Primary GIS ID
+        $primaryGisId = $request->input('primary_gis_id');
 
         // Prepare the new feature
         $newFeature = [
@@ -39,8 +39,8 @@ class ClientMap extends Component
             "geometry" => [
                 "type" => "Point",
                 "coordinates" => [
-                    $longitude,
-                    $latitude
+                    $request->input('longitude'),
+                    $request->input('latitude')
                 ]
             ],
             "properties" => [
@@ -59,8 +59,7 @@ class ClientMap extends Component
         // Write the updated JSON data back to the file
         file_put_contents(public_path('kovai/test.json'), json_encode($data, JSON_PRETTY_PRINT));
 
-        // Emit an event to inform the JavaScript side about the success
-        $this->emit('featureAdded', 'Feature added successfully');
+        return response()->json(['message' => 'Feature added successfully']);
     }
 
     public function render()
