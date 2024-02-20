@@ -19,8 +19,7 @@ class ClientMap extends Component
     public function render()
     {
         return view('livewire.client-map', [
-            'surveyed' => $this->surveyed,
-            'point' => $this->point, // Pass $point variable to the Blade template
+            'surveyed' => $this->surveyed
         ]);
     }
 }
