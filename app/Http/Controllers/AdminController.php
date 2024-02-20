@@ -288,7 +288,7 @@ class AdminController extends Controller
     // Add Client details
 
     public function addClient(){
-        return view('back.page.admin.add-client');
+        return view('back.page.client.add-client');
         // $request->validate([
         //     'name' => 'required',
         //     'user_name' => 'required',
