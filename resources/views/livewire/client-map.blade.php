@@ -143,7 +143,7 @@
             })
         });
 
-        var geoJsonFilePath = "{{ $point }}";
+        var geoJsonFilePath = $point ;
         alert( $point);
 
 
