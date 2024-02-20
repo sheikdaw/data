@@ -143,8 +143,12 @@
             })
         });
 
-        var geoJsonFilePath = "{{ $point }}";
-        alert(geoJsonFilePath);
+        var geoJsonFilePath = "{{$point}}";
+        var pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
+        var left = 8566697.42671;
+        var bottom = 1233036.89252;
+        var right = 8568056.82671;
+        var top = 1234055.69252;
 
         var geoJsonPromise = fetch(geoJsonFilePath)
             .then(response => {
@@ -189,16 +193,16 @@
                     })
                 });
 
-                // var markerLayer = new ol.layer.Vector({
-                //     source: new ol.source.Vector(),
-                //     style: new ol.style.Style({
-                //         image: new ol.style.Icon({
-                //             anchor: [0.5, 1],
-                //             src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
-                //         })
-                //     })
-                // });
-                // map.addLayer(markerLayer);
+                var markerLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector(),
+                    style: new ol.style.Style({
+                        image: new ol.style.Icon({
+                            anchor: [0.5, 1],
+                            src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
+                        })
+                    })
+                });
+                map.addLayer(markerLayer);
 
                 if ('geolocation' in navigator) {
                     navigator.geolocation.watchPosition(function(position) {
