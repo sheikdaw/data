@@ -303,7 +303,7 @@ class AdminController extends Controller
         // Create a new Client instance
         $client = new Client();
         $client->name = $validatedData['name'];
-        $client->user_name = $validatedData['user_name'];
+        $client->username = $validatedData['user_name'];
         $client->password = bcrypt($validatedData['password']); // Assuming you want to hash the password
         $client->email = $validatedData['email'];
 
