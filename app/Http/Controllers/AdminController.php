@@ -328,7 +328,7 @@ class AdminController extends Controller
         $client = Client::find($id);
 
         $client->delete();
-        return back()->with('success', 'Client registered successfully');
+        return back()->with('success', 'Client Removed successfully');
     }
 
     public function changeClientProfilePicture(Request $request)

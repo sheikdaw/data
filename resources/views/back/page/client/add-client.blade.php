@@ -56,14 +56,10 @@
                     </div>
                 </div>
                 <button class="btn btn-primary btn-user btn-block">
-                    Login
+                    Add Surveyor
                 </button>
 
             </form>
-            <hr>
-            <div class="text-center">
-                <a class="small" href="{{ route('client.forgot-password') }}">Forgot Password?</a>
-            </div>
         </div>
     </div>
 @endsection
