@@ -20,5 +20,6 @@
                 </div>
             @endforeach
         </div>
-    </div>
+    </div>@livewire('client-map')
+
 @endsection
