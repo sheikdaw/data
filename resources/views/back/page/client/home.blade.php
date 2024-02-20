@@ -3,7 +3,7 @@
 @section('pagetitle', isset($pagetitle) ? $pagetitle : 'Page Title')
 
 @section('content')
-@livewireStyles
+    @livewireStyles
     <div class="card shadow p-3">
         <div class="row p-2 g-3">
             @foreach ($streetsNotInSurveyed as $street)
@@ -21,6 +21,5 @@
             @endforeach
         </div>
     </div>
-@livewire('client-map')
-@livewireScripts
+    @livewireScripts
 @endsection
