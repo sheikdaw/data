@@ -112,7 +112,7 @@
         src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-    var geoJsonFilePath = "{{ $point }}";
+    var geoJsonFilePath = "{{ asset('public/kovai/test.json') }}";
 
     $.ajax({
         url: geoJsonFilePath,
