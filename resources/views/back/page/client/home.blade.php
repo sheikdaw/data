@@ -3,6 +3,10 @@
 @section('pagetitle', isset($pagetitle) ? $pagetitle : 'Page Title')
 
 @section('content')
+<style>.map {
+    width: 100%;
+    height: 600px;
+}</style>
 
     <div class="card shadow p-3">
         <div class="row p-2 g-3">
