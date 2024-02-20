@@ -12,12 +12,15 @@ class ClientMap extends Component
     public function mount()
     {
         // Fetch surveyed data and assign it to the property
-        $this->point = "{{ asset('public/kovai/test.json') }}";
+        $this->point = asset('public/kovai/test.json');
         $this->surveyed = Surveyed::all();
     }
 
     public function render()
     {
-        return view('livewire.client-map', ['surveyed' => $this->surveyed]);
+        return view('livewire.client-map', [
+            'surveyed' => $this->surveyed,
+            'point' => $this->point, // Pass $point variable to the Blade template
+        ]);
     }
 }
