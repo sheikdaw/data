@@ -286,13 +286,15 @@ class AdminController extends Controller
     }
 
     // Add Client details
-    public function addClient(Request $request){
-        $request->validate([
-            'name' => 'required',
-            'user_name' => 'required',
-            'password' => 'required|max:7',
-            'email' => 'required|email|unique:clients,email'
-        ]);
+
+    public function addClient(){
+        return view('back.page.admin.add-client');
+        // $request->validate([
+        //     'name' => 'required',
+        //     'user_name' => 'required',
+        //     'password' => 'required|max:7',
+        //     'email' => 'required|email|unique:clients,email'
+        // ]);
     }
 
     public function clientView(){
