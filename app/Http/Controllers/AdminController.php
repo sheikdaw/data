@@ -325,6 +325,8 @@ class AdminController extends Controller
         return view('back.page.admin.client-seller-profile', ['client' => $client]);
     }
     public function clientRemove($id){
+        $client = Client::find($id);
+
         $client->delete();
         return back()->with('success', 'Client registered successfully');
     }
