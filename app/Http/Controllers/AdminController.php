@@ -295,7 +295,7 @@ class AdminController extends Controller
     public function register_handler(Request $request){
         $validatedData = $request->validate([
             'name' => 'required',
-            'user_name' => 'required',
+            'user_name' => 'required|unique:clients,username',
             'password' => 'required|max:7',
             'email' => 'required|email|unique:clients,email'
         ]);
