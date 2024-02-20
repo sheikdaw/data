@@ -10,11 +10,7 @@
             </div>
             <form class="user" action="{{ route('admin.register_handler') }}" method="POST">
                 @csrf
-                @if (Session::has('success'))
-                    <div class="alert alert-success">
-                        {{ Session::get('success') }}
-                    </div>
-                @endif
+
 
                 @if (Session::get('fail'))
                     <div class="alert alert-danger">

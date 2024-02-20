@@ -12,7 +12,7 @@
                     <a href="{{ route('admin.client-edit-view', ['id' => $client->id]) }}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
                 </div>
                 <div class="col-6">
-                    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                    <a href="{{ route('admin.client-remove', ['id' => $client->id]) }}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                 </div>
             </div>
         </div>

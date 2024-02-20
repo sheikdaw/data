@@ -30,6 +30,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('admin/client-add', [AdminController::class, 'addClient'])->name('Add-Client');
         Route::post('admin/register_handler', [AdminController::class, 'register_handler'])->name('register_handler');
         Route::get('/clients/{id}/edit', [AdminController::class,'clientEdit'])->name('client-edit-view');
+        Route::get('/clients/{id}/remove', [AdminController::class,'clientRemove'])->name('client-remove');
         Route::post('/change-client-profile-picture', [AdminController::class, 'changeClientProfilePicture'])->name('change-client-profile-picture');
         Route::post('/admin/get-client-profile-picture', [AdminController::class, 'getClientProfilePicture'])->name('get-client-profile-picture');
     });

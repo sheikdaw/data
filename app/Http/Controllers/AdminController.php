@@ -324,6 +324,11 @@ class AdminController extends Controller
         // Pass the client data to the view
         return view('back.page.admin.client-seller-profile', ['client' => $client]);
     }
+    public function clientRemove($id){
+        $client->delete();
+        return back()->with('success', 'Client registered successfully');
+    }
+
     public function changeClientProfilePicture(Request $request)
     {
         try {
