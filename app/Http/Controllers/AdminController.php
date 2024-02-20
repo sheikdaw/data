@@ -311,7 +311,7 @@ class AdminController extends Controller
         $client->save();
 
         // Optionally, you may return a response indicating success
-        return response()->json(['message' => 'Client registered successfully'], 200);
+        return back()->with('success', 'Client registered successfully');
     }
     public function clientView(){
         $totalclient=Client::all();
