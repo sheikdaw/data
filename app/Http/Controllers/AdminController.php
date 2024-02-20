@@ -284,6 +284,17 @@ class AdminController extends Controller
         $pdf->setPaper('a3', 'landscape');
         return $pdf->download('report.pdf');
     }
+
+    // Add Client details
+    public function addClient(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'user_name' => 'required',
+            'password' => 'required|max:7',
+            'email' => 'required|email|unique:clients,email'
+        ]);
+    }
+
     public function clientView(){
         $totalclient=Client::all();
         return view('back.page.admin.client-view',compact('totalclient'));
