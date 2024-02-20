@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Surveyed; // Import the Surveyed model
 
 class ClientMap extends Component
 {
@@ -17,6 +16,6 @@ class ClientMap extends Component
 
     public function render()
     {
-        return view('livewire.client-map', ['surveyed' => $this->surveyed]);
+        return view('livewire.client-map');
     }
 }
