@@ -150,33 +150,33 @@
                 })
             });
 
-            var markerLayer = new ol.layer.Vector({
-                source: new ol.source.Vector(),
-                style: new ol.style.Style({
-                    image: new ol.style.Icon({
-                        anchor: [0.5, 1],
-                        src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
-                    })
-                })
-            });
-            map.addLayer(markerLayer);
+            // var markerLayer = new ol.layer.Vector({
+            //     source: new ol.source.Vector(),
+            //     style: new ol.style.Style({
+            //         image: new ol.style.Icon({
+            //             anchor: [0.5, 1],
+            //             src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
+            //         })
+            //     })
+            // });
+            // map.addLayer(markerLayer);
 
-            if ('geolocation' in navigator) {
-                navigator.geolocation.watchPosition(function(position) {
-                    var lonLat = [position.coords.longitude, position.coords.latitude];
-                    var pos = ol.proj.fromLonLat(lonLat);
-                    markerLayer.getSource().clear();
-                    var marker = new ol.Feature({
-                        geometry: new ol.geom.Point(pos)
-                    });
-                    markerLayer.getSource().addFeature(marker);
-                    map.getView().setCenter(pos);
-                }, function(error) {
-                    console.error('Error getting geolocation:', error);
-                });
-            } else {
-                console.error('Geolocation is not supported by this browser.');
-            }
+            // if ('geolocation' in navigator) {
+            //     navigator.geolocation.watchPosition(function(position) {
+            //         var lonLat = [position.coords.longitude, position.coords.latitude];
+            //         var pos = ol.proj.fromLonLat(lonLat);
+            //         markerLayer.getSource().clear();
+            //         var marker = new ol.Feature({
+            //             geometry: new ol.geom.Point(pos)
+            //         });
+            //         markerLayer.getSource().addFeature(marker);
+            //         map.getView().setCenter(pos);
+            //     }, function(error) {
+            //         console.error('Error getting geolocation:', error);
+            //     });
+            // } else {
+            //     console.error('Geolocation is not supported by this browser.');
+            // }
 
             var popup = new ol.Overlay({
                 element: $('#popup'),
