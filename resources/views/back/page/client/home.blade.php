@@ -20,5 +20,6 @@
             @endforeach
         </div>
     </div>
-@livewire('Map')
+    @livewire('map-component')
+
 @endsection
