@@ -144,7 +144,7 @@
         });
 
         var geoJsonFilePath = "{{ $point }}";
-
+        alert( $point);
 
 
         var geoJsonPromise = fetch(geoJsonFilePath)
