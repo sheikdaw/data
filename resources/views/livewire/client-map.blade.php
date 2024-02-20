@@ -1,4 +1,5 @@
-@push('style')
+<div>
+    @push('style')
 <style>
     .map {
         width: 100%;
@@ -103,4 +104,6 @@
             </div>
         </div>
     </div>
+</div>
+
 </div>
