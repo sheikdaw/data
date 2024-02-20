@@ -7,10 +7,12 @@ use Livewire\Component;
 class ClientMap extends Component
 {
     public $surveyed;
+    public $point;
 
     public function mount()
     {
         // Fetch surveyed data and assign it to the property
+        $this->point = "{{ asset('public/kovai/test.json') }}";
         $this->surveyed = Surveyed::all();
     }
 
