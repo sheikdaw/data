@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Livewire;
+// app/Http/Livewire/MapComponent.php
+
+namespace App\Http\Livewire;
 
 use Livewire\Component;
 

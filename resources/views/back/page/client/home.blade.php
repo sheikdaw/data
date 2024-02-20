@@ -20,6 +20,6 @@
             @endforeach
         </div>
     </div>
-    @livewire('livewire.map-component')
+@livewire('map-component')
 
 @endsection
