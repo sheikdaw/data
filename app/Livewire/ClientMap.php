@@ -1,36 +1,27 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Http\Livewire;
+
 use App\Models\Surveyed;
 use Livewire\Component;
 
 class ClientMap extends Component
 {
     public $surveyed;
-    public $point;
-    public $longitude;
-    public $latitude;
-    public $gis_id;
-
-    protected $listeners = ['addFeature'];
-
 
     public function mount()
     {
         // Fetch surveyed data and assign it to the property
-        $this->point = asset('public/kovai/test.json');
         $this->surveyed = Surveyed::all();
     }
-    public function addFeature($request)
+
+    public function addFeature($data)
     {
         // Load existing JSON data
-        $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
+        $jsonData = json_decode(file_get_contents(public_path('kovai/test.json')), true);
 
         // Assuming 'features' is an existing array in your JSON data
-        $features = $data['features'];
-
-        // Primary GIS ID
-        $primaryGisId = $request->input('primary_gis_id');
+        $features = $jsonData['features'];
 
         // Prepare the new feature
         $newFeature = [
@@ -39,8 +30,8 @@ class ClientMap extends Component
             "geometry" => [
                 "type" => "Point",
                 "coordinates" => [
-                    $request->input('longitude'),
-                    $request->input('latitude')
+                    $data['longitude'],
+                    $data['latitude']
                 ]
             ],
             "properties" => [
@@ -54,18 +45,16 @@ class ClientMap extends Component
         $features[] = $newFeature;
 
         // Update the 'features' array in the JSON data
-        $data['features'] = $features;
+        $jsonData['features'] = $features;
 
         // Write the updated JSON data back to the file
-        file_put_contents(public_path('kovai/test.json'), json_encode($data, JSON_PRETTY_PRINT));
+        file_put_contents(public_path('kovai/test.json'), json_encode($jsonData, JSON_PRETTY_PRINT));
 
         return response()->json(['message' => 'Feature added successfully']);
     }
 
     public function render()
     {
-        return view('livewire.client-map', [
-            'surveyed' => $this->surveyed
-        ]);
+        return view('livewire.client-map');
     }
 }
