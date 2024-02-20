@@ -8,7 +8,7 @@
         <div class="text-center">
             <h1 class="h4 text-gray-900 mb-4">Welcome Again!</h1>
         </div>
-        <form class="user" action="{{route ('client.login_handler')}}" method="POST">
+        <form class="user" action="{{route ('admin.register_handler')}}" method="POST">
             @csrf
             @if (Session::get('fail'))
             <div class="alert alert-danger">

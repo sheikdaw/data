@@ -28,6 +28,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('admin/download-pdf', [AdminController::class, 'downloadPdf'])->name('download-pdf');
         Route::get('admin/client-view', [AdminController::class, 'clientView'])->name('client-view');
         Route::get('admin/client-add', [AdminController::class, 'addClient'])->name('Add-Client');
+        Route::post('admin/register_handler', [AdminController::class, 'register_handler'])->name('register_handler');
         Route::get('/clients/{id}/edit', [AdminController::class,'clientEdit'])->name('client-edit-view');
         Route::post('/change-client-profile-picture', [AdminController::class, 'changeClientProfilePicture'])->name('change-client-profile-picture');
         Route::post('/admin/get-client-profile-picture', [AdminController::class, 'getClientProfilePicture'])->name('get-client-profile-picture');
