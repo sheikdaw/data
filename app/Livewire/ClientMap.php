@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Surveyed; // Import the Surveyed model
 
 class ClientMap extends Component
 {
