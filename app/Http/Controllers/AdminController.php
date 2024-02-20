@@ -293,12 +293,25 @@ class AdminController extends Controller
     }
 
     public function register_handler(Request $request){
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required',
             'user_name' => 'required',
             'password' => 'required|max:7',
             'email' => 'required|email|unique:clients,email'
         ]);
+
+        // Create a new Client instance
+        $client = new Client();
+        $client->name = $validatedData['name'];
+        $client->user_name = $validatedData['user_name'];
+        $client->password = bcrypt($validatedData['password']); // Assuming you want to hash the password
+        $client->email = $validatedData['email'];
+
+        // Save the client to the database
+        $client->save();
+
+        // Optionally, you may return a response indicating success
+        return response()->json(['message' => 'Client registered successfully'], 200);
     }
     public function clientView(){
         $totalclient=Client::all();
