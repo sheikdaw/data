@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('picture')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
+            $table->string('work')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('status',['Pending','Active0'])->default('pending');
             $table->timestamps();
