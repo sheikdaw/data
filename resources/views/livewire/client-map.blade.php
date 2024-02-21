@@ -171,14 +171,14 @@
             })
         });
 
-        var geoJsonFilePath = "{{$point}}";
+        var pointpath = "{{$point}}";
         var pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
         var left = 8566697.42671;
         var bottom = 1233036.89252;
         var right = 8568056.82671;
         var top = 1234055.69252;
 
-        var geoJsonPromise = fetch(geoJsonFilePath)
+        var pointJsonPromise = fetch(pointpath)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to load GeoJSON file');
@@ -186,10 +186,10 @@
                 return response.json();
             });
 
-        Promise.all([geoJsonPromise])
+        Promise.all([pointJsonPromise])
             .then(responses => {
-                var geoJsonData = responses[0];
-                var features = (new ol.format.GeoJSON()).readFeatures(geoJsonData);
+                var pointJsonData = responses[0];
+                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
                 var vectorSource = new ol.source.Vector({
                     features: features
@@ -346,16 +346,24 @@
                     vectorSource.clear();
 
                     // Fetch updated GeoJSON data
-                    fetch(geoJsonFilePath)
+                    fetch(pointpath)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Failed to load GeoJSON file');
                             }
                             return response.json();
                         })
-                        .then(geoJsonData => {
+                        .then(pointJsonData => {
                             // Parse the GeoJSON data and add features to the vector source
-                            vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
+                            vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(pointJsonData));
+                            features.forEach(function(feature) {
+                    var properties = feature.getProperties();
+                    if (gisIdSet.has(properties['GIS_ID'])) {
+                        feature.setStyle(completeStyle);
+                    } else {
+                        feature.setStyle(clickedStyle);
+                    }
+                });
 
                             // Optionally, you can update other parts of your application's UI here
 
