@@ -111,6 +111,14 @@
 <script type="text/javascript"
         src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
     <script type="text/javascript">
+
+
+Livewire.emit('addFeature', 'param1', 'param2');
+
+
+
+
+
         var clickedStyle = new ol.style.Style({
             fill: new ol.style.Fill({
                 color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
