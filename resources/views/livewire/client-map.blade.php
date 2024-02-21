@@ -88,7 +88,7 @@
                 </ul>
                 <hr>
                 <h4>Feature Form</h4>
-                {{-- <form id="featureForm" method="post" action="{{ route('client.Survey-Form-Point') }}">
+                <form id="featureForm" method="post" action="{{ route('client.Survey-Form-Point') }}">
                     @csrf <!-- CSRF token for security -->
                     <div class="mb-3">
                         <label for="gisIdInput" class="form-label">Gis id</label>
@@ -100,8 +100,8 @@
                     </div>
                     <!-- Add more form fields as needed -->
                     <button type="submit" class="btn btn-primary">Submit</button>
-                </form> --}}
-                <form action="{{ route('client.gis-images-upload') }}" method="POST"
+                </form>
+                {{-- <form action="{{ route('client.gis-images-upload') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="modal-body">
@@ -128,7 +128,7 @@
                                             <!-- Moved submit button inside the form -->
                                             <button type="submit" class="btn btn-primary">Save image</button>
                                         </div>
-                                    </form>
+                                    </form> --}}
             </div>
         </div>
     </div>
