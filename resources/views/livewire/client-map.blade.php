@@ -88,7 +88,7 @@
                 </ul>
                 <hr>
                 <h4>Feature Form</h4>
-                <form id="featureForm" method="post" action="{{ route('client.Survey-Form-Point') }}">
+                {{-- <form id="featureForm" method="post" action="{{ route('client.Survey-Form-Point') }}">
                     @csrf <!-- CSRF token for security -->
                     <div class="mb-3">
                         <label for="gisIdInput" class="form-label">Gis id</label>
@@ -100,7 +100,36 @@
                     </div>
                     <!-- Add more form fields as needed -->
                     <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                </form> --}}
+                <form action="{{ route('client.gis-images-upload') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div id="alertBox" class="alert alert-danger" style="display: none;">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gis">Gis</label>
+                                                <input type="text" name="gisid" class="form-control"
+                                                    id="gisid" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ward">Ward</label>
+                                                <input type="text" name="ward" class="form-control"
+                                                    id="ward">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="value">Picture</label>
+                                                <input type="file" name="image" id="image"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <!-- Moved submit button inside the form -->
+                                            <button type="submit" class="btn btn-primary">Save image</button>
+                                        </div>
+                                    </form>
             </div>
         </div>
     </div>
@@ -274,44 +303,43 @@
                 let draw; // global so we can remove it later
 
                 function addInteraction() {
-                    const value = typeSelect.value;
-                    if (value !== 'None') {
-                        draw = new ol.interaction.Draw({
-                            source: vectorSource,
-                            type: typeSelect.value,
-                        });
-                        map.addInteraction(draw);
-                        draw.on('drawend', function(event) {
-                            const feature = event.feature;
-                            const geometry = feature.getGeometry();
-                            const coordinates = geometry.getCoordinates();
+    const value = typeSelect.value;
+    if (value !== 'None') {
+        draw = new ol.interaction.Draw({
+            source: vectorSource,
+            type: typeSelect.value,
+        });
+        map.addInteraction(draw);
+        draw.on('drawend', function(event) {
+            const feature = event.feature;
+            const geometry = feature.getGeometry();
+            const coordinates = geometry.getCoordinates();
 
-                            // Send an Ajax request to Laravel route to add the feature to JSON
-                            $.ajax({
-                                url: '/add-feature',
-                                type: 'POST', // Use POST method
-                                data: JSON.stringify({
-                                    '_token': '{{ csrf_token() }}',
-                                    'longitude': coordinates[0],
-                                    'latitude': coordinates[1],
-                                    'gis_id': feature
-                                    .getId() // Assuming you're setting an ID for the feature
-                                }),
-                                contentType: 'application/json', // Set content type to JSON
-                                success: function(response) {
-                                    console.log(response.message);
-                                    // Handle success response
-                                    // Refresh the map and update JSON data after point addition
-                                    refreshMapAndData();
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error(error);
-                                    // Handle error response
-                                }
-                            });
-                        });
-                    }
+            // Send an Ajax request to Laravel route to add the feature to JSON
+            $.ajax({
+                url: '/add-feature',
+                type: 'POST', // Use POST method
+                data: JSON.stringify({
+                    '_token': '{{ csrf_token() }}',
+                    'longitude': coordinates[0],
+                    'latitude': coordinates[1],
+                    'gis_id': feature.getId() // Assuming you're setting an ID for the feature
+                }),
+                contentType: 'application/json', // Set content type to JSON
+                success: function(response) {
+                    console.log(response.message);
+                    // Emit Livewire event to refresh data
+                    Livewire.emit('refreshData');
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    // Handle error response
                 }
+            });
+        });
+    }
+}
+
 
                 function refreshMapAndData() {
                     // Clear the vector source to remove existing features from the map
