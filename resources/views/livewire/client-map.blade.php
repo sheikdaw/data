@@ -59,11 +59,11 @@
 <form class="form-inline">
     <label for="type">Geometry type: &nbsp;</label>
     <select class="form-control mr-2 mb-2 mt-2" id="type">
+        <option value="None">None</option>
         <option value="Point">Point</option>
         <option value="LineString">LineString</option>
         <option value="Polygon">Polygon</option>
         <option value="Circle">Circle</option>
-        <option value="None">None</option>
     </select>
     <input class="form-control mr-2 mb-2 mt-2" type="button" value="Undo" id="undo">
 </form>
