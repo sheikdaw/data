@@ -113,7 +113,7 @@
     <script type="text/javascript">
 
 
-Livewire.emit('addFeature', 'param1', 'param2');
+
 
 
 
