@@ -21,7 +21,7 @@ class ClientMap extends Component
         $this->point = asset('public/kovai/test.json');
         $this->surveyed = Surveyed::all();
     }
-    public function addFeature($p,$p1)
+    public function addFeature($request)
     {
         // Load existing JSON data
         $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
