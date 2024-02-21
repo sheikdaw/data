@@ -110,6 +110,7 @@
 
 <script type="text/javascript"
         src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/livewire/livewire.js"></script>
     <script type="text/javascript">
         var clickedStyle = new ol.style.Style({
             fill: new ol.style.Fill({
