@@ -88,7 +88,7 @@
                 </ul>
                 <hr>
                 <h4>Feature Form</h4>
-                <form id="featureForm" method="post" action="{{ route('client.Survey-Form-Point') }}">
+                {{-- <form id="featureForm" method="post" action="{{ route('client.Survey-Form-Point') }}">
                     @csrf <!-- CSRF token for security -->
                     <div class="mb-3">
                         <label for="gisIdInput" class="form-label">Gis id</label>
@@ -100,7 +100,35 @@
                     </div>
                     <!-- Add more form fields as needed -->
                     <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                </form> --}}
+                <form action="{{ route('client.gis-images-upload') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div id="alertBox" class="alert alert-danger" style="display: none;">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gis">Gis</label>
+                                                <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ward">Ward</label>
+                                                <input type="text" name="ward" class="form-control"
+                                                    id="ward">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="value">Picture</label>
+                                                <input type="file" name="image" id="image"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <!-- Moved submit button inside the form -->
+                                            <button type="submit" class="btn btn-primary">Save image</button>
+                                        </div>
+                                    </form>
             </div>
         </div>
     </div>
