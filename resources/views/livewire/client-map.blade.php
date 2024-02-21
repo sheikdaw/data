@@ -105,7 +105,7 @@
         </div>
     </div>
 </div>
-@push('script')
+
 
 
 <script type="text/javascript"
@@ -348,5 +348,5 @@
                 console.error('Error loading files:', error);
             });
     </script>
-    @endpush
+
 </div>
