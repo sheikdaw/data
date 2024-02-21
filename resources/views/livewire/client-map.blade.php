@@ -108,9 +108,8 @@
                                             <div id="alertBox" class="alert alert-danger" style="display: none;">
                                             </div>
                                             <div class="form-group">
-                                                <label for="gis">Gis</label>
-                                                <input type="text" name="gisid" class="form-control"
-                                                    id="gisid" readonly>
+                                                <label for="gisIdInput" class="form-label">Gis id</label>
+                        <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="ward">Ward</label>
