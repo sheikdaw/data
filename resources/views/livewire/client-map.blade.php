@@ -110,7 +110,6 @@
 
 <script type="text/javascript"
         src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/livewire/livewire.js"></script>
     <script type="text/javascript">
         var clickedStyle = new ol.style.Style({
             fill: new ol.style.Fill({
@@ -270,69 +269,88 @@
                         }
                     }
                 });
-              // Assuming you have defined 'typeSelect', 'vectorSource', 'map', and 'ol' objects elsewhere in your code
+                const typeSelect = document.getElementById('type');
 
-// Define a global variable 'draw' to store the drawing interaction
-const typeSelect = document.getElementById('type');
-let draw;
+                let draw; // global so we can remove it later
 
-// Function to add drawing interaction
-function addInteraction() {
-    const value = typeSelect.value;
-    if (value !== 'None') {
-        // Create a new drawing interaction
-        draw = new ol.interaction.Draw({
-            source: vectorSource,
-            type: typeSelect.value,
-        });
-        // Add the drawing interaction to the map
-        map.addInteraction(draw);
-        // Event listener for when a drawing is completed
-        draw.on('drawend', function(event) {
-            const feature = event.feature;
-            const geometry = feature.getGeometry();
-            const coordinates = geometry.getCoordinates();
-            // Send an AJAX request to Laravel route to add the feature to JSON
-            $.ajax({
-                url: '/add-feature',
-                type: 'POST',
-                data: JSON.stringify({
-                    '_token': '{{ csrf_token() }}',
-                    'longitude': coordinates[0],
-                    'latitude': coordinates[1],
-                    'gis_id': feature.getId() // Assuming you're setting an ID for the feature
-                }),
-                contentType: 'application/json',
-                success: function(response) {
-                    console.log(response.message);
-                    // Emit a Livewire event named 'refresh' after successful AJAX request
-                    Livewire.emit('refresh');
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                    // Handle error response
+                function addInteraction() {
+                    const value = typeSelect.value;
+                    if (value !== 'None') {
+                        draw = new ol.interaction.Draw({
+                            source: vectorSource,
+                            type: typeSelect.value,
+                        });
+                        map.addInteraction(draw);
+                        draw.on('drawend', function(event) {
+                            const feature = event.feature;
+                            const geometry = feature.getGeometry();
+                            const coordinates = geometry.getCoordinates();
+
+                            // Send an Ajax request to Laravel route to add the feature to JSON
+                            $.ajax({
+                                url: '/add-feature',
+                                type: 'POST', // Use POST method
+                                data: JSON.stringify({
+                                    '_token': '{{ csrf_token() }}',
+                                    'longitude': coordinates[0],
+                                    'latitude': coordinates[1],
+                                    'gis_id': feature
+                                    .getId() // Assuming you're setting an ID for the feature
+                                }),
+                                contentType: 'application/json', // Set content type to JSON
+                                success: function(response) {
+                                    console.log(response.message);
+                                    // Handle success response
+                                    // Refresh the map and update JSON data after point addition
+                                    refreshMapAndData();
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                    // Handle error response
+                                }
+                            });
+                        });
+                    }
                 }
-            });
-        });
-    }
-}
 
-// Event listener for changes in the 'typeSelect' dropdown
-typeSelect.onchange = function() {
-    // Remove the drawing interaction from the map
-    map.removeInteraction(draw);
-    // Add the drawing interaction based on the new selected value
-    addInteraction();
-};
+                function refreshMapAndData() {
+                    // Clear the vector source to remove existing features from the map
+                    vectorSource.clear();
 
-// Event listener for the 'undo' button to remove the last drawn point
-document.getElementById('undo').addEventListener('click', function() {
-    draw.removeLastPoint();
-});
+                    // Fetch updated GeoJSON data
+                    fetch(geoJsonFilePath)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to load GeoJSON file');
+                            }
+                            return response.json();
+                        })
+                        .then(geoJsonData => {
+                            // Parse the GeoJSON data and add features to the vector source
+                            vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
 
-// Add the drawing interaction when the page loads
-addInteraction();
+                            // Optionally, you can update other parts of your application's UI here
 
+                            // You may need to update any other data or UI elements accordingly
+                        })
+                        .catch(error => {
+                            console.error('Error loading files:', error);
+                        });
+                }
+
+                /**
+                 * Handle change event.
+                 */
+                typeSelect.onchange = function() {
+                    map.removeInteraction(draw);
+                    addInteraction();
+                };
+
+                document.getElementById('undo').addEventListener('click', function() {
+                    draw.removeLastPoint();
+                });
+
+                addInteraction();
 
             })
             .catch(error => {
