@@ -272,6 +272,7 @@
               // Assuming you have defined 'typeSelect', 'vectorSource', 'map', and 'ol' objects elsewhere in your code
 
 // Define a global variable 'draw' to store the drawing interaction
+const typeSelect = document.getElementById('type');
 let draw;
 
 // Function to add drawing interaction
