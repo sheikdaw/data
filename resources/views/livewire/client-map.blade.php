@@ -295,56 +295,39 @@
                             const coordinates = geometry.getCoordinates();
 
                             // Send an Ajax request to Laravel route to add the feature to JSON
-                            $.ajax({
-                                url: '/add-feature',
-                                type: 'POST', // Use POST method
-                                data: JSON.stringify({
-                                    '_token': '{{ csrf_token() }}',
-                                    'longitude': coordinates[0],
-                                    'latitude': coordinates[1],
-                                    'gis_id': feature
-                                    .getId() // Assuming you're setting an ID for the feature
-                                }),
-                                contentType: 'application/json', // Set content type to JSON
-                                success: function(response) {
-                                    console.log(response.message);
-                                    // Handle success response
-                                    // Refresh the map and update JSON data after point addition
-                                    refreshMapAndData();
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error(error);
-                                    // Handle error response
-                                }
-                            });
+                            Livewire.emit('addFeature', {
+        longitude: coordinates[0],
+        latitude: coordinates[1],
+        gis_id: feature.getId()
+    });
                         });
                     }
                 }
 
-                function refreshMapAndData() {
-                    // Clear the vector source to remove existing features from the map
-                    vectorSource.clear();
+                // function refreshMapAndData() {
+                //     // Clear the vector source to remove existing features from the map
+                //     vectorSource.clear();
 
-                    // Fetch updated GeoJSON data
-                    fetch(geoJsonFilePath)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to load GeoJSON file');
-                            }
-                            return response.json();
-                        })
-                        .then(geoJsonData => {
-                            // Parse the GeoJSON data and add features to the vector source
-                            vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
+                //     // Fetch updated GeoJSON data
+                //     fetch(geoJsonFilePath)
+                //         .then(response => {
+                //             if (!response.ok) {
+                //                 throw new Error('Failed to load GeoJSON file');
+                //             }
+                //             return response.json();
+                //         })
+                //         .then(geoJsonData => {
+                //             // Parse the GeoJSON data and add features to the vector source
+                //             vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(geoJsonData));
 
-                            // Optionally, you can update other parts of your application's UI here
+                //             // Optionally, you can update other parts of your application's UI here
 
-                            // You may need to update any other data or UI elements accordingly
-                        })
-                        .catch(error => {
-                            console.error('Error loading files:', error);
-                        });
-                }
+                //             // You may need to update any other data or UI elements accordingly
+                //         })
+                //         .catch(error => {
+                //             console.error('Error loading files:', error);
+                //         });
+                // }
 
                 /**
                  * Handle change event.
