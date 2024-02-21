@@ -25,5 +25,5 @@
             @endforeach
         </div>
     </div>@livewire('client-map')
-
+    @livewireScripts
 @endsection
