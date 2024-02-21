@@ -375,7 +375,7 @@ class AdminController extends Controller
 
 
 
-   public function addFeature(Request $request)
+    public function addFeature(Request $request)
     {
         $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
 
@@ -412,6 +412,10 @@ class AdminController extends Controller
         // Write the updated JSON data back to the file
         file_put_contents(public_path('kovai/test.json'), json_encode($data, JSON_PRETTY_PRINT));
 
+        // Emit Livewire event after feature addition
+        event(new \App\Events\FeatureAdded());
+
         return response()->json(['message' => 'Feature added successfully']);
     }
+
 }
