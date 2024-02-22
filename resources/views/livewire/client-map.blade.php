@@ -280,6 +280,37 @@
             });
         }
     }
+    refreshMapAndData() {
+    // Remove the point layer
+    const pointLayer = this.map.getLayers().getArray().find(layer => layer.get('name') === 'pointLayer');
+    if (pointLayer) {
+        this.map.removeLayer(pointLayer);
+    }
+
+    // Logic to refresh map and data
+    // Assuming refresh logic goes here
+
+    // Add the point layer again with updated style
+    const vectorSource = new ol.source.Vector({
+        features: features
+    });
+
+    features.forEach(function(feature) {
+        var properties = feature.getProperties();
+        if (gisIdSet.has(properties['GIS_ID'])) {
+            feature.setStyle(completeStyle);
+        } else {
+            feature.setStyle(clickedStyle);
+        }
+    });
+
+    const vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+    });
+    vectorLayer.set('name', 'pointLayer'); // Set a name to identify the layer
+    this.map.addLayer(vectorLayer);
+}
+
 }
 
 $(document).ready(function() {
