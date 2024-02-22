@@ -132,193 +132,109 @@
     @push('script')
         <script type="text/javascript"
             src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
-       <script>
-        class MapController {
-    constructor() {
-        this.clickedStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 0, 0, 0.6)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'rgba(255, 0, 0, 1)',
-                width: 2
-            }),
-            image: new ol.style.Circle({
-                radius: 6,
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 0, 1)'
-                })
-            })
-        });
+            <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script type="text/javascript">
+                class MapManager {
+                    constructor() {
+                        this.clickedStyle = new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0.6)'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'rgba(255, 0, 0, 1)',
+                                width: 2
+                            }),
+                            image: new ol.style.Circle({
+                                radius: 6,
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(255, 0, 0, 1)'
+                                })
+                            })
+                        });
 
-        this.completeStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: 'rgba(0, 48, 143, 0.6)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'rgba(0, 48, 143, 1)',
-                width: 2
-            }),
-            image: new ol.style.Circle({
-                radius: 6,
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 48, 143, 1)'
-                })
-            })
-        });
+                        this.completeStyle = new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0, 48, 143, 0.6)'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'rgba(0, 48, 143, 1)',
+                                width: 2
+                            }),
+                            image: new ol.style.Circle({
+                                radius: 6,
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(0, 48, 143, 1)'
+                                })
+                            })
+                        });
 
-        this.vectorSource = new ol.source.Vector();
-        this.vectorLayer = new ol.layer.Vector({
-            source: this.vectorSource
-        });
-
-        this.markerLayer = new ol.layer.Vector({
-            source: new ol.source.Vector(),
-            style: new ol.style.Style({
-                image: new ol.style.Icon({
-                    anchor: [0.5, 1],
-                    src: 'https://openlayers.org/en/latest/examples/data/icon.png'
-                })
-            })
-        });
-
-        this.popup = new ol.Overlay({
-            element: document.getElementById('popup'),
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
-        });
-
-        this.map = new ol.Map({
-            target: 'map',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM()
-                }),
-                this.vectorLayer,
-                this.markerLayer
-            ],
-            view: new ol.View({
-                center: ol.proj.fromLonLat([80.241610, 13.098640]),
-                zoom: 15
-            }),
-            overlays: [this.popup]
-        });
-    }
-
-    loadPointData(pointPath) {
-        fetch(pointPath)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load GeoJSON file');
-                }
-                return response.json();
-            })
-            .then(pointJsonData => {
-                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                this.vectorSource.addFeatures(features);
-                this.applyStyles();
-            })
-            .catch(error => {
-                console.error('Error loading files:', error);
-            });
-    }
-
-    applyStyles() {
-        var surveyed = @json($surveyed);
-        var gisIdSet = new Set(surveyed.map(survey => survey.gisid));
-
-        this.vectorSource.getFeatures().forEach(feature => {
-            var properties = feature.getProperties();
-            if (gisIdSet.has(properties['GIS_ID'])) {
-                feature.setStyle(this.completeStyle);
-            } else {
-                feature.setStyle(this.clickedStyle);
-            }
-        });
-    }
-
-    setupGeolocation() {
-        if ('geolocation' in navigator) {
-            navigator.geolocation.watchPosition(position => {
-                var lonLat = [position.coords.longitude, position.coords.latitude];
-                var pos = ol.proj.fromLonLat(lonLat);
-                this.markerLayer.getSource().clear();
-                var marker = new ol.Feature({
-                    geometry: new ol.geom.Point(pos)
-                });
-                this.markerLayer.getSource().addFeature(marker);
-                this.map.getView().setCenter(pos);
-            }, error => {
-                console.error('Error getting geolocation:', error);
-            });
-        } else {
-            console.error('Geolocation is not supported by this browser.');
-        }
-    }
-
-    addPointFeature(type) {
-        const vectorSource = this.vectorSource;
-        const map = this.map;
-        const typeSelect = document.getElementById('type');
-
-        if (type !== 'None') {
-            const draw = new ol.interaction.Draw({
-                source: vectorSource,
-                type: type
-            });
-
-            map.addInteraction(draw);
-
-            draw.on('drawend', event => {
-                const feature = event.feature;
-                const geometry = feature.getGeometry();
-                const coordinates = geometry.getCoordinates();
-
-                // Send an Ajax request to Laravel route to add the feature to JSON
-                $.ajax({
-                    url: '/add-feature',
-                    type: 'POST',
-                    data: JSON.stringify({
-                        '_token': '{{ csrf_token() }}',
-                        'longitude': coordinates[0],
-                        'latitude': coordinates[1],
-                        'gis_id': feature.getId()
-                    }),
-                    contentType: 'application/json',
-                    success: response => {
-                        console.log(response.message);
-                        // Handle success response
-                        // Refresh the map and update JSON data after point addition
-                        this.refreshMapAndData();
-                    },
-                    error: (xhr, status, error) => {
-                        console.error(error);
-                        // Handle error response
+                        this.pointpath = "{{ $point }}";
+                        this.pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
+                        this.left = 8566697.42671;
+                        this.bottom = 1233036.89252;
+                        this.right = 8568056.82671;
+                        this.top = 1234055.69252;
                     }
+
+                    initMap() {
+                        this.pointJsonPromise = fetch(this.pointpath)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Failed to load GeoJSON file');
+                                }
+                                return response.json();
+                            });
+
+                        Promise.all([this.pointJsonPromise])
+                            .then(responses => {
+                                var pointJsonData = responses[0];
+                                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+
+                                var vectorSource = new ol.source.Vector({
+                                    features: features
+                                });
+                                var vectorLayer = new ol.layer.Vector({
+                                    source: vectorSource
+                                });
+
+                                var pngLayer = new ol.layer.Image({
+                                    source: new ol.source.ImageStatic({
+                                        url: this.pngFilePath,
+                                        imageExtent: [this.left, this.bottom, this.right, this.top],
+                                        projection: 'EPSG:32643',
+                                    })
+                                });
+
+                                this.map = new ol.Map({
+                                    target: 'map',
+                                    layers: [
+                                        new ol.layer.Tile({
+                                            source: new ol.source.OSM()
+                                        }),
+                                        pngLayer,
+                                        vectorLayer
+                                    ],
+                                    view: new ol.View({
+                                        center: ol.proj.fromLonLat([80.241610, 13.098640]),
+                                        zoom: 15
+                                    })
+                                });
+
+                                // Additional initialization...
+                            })
+                            .catch(error => {
+                                console.error('Error loading files:', error);
+                            });
+                    }
+
+                    // Define other methods as needed...
+                }
+
+                $(document).ready(function() {
+                    const mapManager = new MapManager();
+                    mapManager.initMap();
                 });
+            </script>
 
-                map.removeInteraction(draw); // Remove the draw interaction after a feature is drawn
-                typeSelect.value = 'None'; // Reset the type select
-            });
-        }
-    }
-
-    refreshMapAndData() {
-        // Clear the vector source to remove existing features from the map
-        this.vectorSource.clear();
-
-        // Fetch new GeoJSON data
-        this.loadPointData("{{ $point }}");
-    }
-}
-
-// Usage
-const mapController = new MapController();
-mapController.loadPointData("{{ $point }}");
-mapController.setupGeolocation();
-
-       </script>
     @endpush
 </div>
