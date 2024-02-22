@@ -199,14 +199,7 @@
                     source: vectorSource,
 
                 });
-                features.forEach(function(feature) {
-        var properties = feature.getProperties();
-        if (gisIdSet.has(properties['GIS_ID'])) {
-            feature.setStyle(this.completeStyle);
-        } else {
-            feature.setStyle(this.clickedStyle);
-        }
-    });
+
 
                 var pngLayer = new ol.layer.Image({
                     source: new ol.source.ImageStatic({
