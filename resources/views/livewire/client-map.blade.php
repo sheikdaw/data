@@ -179,120 +179,94 @@
             }
 
             initMap() {
-                this.pointJsonPromise = fetch(this.pointpath)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to load GeoJSON file');
-                        }
-                        return response.json();
-                    });
-
-                Promise.all([this.pointJsonPromise])
-                    .then(responses => {
-                        var pointJsonData = responses[0];
-                        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                        this.vectorSource = new ol.source.Vector({
-                            features: features
-                        });
-                        this.surveyed.forEach(survey => {
-                    gisIdSet.add(survey.gisid);
-                });
-                        this.vectorLayer = new ol.layer.Vector({
-                            source: this.vectorSource,
-                            style: (feature) => {
-                                const properties = feature.getProperties();
-                                if (this.gisIdSet.has(properties['GIS_ID'])) {
-                                    return this.completeStyle;
-                                } else {
-                                    return this.clickedStyle;
-                                }
-                            }
-                        });
-
-                        var pngLayer = new ol.layer.Image({
-                            source: new ol.source.ImageStatic({
-                                url: this.pngFilePath,
-                                imageExtent: [this.left, this.bottom, this.right, this.top],
-                                projection: 'EPSG:32643',
-                            })
-                        });
-
-                        this.map = new ol.Map({
-                            target: 'map',
-                            layers: [
-                                new ol.layer.Tile({
-                                    source: new ol.source.OSM()
-                                }),
-                                pngLayer,
-                                this.vectorLayer
-                            ],
-                            view: new ol.View({
-                                center: ol.proj.fromLonLat([80.241610, 13.098640]),
-                                zoom: 15
-                            })
-                        });
-
-                        this.addInteraction();
-                    })
-                    .catch(error => {
-                        console.error('Error loading files:', error);
-                    });
-
-                this.typeSelect.on('change', () => {
-                    this.map.removeInteraction(this.draw);
-                    this.addInteraction();
-                });
-
-                this.undoButton.on('click', () => {
-                    // Handle undo logic here
-                    $.ajax({
-                        url: '/delete-feature',
-                        success: (response) => {
-                            console.log(response.message);
-                            this.refreshMapAndData();
-                        },
-                        error: (xhr, status, error) => {
-                            console.error(error);
-                        }
-                    });
-                });
+    this.pointJsonPromise = fetch(this.pointpath)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load GeoJSON file');
             }
+            return response.json();
+        });
 
-            addInteraction() {
-                const value = this.typeSelect.val();
-                if (value !== 'None') {
-                    this.draw = new ol.interaction.Draw({
-                        source: this.vectorSource,
-                        type: value,
-                    });
-                    this.map.addInteraction(this.draw);
-                    this.draw.on('drawend', event => {
-                        const feature = event.feature;
-                        const geometry = feature.getGeometry();
-                        const coordinates = geometry.getCoordinates();
+    Promise.all([this.pointJsonPromise])
+        .then(responses => {
+            var pointJsonData = responses[0];
+            var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
-                        $.ajax({
-                            url: '/add-feature',
-                            type: 'POST',
-                            data: JSON.stringify({
-                                '_token': '{{ csrf_token() }}',
-                                'longitude': coordinates[0],
-                                'latitude': coordinates[1],
-                                'gis_id': feature.getId()
-                            }),
-                            contentType: 'application/json',
-                            success: (response) => {
-                                console.log(response.message);
-                                this.refreshMapAndData();
-                            },
-                            error: (xhr, status, error) => {
-                                console.error(error);
-                            }
-                        });
-                    });
+            this.vectorSource = new ol.source.Vector({
+                features: features
+            });
+
+            var vectorLayer = new ol.layer.Vector({
+                source: this.vectorSource,
+                style: feature => {
+                    const properties = feature.getProperties();
+                    if (this.gisIdSet.has(properties['GIS_ID'])) {
+                        return this.completeStyle;
+                    } else {
+                        return this.clickedStyle;
+                    }
                 }
+            });
+
+            var pngLayer = new ol.layer.Image({
+                source: new ol.source.ImageStatic({
+                    url: this.pngFilePath,
+                    imageExtent: [this.left, this.bottom, this.right, this.top],
+                    projection: 'EPSG:32643',
+                })
+            });
+
+            this.map = new ol.Map({
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    }),
+                    pngLayer,
+                    vectorLayer
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([80.241610, 13.098640]),
+                    zoom: 15
+                })
+            });
+
+            // Initialize gisIdSet
+            this.initGisIdSet(features);
+
+            // Additional initialization...
+        })
+        .catch(error => {
+            console.error('Error loading files:', error);
+        });
+
+    this.addInteraction();
+    this.typeSelect.on('change', () => {
+        this.map.removeInteraction(this.draw);
+        this.addInteraction();
+    });
+    this.undoButton.on('click', () => {
+        // Handle undo logic here
+        $.ajax({
+            url: '/delete-feature',
+            success: function(response) {
+                console.log(response.message);
+                this.refreshMapAndData();
+            }.bind(this),
+            error: function(xhr, status, error) {
+                console.error(error);
             }
+        });
+    });
+}
+
+initGisIdSet(features) {
+    features.forEach(feature => {
+        const properties = feature.getProperties();
+        this.gisIdSet.add(properties['GIS_ID']);
+    });
+}
+
             refreshMapAndData(features) {
                 const gisIdSet = new Set(); // Assuming gisIdSet is defined somewhere accessible
                 this.surveyed.forEach(survey => {
