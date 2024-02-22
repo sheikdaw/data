@@ -195,7 +195,9 @@
                         this.vectorSource = new ol.source.Vector({
                             features: features
                         });
-
+                        this.surveyed.forEach(survey => {
+                    gisIdSet.add(survey.gisid);
+                });
                         this.vectorLayer = new ol.layer.Vector({
                             source: this.vectorSource,
                             style: (feature) => {
