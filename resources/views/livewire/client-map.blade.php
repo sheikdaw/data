@@ -227,27 +227,19 @@
                         });
                 }
 
-                // Define other methods as needed...
+                addPointFeature(longitude, latitude) {
+                    const pos = ol.proj.fromLonLat([longitude, latitude]);
+                    const markerLayer = this.map.getLayers().item(
+                    3); // Assuming the marker layer is the fourth layer added to the map
+
+                    const marker = new ol.Feature({
+                        geometry: new ol.geom.Point(pos)
+                    });
+
+                    markerLayer.getSource().addFeature(marker);
+                    this.map.getView().setCenter(pos);
+                }
             }
-
-            $(document).ready(function() {
-                const mapManager = new MapManager();
-                mapManager.initMap();
-            });
-
-            addPointFeature(longitude, latitude) {
-                const pos = ol.proj.fromLonLat([longitude, latitude]);
-                const markerLayer = this.map.getLayers().item(
-                3); // Assuming the marker layer is the fourth layer added to the map
-
-                const marker = new ol.Feature({
-                    geometry: new ol.geom.Point(pos)
-                });
-
-                markerLayer.getSource().addFeature(marker);
-                this.map.getView().setCenter(pos);
-            }
-
 
             $(document).ready(function() {
                 const mapManager = new MapManager();
