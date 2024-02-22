@@ -175,6 +175,7 @@
         this.top = 1234055.69252;
         this.typeSelect = $('#type');
         this.undoButton = $('#undo');
+        this.gisIdSet = new Set();
     }
 
     initMap() {
