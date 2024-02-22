@@ -302,7 +302,7 @@
         vectorLayer.set('name', 'pointLayer'); // Set a name to identify the layer
         this.map.addLayer(vectorLayer);
     }
-}
+
 }
 
 $(document).ready(function() {
