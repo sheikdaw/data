@@ -196,14 +196,7 @@
                 });
                 var vectorLayer = new ol.layer.Vector({
                     source: vectorSource,
-                    style: feature => {
-                        const properties = feature.getProperties();
-                        if (gisIdSet.has(properties['GIS_ID'])) {
-                            return this.completeStyle;
-                        } else {
-                            return this.clickedStyle;
-                        }
-                    }
+
                 });
 
                 var pngLayer = new ol.layer.Image({
