@@ -132,109 +132,139 @@
     @push('script')
         <script type="text/javascript"
             src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
-            <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script type="text/javascript">
-                class MapManager {
-                    constructor() {
-                        this.clickedStyle = new ol.style.Style({
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript">
+            class MapManager {
+                constructor() {
+                    this.clickedStyle = new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 0, 0, 0.6)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(255, 0, 0, 1)',
+                            width: 2
+                        }),
+                        image: new ol.style.Circle({
+                            radius: 6,
                             fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0.6)'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'rgba(255, 0, 0, 1)',
-                                width: 2
-                            }),
-                            image: new ol.style.Circle({
-                                radius: 6,
-                                fill: new ol.style.Fill({
-                                    color: 'rgba(255, 0, 0, 1)'
-                                })
+                                color: 'rgba(255, 0, 0, 1)'
                             })
-                        });
+                        })
+                    });
 
-                        this.completeStyle = new ol.style.Style({
+                    this.completeStyle = new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 48, 143, 0.6)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 48, 143, 1)',
+                            width: 2
+                        }),
+                        image: new ol.style.Circle({
+                            radius: 6,
                             fill: new ol.style.Fill({
-                                color: 'rgba(0, 48, 143, 0.6)'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'rgba(0, 48, 143, 1)',
-                                width: 2
-                            }),
-                            image: new ol.style.Circle({
-                                radius: 6,
-                                fill: new ol.style.Fill({
-                                    color: 'rgba(0, 48, 143, 1)'
-                                })
+                                color: 'rgba(0, 48, 143, 1)'
                             })
-                        });
+                        })
+                    });
 
-                        this.pointpath = "{{ $point }}";
-                        this.pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
-                        this.left = 8566697.42671;
-                        this.bottom = 1233036.89252;
-                        this.right = 8568056.82671;
-                        this.top = 1234055.69252;
-                    }
-
-                    initMap() {
-                        this.pointJsonPromise = fetch(this.pointpath)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Failed to load GeoJSON file');
-                                }
-                                return response.json();
-                            });
-
-                        Promise.all([this.pointJsonPromise])
-                            .then(responses => {
-                                var pointJsonData = responses[0];
-                                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                                var vectorSource = new ol.source.Vector({
-                                    features: features
-                                });
-                                var vectorLayer = new ol.layer.Vector({
-                                    source: vectorSource
-                                });
-
-                                var pngLayer = new ol.layer.Image({
-                                    source: new ol.source.ImageStatic({
-                                        url: this.pngFilePath,
-                                        imageExtent: [this.left, this.bottom, this.right, this.top],
-                                        projection: 'EPSG:32643',
-                                    })
-                                });
-
-                                this.map = new ol.Map({
-                                    target: 'map',
-                                    layers: [
-                                        new ol.layer.Tile({
-                                            source: new ol.source.OSM()
-                                        }),
-                                        pngLayer,
-                                        vectorLayer
-                                    ],
-                                    view: new ol.View({
-                                        center: ol.proj.fromLonLat([80.241610, 13.098640]),
-                                        zoom: 15
-                                    })
-                                });
-
-                                // Additional initialization...
-                            })
-                            .catch(error => {
-                                console.error('Error loading files:', error);
-                            });
-                    }
-
-                    // Define other methods as needed...
+                    this.pointpath = "{{ $point }}";
+                    this.pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
+                    this.left = 8566697.42671;
+                    this.bottom = 1233036.89252;
+                    this.right = 8568056.82671;
+                    this.top = 1234055.69252;
                 }
 
-                $(document).ready(function() {
-                    const mapManager = new MapManager();
-                    mapManager.initMap();
-                });
-            </script>
+                initMap() {
+                    this.pointJsonPromise = fetch(this.pointpath)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to load GeoJSON file');
+                            }
+                            return response.json();
+                        });
 
+                    Promise.all([this.pointJsonPromise])
+                        .then(responses => {
+                            var pointJsonData = responses[0];
+                            var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+
+                            var vectorSource = new ol.source.Vector({
+                                features: features
+                            });
+                            var vectorLayer = new ol.layer.Vector({
+                                source: vectorSource
+                            });
+
+                            var pngLayer = new ol.layer.Image({
+                                source: new ol.source.ImageStatic({
+                                    url: this.pngFilePath,
+                                    imageExtent: [this.left, this.bottom, this.right, this.top],
+                                    projection: 'EPSG:32643',
+                                })
+                            });
+
+                            this.map = new ol.Map({
+                                target: 'map',
+                                layers: [
+                                    new ol.layer.Tile({
+                                        source: new ol.source.OSM()
+                                    }),
+                                    pngLayer,
+                                    vectorLayer
+                                ],
+                                view: new ol.View({
+                                    center: ol.proj.fromLonLat([80.241610, 13.098640]),
+                                    zoom: 15
+                                })
+                            });
+
+                            // Additional initialization...
+                        })
+                        .catch(error => {
+                            console.error('Error loading files:', error);
+                        });
+                }
+
+                // Define other methods as needed...
+            }
+
+            $(document).ready(function() {
+                const mapManager = new MapManager();
+                mapManager.initMap();
+            });
+
+            addPointFeature(longitude, latitude) {
+                const pos = ol.proj.fromLonLat([longitude, latitude]);
+                const markerLayer = this.map.getLayers().item(
+                3); // Assuming the marker layer is the fourth layer added to the map
+
+                const marker = new ol.Feature({
+                    geometry: new ol.geom.Point(pos)
+                });
+
+                markerLayer.getSource().addFeature(marker);
+                this.map.getView().setCenter(pos);
+            }
+
+
+            $(document).ready(function() {
+                const mapManager = new MapManager();
+                mapManager.initMap();
+
+                // Example usage to add a point feature
+                $('#addPointButton').click(function() {
+                    const longitude = parseFloat($('#longitudeInput').val());
+                    const latitude = parseFloat($('#latitudeInput').val());
+
+                    if (!isNaN(longitude) && !isNaN(latitude)) {
+                        mapManager.addPointFeature(longitude, latitude);
+                    } else {
+                        console.error('Invalid longitude or latitude');
+                    }
+                });
+            });
+        </script>
     @endpush
 </div>
