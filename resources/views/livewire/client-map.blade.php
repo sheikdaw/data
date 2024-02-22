@@ -281,6 +281,28 @@
             });
         }
     }
+    refreshMapAndData(features) {
+        const gisIdSet = new Set(); // Assuming gisIdSet is defined somewhere accessible
+        this.surveyed.forEach(survey => {
+            gisIdSet.add(survey.gisid);
+        });
+
+        features.forEach(feature => {
+            const properties = feature.getProperties();
+            if (gisIdSet.has(properties['GIS_ID'])) {
+                feature.setStyle(this.completeStyle);
+            } else {
+                feature.setStyle(this.clickedStyle);
+            }
+        });
+
+        const vectorLayer = new ol.layer.Vector({
+            source: this.vectorSource
+        });
+        vectorLayer.set('name', 'pointLayer'); // Set a name to identify the layer
+        this.map.addLayer(vectorLayer);
+    }
+}
 }
 
 $(document).ready(function() {
