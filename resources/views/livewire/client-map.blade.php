@@ -186,28 +186,8 @@
                     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
                     var vectorSource = new ol.source.Vector({
-                        features: features,
-                        style: function(feature) {
-                            return new ol.style.Style({
-                                text: new ol.style.Text({
-                                    text: labelText,
-                                    font: '12px Calibri,sans-serif',
-                                    fill: new ol.style.Fill({
-                                        color: '#000'
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: '#fff',
-                                        width: 2
-                                    }),
-                                    offsetX: 0,
-                                    offsetY: -10,
-                                    textAlign: 'center',
-                                    textBaseline: 'middle'
-                                })
-                            });
-                        }
+                        features: features
                     });
-
                     var vectorLayer = new ol.layer.Vector({
                         source: vectorSource
                     });
@@ -388,8 +368,6 @@
                                 // Handle error
                             });
                     }
-
-
                     /**
                      * Handle change event.
                      */
@@ -397,10 +375,21 @@
                         map.removeInteraction(draw);
                         addInteraction();
                     };
-
                     document.getElementById('undo').addEventListener('click', function() {
-                        draw.removeLastPoint();
+                        // When the element with the ID 'undo' is clicked, execute the following function
+                        $.ajax({
+                            url: '/delete-feature', // URL to send the AJAX request
+                            success: function(response) {
+                                console.log(response
+                                .message);
+                                refreshMapAndData();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
                     });
+
 
                     addInteraction();
 

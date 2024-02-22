@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FormController;
 use App\Http\Middleware\PreventBackHistory;
 Route::post('/add-feature', [AdminController::class, 'addFeature']);
+Route::post('/delete-feature', [AdminController::class, 'deleteLastFeature']);
 Route::prefix('client')->name('client.')->group(function () {
     Route::middleware(['guest:client', PreventBackHistory::class])->group(function () {
         Route::view('/login', 'back.page.client.auth.login')->name('login');
