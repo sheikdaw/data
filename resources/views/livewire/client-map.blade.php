@@ -186,8 +186,28 @@
                     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
                     var vectorSource = new ol.source.Vector({
-                        features: features
+                        features: features,
+                        style: function(feature) {
+                            return new ol.style.Style({
+                                text: new ol.style.Text({
+                                    text: labelText,
+                                    font: '12px Calibri,sans-serif',
+                                    fill: new ol.style.Fill({
+                                        color: '#000'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#fff',
+                                        width: 2
+                                    }),
+                                    offsetX: 0,
+                                    offsetY: -10,
+                                    textAlign: 'center',
+                                    textBaseline: 'middle'
+                                })
+                            });
+                        }
                     });
+
                     var vectorLayer = new ol.layer.Vector({
                         source: vectorSource
                     });
@@ -336,38 +356,38 @@
                     }
 
                     function refreshMapAndData() {
-    // Clear the vector source to remove existing features from the map
-    vectorSource.clear();
+                        // Clear the vector source to remove existing features from the map
+                        vectorSource.clear();
 
-    // Fetch new GeoJSON data
-    fetch(pointpath)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load GeoJSON file');
-            }
-            return response.json();
-        })
-        .then(pointJsonData => {
-            var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                        // Fetch new GeoJSON data
+                        fetch(pointpath)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Failed to load GeoJSON file');
+                                }
+                                return response.json();
+                            })
+                            .then(pointJsonData => {
+                                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
-            // Add new features to the vector source
-            vectorSource.addFeatures(features);
+                                // Add new features to the vector source
+                                vectorSource.addFeatures(features);
 
-            // Iterate over features to set style
-            features.forEach(function(feature) {
-                var properties = feature.getProperties();
-                if (gisIdSet.has(properties['GIS_ID'])) {
-                    feature.setStyle(completeStyle);
-                } else {
-                    feature.setStyle(clickedStyle);
-                }
-            });
-        })
-        .catch(error => {
-            console.error('Error refreshing map and data:', error);
-            // Handle error
-        });
-}
+                                // Iterate over features to set style
+                                features.forEach(function(feature) {
+                                    var properties = feature.getProperties();
+                                    if (gisIdSet.has(properties['GIS_ID'])) {
+                                        feature.setStyle(completeStyle);
+                                    } else {
+                                        feature.setStyle(clickedStyle);
+                                    }
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error refreshing map and data:', error);
+                                // Handle error
+                            });
+                    }
 
 
                     /**
