@@ -257,12 +257,66 @@
             console.error('Geolocation is not supported by this browser.');
         }
     }
+
+    addPointFeature(type) {
+        const vectorSource = this.vectorSource;
+        const map = this.map;
+        const typeSelect = document.getElementById('type');
+
+        if (type !== 'None') {
+            const draw = new ol.interaction.Draw({
+                source: vectorSource,
+                type: type
+            });
+
+            map.addInteraction(draw);
+
+            draw.on('drawend', event => {
+                const feature = event.feature;
+                const geometry = feature.getGeometry();
+                const coordinates = geometry.getCoordinates();
+
+                // Send an Ajax request to Laravel route to add the feature to JSON
+                $.ajax({
+                    url: '/add-feature',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        '_token': '{{ csrf_token() }}',
+                        'longitude': coordinates[0],
+                        'latitude': coordinates[1],
+                        'gis_id': feature.getId()
+                    }),
+                    contentType: 'application/json',
+                    success: response => {
+                        console.log(response.message);
+                        // Handle success response
+                        // Refresh the map and update JSON data after point addition
+                        this.refreshMapAndData();
+                    },
+                    error: (xhr, status, error) => {
+                        console.error(error);
+                        // Handle error response
+                    }
+                });
+
+                map.removeInteraction(draw); // Remove the draw interaction after a feature is drawn
+                typeSelect.value = 'None'; // Reset the type select
+            });
+        }
+    }
+
+    refreshMapAndData() {
+        // Clear the vector source to remove existing features from the map
+        this.vectorSource.clear();
+
+        // Fetch new GeoJSON data
+        this.loadPointData("{{ $point }}");
+    }
 }
 
 // Usage
 const mapController = new MapController();
-const pointPath = "{{ $point }}";
-mapController.loadPointData(pointPath);
+mapController.loadPointData("{{ $point }}");
 mapController.setupGeolocation();
 
        </script>
