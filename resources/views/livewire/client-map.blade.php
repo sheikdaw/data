@@ -199,7 +199,15 @@
                             projection: 'EPSG:32643',
                         })
                     });
-
+                    var geoServerSource = new ol.source.TileWMS({
+                            url: 'http://localhost:8080/geoserver/india/wms',
+                            params: {
+                                'LAYERS': '	india:Ward 49_Orthomosaic_1', // Change to your actual layer name
+                                'TILED': true,
+                                'VERSION': '1.1.1'
+                            },
+                            serverType: 'geoserver'
+                            });
                     var map = new ol.Map({
                         target: 'map',
                         layers: [
@@ -207,6 +215,7 @@
                                 source: new ol.source.OSM()
                             }),
                             pngLayer,
+                            geoServerSource,
                             vectorLayer
                         ],
                         view: new ol.View({
