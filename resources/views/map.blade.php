@@ -1,402 +1,70 @@
-<div>
-    @push('style')
-        <style>
-            .map {
-                width: 100%;
-                height: 600px;
-            }
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:36gbi2PIn4l6L7iuQL+olc4wtIPSQYumOyTVLC6jQ30=
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000/
 
-            .ol-popup {
-                position: absolute;
-                background-color: white;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-                padding: 15px;
-                border-radius: 10px;
-                border: 1px solid #cccccc;
-                bottom: 12px;
-                left: -50px;
-                min-width: 280px;
-            }
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
 
-            .ol-popup:after,
-            .ol-popup:before {
-                top: 100%;
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                pointer-events: none;
-            }
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=u208645685_survey
+DB_USERNAME=u208645685_survey
+DB_PASSWORD=SgtSolutions@12
 
-            .ol-popup:after {
-                border-top-color: white;
-                border-width: 10px;
-                left: 48px;
-                margin-left: -10px;
-            }
-
-            .ol-popup:before {
-                border-top-color: #cccccc;
-                border-width: 11px;
-                left: 48px;
-                margin-left: -11px;
-            }
-
-            .ol-popup-closer {
-                text-decoration: none;
-                position: absolute;
-                top: 2px;
-                right: 8px;
-            }
-
-            .ol-popup-closer:after {
-                content: "✖";
-            }
-        </style>
-    @endpush
-
-    <form class="form-inline">
-        <label for="type">Geometry type: &nbsp;</label>
-        <select class="form-control mr-2 mb-2 mt-2" id="type">
-            <option value="None">None</option>
-            <option value="Point">Point</option>
-            <option value="LineString">LineString</option>
-            <option value="Polygon">Polygon</option>
-            <option value="Circle">Circle</option>
-        </select>
-        <input class="form-control mr-2 mb-2 mt-2" type="button" value="Undo" id="undo">
-    </form>
-    <div id="map" class="map"></div>
-
-    <div id="popup" class="ol-popup">
-        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-        <div id="popup-content"></div>
-    </div>
-
-    <div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="featureModalLabel">Feature Properties</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h4>Feature Properties</h4>
-                    <ul id="featurePropertiesList">
-                        <!-- Feature properties will be displayed here -->
-                    </ul>
-                    <hr>
-                    <h4>Feature Form</h4>
-                    {{-- <form id="featureForm" method="post" action="{{ route('client.Survey-Form-Point') }}">
-                    @csrf <!-- CSRF token for security -->
-                    <div class="mb-3">
-                        <label for="gisIdInput" class="form-label">Gis id</label>
-                        <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="assessment" class="form-label">Assessment no</label>
-                        <input type="text" class="form-control" id="assessment" name="assessment">
-                    </div>
-                    <!-- Add more form fields as needed -->
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form> --}}
-                    <form action="{{ route('client.gis-images-upload') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-body">
-                            <div id="alertBox" class="alert alert-danger" style="display: none;">
-                            </div>
-                            <div class="form-group">
-                                <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                            </div>
-                            <div class="form-group">
-                                <label for="value">Picture</label>
-                                <input type="file" name="image" id="image" class="form-control">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <!-- Moved submit button inside the form -->
-                            <button type="submit" class="btn btn-primary">Save image</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    @push('script')
-        <script type="text/javascript"
-            src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
-        <script type="text/javascript">
-            var clickedStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255, 0, 0, 1)', // Red color for outline
-                    width: 2 // Outline width
-                }),
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
-                    })
-                })
-            });
-
-            var completeStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(0, 48, 143, 1)', // Green color for outline
-                    width: 2 // Outline width
-                }),
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
-                    })
-                })
-            });
-
-            var pointpath = "{{ $point }}";
-            var pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
-            var left = 8566697.42671;
-            var bottom = 1233036.89252;
-            var right = 8568056.82671;
-            var top = 1234055.69252;
-
-            var pointJsonPromise = fetch(pointpath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load GeoJSON file');
-                    }
-                    return response.json();
-                });
-
-            Promise.all([pointJsonPromise])
-                .then(responses => {
-                    var pointJsonData = responses[0];
-                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                    var vectorSource = new ol.source.Vector({
-                        features: features
-                    });
-                    var vectorLayer = new ol.layer.Vector({
-                        source: vectorSource
-                    });
-
-                    var pngLayer = new ol.layer.Image({
-                        source: new ol.source.ImageStatic({
-                            url: pngFilePath,
-                            imageExtent: [left, bottom, right, top],
-                            projection: 'EPSG:32643',
-                        })
-                    });
-
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }),
-                            pngLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
-                            zoom: 15
-                        })
-                    });
-
-                    var markerLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector(),
-                        style: new ol.style.Style({
-                            image: new ol.style.Icon({
-                                anchor: [0.5, 1],
-                                src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
-                            })
-                        })
-                    });
-                    map.addLayer(markerLayer);
-
-                    if ('geolocation' in navigator) {
-                        navigator.geolocation.watchPosition(function(position) {
-                            var lonLat = [position.coords.longitude, position.coords.latitude];
-                            var pos = ol.proj.fromLonLat(lonLat);
-                            markerLayer.getSource().clear();
-                            var marker = new ol.Feature({
-                                geometry: new ol.geom.Point(pos)
-                            });
-                            markerLayer.getSource().addFeature(marker);
-                            map.getView().setCenter(pos);
-                        }, function(error) {
-                            console.error('Error getting geolocation:', error);
-                        });
-                    } else {
-                        console.error('Geolocation is not supported by this browser.');
-                    }
-
-                    var popup = new ol.Overlay({
-                        element: document.getElementById('popup'),
-                        autoPan: true,
-                        autoPanAnimation: {
-                            duration: 250
-                        }
-                    });
-                    map.addOverlay(popup);
-
-                    var surveyed = @json($surveyed);
-
-                    var gisIdSet = new Set();
-
-                    surveyed.forEach(function(survey) {
-                        gisIdSet.add(survey.gisid);
-                    });
-
-                    features.forEach(function(feature) {
-                        var properties = feature.getProperties();
-                        if (gisIdSet.has(properties['GIS_ID'])) {
-                            feature.setStyle(completeStyle);
-                        } else {
-                            feature.setStyle(clickedStyle);
-                        }
-                    });
-
-                    map.on('click', function(event) {
-                        if (document.getElementById('type').value == 'None') {
-                            var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-                                return feature;
-                            });
-
-                            if (feature) {
-                                var properties = feature.getProperties();
-                                var content = '';
-                                for (var key in properties) {
-                                    if (key !== 'geometry') {
-                                        content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
-                                    }
-                                }
-                                document.getElementById('featurePropertiesList').innerHTML = content;
-                                document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                $('#featureModal').modal('show');
-                            } else {
-                                $('#featureModal').modal('hide');
-                            }
-                        }
-                    });
-                    const typeSelect = document.getElementById('type');
-
-                    let draw; // global so we can remove it later
-
-                    function addInteraction() {
-                        const value = typeSelect.value;
-                        if (value !== 'None') {
-                            draw = new ol.interaction.Draw({
-                                source: vectorSource,
-                                type: typeSelect.value,
-                            });
-                            map.addInteraction(draw);
-                            draw.on('drawend', function(event) {
-                                const feature = event.feature;
-                                const geometry = feature.getGeometry();
-                                const coordinates = geometry.getCoordinates();
-
-                                // Send an Ajax request to Laravel route to add the feature to JSON
-                                $.ajax({
-                                    url: '/add-feature',
-                                    type: 'POST', // Use POST method
-                                    data: JSON.stringify({
-                                        '_token': '{{ csrf_token() }}',
-                                        'longitude': coordinates[0],
-                                        'latitude': coordinates[1],
-                                        'gis_id': feature
-                                            .getId() // Assuming you're setting an ID for the feature
-                                    }),
-                                    contentType: 'application/json', // Set content type to JSON
-                                    success: function(response) {
-                                        console.log(response.message);
-                                        // Handle success response
-                                        // Refresh the map and update JSON data after point addition
-                                        refreshMapAndData();
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error(error);
-                                        // Handle error response
-                                    }
-                                });
-                            });
-                        }
-                    }
-
-                    function refreshMapAndData() {
-                        // Clear the vector source to remove existing features from the map
-                        vectorSource.clear();
-
-                        // Fetch new GeoJSON data
-                        fetch(pointpath)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Failed to load GeoJSON file');
-                                }
-                                return response.json();
-                            })
-                            .then(pointJsonData => {
-                                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                                // Add new features to the vector source
-                                vectorSource.addFeatures(features);
-
-                                // Iterate over features to set style
-                                features.forEach(function(feature) {
-                                    var properties = feature.getProperties();
-                                    if (gisIdSet.has(properties['GIS_ID'])) {
-                                        feature.setStyle(completeStyle);
-                                    } else {
-                                        feature.setStyle(clickedStyle);
-                                    }
-                                });
-                            })
-                            .catch(error => {
-                                console.error('Error refreshing map and data:', error);
-                                // Handle error
-                            });
-                    }
-                    /**
-                     * Handle change event.
-                     */
-                    typeSelect.onchange = function() {
-                        map.removeInteraction(draw);
-                        addInteraction();
-                    };
-                    document.getElementById('undo').addEventListener('click', function() {
-                        // When the element with the ID 'undo' is clicked, execute the following function
-                        $.ajax({
-                            url: '/delete-feature', // URL to send the AJAX request
-                            success: function(response) {
-                                console.log(response
-                                .message);
-                                refreshMapAndData();
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(error);
-                            }
-                        });
-                    });
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
 
 
-                    addInteraction();
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
 
-                })
-                .catch(error => {
-                    console.error('Error loading files:', error);
-                });
-        </script>
-    @endpush
-</div>
+MEMCACHED_HOST=127.0.0.1
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.hostinger.com
+MAIL_PORT=465
+MAIL_USERNAME=sheikdawood@sgtsolutions.in
+MAIL_PASSWORD=Sheikdawood@12
+MAIL_ENCRYPTION=SSL
+MAIL_FROM_ADDRESS="sheikdawood@sgtsolutions.in"
+MAIL_FROM_NAME="${APP_NAME}"
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=
+AWS_USE_PATH_STYLE_ENDPOINT=false
+
+PUSHER_APP_ID=
+PUSHER_APP_KEY=
+PUSHER_APP_SECRET=
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME=https
+PUSHER_APP_CLUSTER=mt1
+
+VITE_APP_NAME="${APP_NAME}"
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST="${PUSHER_HOST}"
+VITE_PUSHER_PORT="${PUSHER_PORT}"
+VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+
+
