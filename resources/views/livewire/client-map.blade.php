@@ -194,7 +194,7 @@
         })
     });
 
-    var pointpath = "{{ asset('public/kovai/building.json') }}";
+    var pointpath = "{{ $point }}";
     var buildingpath = "{{ asset('public/kovai/building.json') }}";
     var pngFilePath = "{{ asset('public/kovai/building.png') }}";
 
