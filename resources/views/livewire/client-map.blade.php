@@ -195,7 +195,7 @@
     });
 
     var pointpath = "{{ $point }}";
-    var buildingpath = "{{ asset('public/kovai/building.json') }}";
+    var buildingpath = "{{ asset('public/kovai/ward49.json') }}";
     var pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
 
     var pointJsonPromise = fetch(pointpath)
