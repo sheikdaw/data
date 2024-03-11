@@ -3,7 +3,7 @@
   "crs" : {
     "type" : "name",
     "properties" : {
-      "name" : "EPSG:32643"
+      "name" : "EPSG:3857"
     }
   },
   "features" : [
