@@ -22,7 +22,7 @@ class ClientMap extends Component
     public function mount()
     {
         // Fetch surveyed data and assign it to the property
-        $this->point = asset('public/kovai/point.json');
+        $this->point = asset('public/kovai/test.json');
         $this->surveyed = Surveyed::all();
     }
 
