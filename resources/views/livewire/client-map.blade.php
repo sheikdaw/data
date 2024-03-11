@@ -195,7 +195,7 @@
     });
 
     var pointpath = "{{ $point }}";
-    var buildingpath = "{{ asset('public/kovai/india.json') }}";
+    var buildingpath = "{{ asset('public/kovai/building.geojson') }}";
     var pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
 
     var pointJsonPromise = fetch(pointpath)
