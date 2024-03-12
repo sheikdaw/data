@@ -334,7 +334,8 @@
                                 var properties = feature.getProperties();
                                 var geometryType = feature.getGeometry().getType();
                                 alert("Geometry type: " + geometryType);
-                                var content = '';
+                                if (geometryType == 'Point') {
+                                    var content = '';
                                 for (var key in properties) {
                                     if (key !== 'geometry') {
                                         content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
@@ -356,6 +357,7 @@
                                     })
                                 });
                                 feature.setStyle(newStyle);
+                                }
                             } else {
                                 $('#featureModal').modal('hide');
                             }
