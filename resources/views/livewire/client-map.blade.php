@@ -467,8 +467,9 @@
                     $("#filterBtn").click(function(e) {
                         e.preventDefault();
                         var gisidvalue = $("#gisidval").val();
-                        console.log(gisidvalue);
 
+                        // Clear existing features
+                        vectorSource.clear();
 
                         var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
                         features.forEach(function(feature) {
@@ -501,6 +502,7 @@
                             }
 
                             feature.setStyle(newStyle);
+                            vectorSource.addFeature(feature); // Add the feature back to the source
                         });
                     });
 
