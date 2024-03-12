@@ -330,9 +330,8 @@
                         return feature;
                     });
 
-                    if (feature && properties['GIS_ID']) {
-                        var geometryType = feature.getGeometry().getType();
-    alert("Geometry type: " + geometryType);
+                    if (feature) {
+                        var properties = feature.getProperties();
                         var content = '';
                         for (var key in properties) {
                             if (key !== 'geometry') {
