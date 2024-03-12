@@ -329,10 +329,10 @@
                     var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
                         return feature;
                     });
-                    var properties = feature.getProperties();
-                    alert(feature.type);
-                    if (feature && properties['GIS_ID']) {
 
+                    if (feature && properties['GIS_ID']) {
+                        var geometryType = feature.getGeometry().getType();
+    alert("Geometry type: " + geometryType);
                         var content = '';
                         for (var key in properties) {
                             if (key !== 'geometry') {
