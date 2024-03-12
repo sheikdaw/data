@@ -343,6 +343,19 @@
                         document.getElementById('featurePropertiesList').innerHTML = content;
                         document.getElementById('gisIdInput').value = properties['GIS_ID'];
                         $('#featureModal').modal('show');
+                        var newStyle = new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 6,
+                        fill: new ol.style.Fill({
+                            color: 'red' // Change color as desired
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'white',
+                            width: 2
+                        })
+                    })
+                });
+                feature.setStyle(newStyle);
                     } else {
                         $('#featureModal').modal('hide');
                     }
