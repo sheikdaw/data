@@ -478,6 +478,7 @@
         var newStyle;
 
         if (gisidvalue == properties['GIS_ID']) {
+            console.log(properties['GIS_ID']);
             newStyle = new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: 6,
