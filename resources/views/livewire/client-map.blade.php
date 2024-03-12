@@ -469,11 +469,9 @@
     var gisidvalue = $("#gisid").val();
 
     // Clear existing features
-    vectorSource.clear();
+
 
     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-    vectorSource.addFeatures(features);
-
     features.forEach(function(feature) {
         var properties = feature.getProperties();
         console.log(properties);
