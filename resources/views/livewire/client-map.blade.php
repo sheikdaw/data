@@ -469,20 +469,18 @@
     var gisidvalue = $("#gisid").val();
 
     // Clear existing features
-
+    vectorSource.clear();
 
     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
     features.forEach(function(feature) {
         var properties = feature.getProperties();
         var newStyle;
-        console.log(properties['GIS_ID'] == gisidvalue);
         if (gisidvalue == properties['GIS_ID']) {
-
             newStyle = new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: 6,
                     fill: new ol.style.Fill({
-                        color: 'green'
+                        color: 'blue'
                     }),
                     stroke: new ol.style.Stroke({
                         color: 'white'
@@ -504,8 +502,10 @@
         }
 
         feature.setStyle(newStyle);
+        vectorSource.addFeature(feature); // Add the feature back to the source
     });
 });
+
 
 
 
