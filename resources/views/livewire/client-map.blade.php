@@ -332,6 +332,8 @@
 
                     if (feature) {
                         var properties = feature.getProperties();
+                        var geometryType = feature.getGeometry().getType();
+    alert("Geometry type: " + geometryType);
                         var content = '';
                         for (var key in properties) {
                             if (key !== 'geometry') {
