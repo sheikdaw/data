@@ -80,8 +80,8 @@
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="filter " tabindex="-1" role="dialog"
+        aria-labelledby="filterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -503,6 +503,7 @@
 
                             feature.setStyle(newStyle);
                             vectorSource.addFeature(feature); // Add the feature back to the source
+                            $('#filter').modal('hide');
                         });
                     });
 
