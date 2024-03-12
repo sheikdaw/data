@@ -484,7 +484,7 @@
                 image: new ol.style.Circle({
                     radius: 6,
                     fill: new ol.style.Fill({
-                        color: 'blue'
+                        color: 'red'
                     }),
                     stroke: new ol.style.Stroke({
                         color: 'white'
