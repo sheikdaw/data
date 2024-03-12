@@ -474,6 +474,7 @@
     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
     features.forEach(function(feature) {
         var properties = feature.getProperties();
+        alert(gisidvalue);
         if (gisidvalue == properties['GIS_ID']) {
             gisIdExists = true;
             return; // Exit forEach loop early as GIS ID found
