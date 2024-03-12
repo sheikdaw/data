@@ -467,7 +467,7 @@
                     $("#filterBtn").click(function(e) {
                         e.preventDefault();
                         var gisidvalue = $("#gisidval").val();
-
+                        console.log(gisidvalue);
 
 
                         var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
