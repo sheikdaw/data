@@ -475,7 +475,7 @@
     features.forEach(function(feature) {
         var properties = feature.getProperties();
         var newStyle;
-        console.log(properties['GIS_ID']);
+        console.log(properties['GIS_ID'] == gisidvalue);
         if (gisidvalue == properties['GIS_ID']) {
 
             newStyle = new ol.style.Style({
