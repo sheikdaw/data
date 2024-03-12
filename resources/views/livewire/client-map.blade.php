@@ -467,10 +467,17 @@
                     $("#filterBtn").click(function(e) {
     e.preventDefault();
     var gisidvalue = $("#gisid").val();
-    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
-    var gisIdExists = features.some(function(feature) {
-        return feature.getProperties()['GIS_ID'] === gisidvalue;
+    // Flag to check if GIS ID exists
+    var gisIdExists = false;
+
+    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+    features.forEach(function(feature) {
+        var properties = feature.getProperties();
+        if (gisidvalue == properties['GIS_ID']) {
+            gisIdExists = true;
+            return; // Exit forEach loop early as GIS ID found
+        }
     });
 
     if (gisIdExists) {
@@ -479,6 +486,7 @@
         alert("GIS ID does not exist in features.");
     }
 });
+
 
 
 
