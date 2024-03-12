@@ -474,7 +474,6 @@
     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
     features.forEach(function(feature) {
         var properties = feature.getProperties();
-        console.log(properties);
         var newStyle;
 
         if (gisidvalue == properties['GIS_ID']) {
