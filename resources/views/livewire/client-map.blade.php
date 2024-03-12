@@ -212,7 +212,6 @@
             }
             return response.json();
         });
-
     Promise.all([pointJsonPromise,buildingJsonPromise])
         .then(responses => {
             var pointJsonData = responses[0];
