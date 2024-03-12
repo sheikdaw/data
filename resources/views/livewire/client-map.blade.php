@@ -464,8 +464,7 @@
                         addInteraction();
 
 
-                        $(document).ready(function() {
-                                $("#filterBtn").click(function(e) {
+                        $("#filterBtn").click(function(e) {
                                     e.preventDefault();
                                     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
@@ -479,36 +478,37 @@
                                         console(properties);
                                         if (gisidvalue == properties['GIS_ID']) {
                                             var newStyle = new ol.style.Style({
-                                        image: new ol.style.Circle({
-                                            radius: 6,
-                                            fill: new ol.style.Fill({
-                                                color: 'blue' // Change color as desired
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'white'
+                                                image: new ol.style.Circle({
+                                                    radius: 6,
+                                                    fill: new ol.style.Fill({
+                                                        color: 'blue' // Change color as desired
+                                                    }),
+                                                    stroke: new ol.style.Stroke({
+                                                        color: 'white'
 
-                                            })
-                                        })
-                                    });
-                                    feature.setStyle(newStyle);
+                                                    })
+                                                })
+                                            });
+                                            feature.setStyle(newStyle);
                                         } else {
                                             var newStyle = new ol.style.Style({
-                                        image: new ol.style.Circle({
-                                            radius: 6,
-                                            fill: new ol.style.Fill({
-                                                color: 'green' // Change color as desired
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'white'
+                                                image: new ol.style.Circle({
+                                                    radius: 6,
+                                                    fill: new ol.style.Fill({
+                                                        color: 'green' // Change color as desired
+                                                    }),
+                                                    stroke: new ol.style.Stroke({
+                                                        color: 'white'
 
-                                            })
-                                        })
-                                    });
-                                    feature.setStyle(newStyle);
+                                                    })
+                                                })
+                                            });
+                                            feature.setStyle(newStyle);
                                         }
                                     });
 
                                 });
+
 
                             })
                             .catch(error => {
