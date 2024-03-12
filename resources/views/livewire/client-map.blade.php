@@ -329,9 +329,9 @@
                     var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
                         return feature;
                     });
+                    var properties = feature.getProperties();
+                    if (feature && properties['GIS_ID']) {
 
-                    if (feature) {
-                        var properties = feature.getProperties();
                         var content = '';
                         for (var key in properties) {
                             if (key !== 'geometry') {
