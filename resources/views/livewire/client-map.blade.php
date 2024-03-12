@@ -330,6 +330,7 @@
                         return feature;
                     });
                     var properties = feature.getProperties();
+                    alert(feature.type);
                     if (feature && properties['GIS_ID']) {
 
                         var content = '';
