@@ -92,7 +92,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="filter">
-                        <input type="type" value="gis" id="gisid">
+                        <input type="type" value="gis" id="gisidval">
                         <input type="button" value="save" id="filterBtn">
                     </form>
                 </div>
@@ -466,7 +466,7 @@
 
                     $("#filterBtn").click(function(e) {
     e.preventDefault();
-    var gisidvalue = $("#gisid").val();
+    var gisidvalue = $("#gisidval").val();
 
     // Flag to check if GIS ID exists
     var gisIdExists = false;
