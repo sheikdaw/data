@@ -465,30 +465,44 @@
 
 
                     $("#filterBtn").click(function(e) {
-    e.preventDefault();
-    var gisidvalue = $("#gisidval").val();
-
-    // Flag to check if GIS ID exists
-    var gisIdExists = false;
-
-    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-    features.forEach(function(feature) {
-        var properties = feature.getProperties();
-        alert(gisidvalue);
-        if (gisidvalue == properties['GIS_ID']) {
-            gisIdExists = true;
-            return; // Exit forEach loop early as GIS ID found
-        }
-    });
-
-    if (gisIdExists) {
-        alert("GIS ID exists in features.");
-    } else {
-        alert("GIS ID does not exist in features.");
-    }
-});
+                        e.preventDefault();
+                        var gisidvalue = $("#gisidval").val();
 
 
+
+                        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                        features.forEach(function(feature) {
+                            var properties = feature.getProperties();
+                            var newStyle;
+                            if (gisidvalue == properties['GIS_ID']) {
+                                newStyle = new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                        radius: 6,
+                                        fill: new ol.style.Fill({
+                                            color: 'green'
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: 'white'
+                                        })
+                                    })
+                                });
+                            } else {
+                                newStyle = new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                        radius: 6,
+                                        fill: new ol.style.Fill({
+                                            color: 'red'
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: 'white'
+                                        })
+                                    })
+                                });
+                            }
+
+                            feature.setStyle(newStyle);
+                        });
+                    });
 
 
 
