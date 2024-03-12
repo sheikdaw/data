@@ -347,11 +347,11 @@
                     image: new ol.style.Circle({
                         radius: 6,
                         fill: new ol.style.Fill({
-                            color: 'red' // Change color as desired
+                            color: 'blue' // Change color as desired
                         }),
                         stroke: new ol.style.Stroke({
-                            color: 'white',
-                            width: 2
+                            color: 'white'
+
                         })
                     })
                 });
