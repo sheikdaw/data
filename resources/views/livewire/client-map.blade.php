@@ -467,12 +467,9 @@
                         $("#filterBtn").click(function(e) {
                                     e.preventDefault();
                                     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                                    // Add new features to the vector source
                                     vectorSource.addFeatures(features);
-
-                                    var gisidvalue = $("#gisid").val(); // Get the GIS ID value from input field
-
+                            alert('hi');
+                                    var gisidvalue = $("#gisid").val();
                                     features.forEach(function(feature) {
                                         var properties = feature.getProperties();
                                         console(properties);
@@ -481,7 +478,7 @@
                                                 image: new ol.style.Circle({
                                                     radius: 6,
                                                     fill: new ol.style.Fill({
-                                                        color: 'blue' // Change color as desired
+                                                        color: 'blue'
                                                     }),
                                                     stroke: new ol.style.Stroke({
                                                         color: 'white'
