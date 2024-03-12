@@ -467,44 +467,19 @@
                     $("#filterBtn").click(function(e) {
     e.preventDefault();
     var gisidvalue = $("#gisid").val();
-
-    // Clear existing features
-    vectorSource.clear();
-
     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-    features.forEach(function(feature) {
-        var properties = feature.getProperties();
-        var newStyle;
-        if (gisidvalue == properties['GIS_ID']) {
-            newStyle = new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'blue'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'white'
-                    })
-                })
-            });
-        } else {
-            newStyle = new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'green'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'white'
-                    })
-                })
-            });
-        }
 
-        feature.setStyle(newStyle);
-        vectorSource.addFeature(feature); // Add the feature back to the source
+    var gisIdExists = features.some(function(feature) {
+        return feature.getProperties()['GIS_ID'] === gisidvalue;
     });
+
+    if (gisIdExists) {
+        alert("GIS ID exists in features.");
+    } else {
+        alert("GIS ID does not exist in features.");
+    }
 });
+
 
 
 
