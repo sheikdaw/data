@@ -489,6 +489,7 @@
 
                 features.forEach(function(feature) {
                     var properties = feature.getProperties();
+                    console(properties);
                     if (gisidvalue == properties['GIS_ID']) {
                         feature.setStyle(filterStyle); // Apply filter style
                     } else {
