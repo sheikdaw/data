@@ -75,7 +75,7 @@
         <div id="popup-content"></div>
     </div>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filter">
         Filter
     </button>
 
