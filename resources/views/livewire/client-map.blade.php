@@ -254,17 +254,21 @@
                                 })
                             })
                         ]
-                    });var satelliteLayer = new ol.layer.Tile({
-    source: new ol.source.XYZ({
-        url: 'https://{a-c}.sat.owm.io/hd/{z}/{x}/{y}?appid=YOUR_OPENWEATHERMAP_API_KEY',
-        attributions: ['&copy; <a href="https://www.openweathermap.org">OpenWeatherMap</a> contributors']
-    })
-});
+                    });
 
                     var map = new ol.Map({
                         target: 'map',
                         layers: [
-                            satelliteLayer, overlays, vectorBuildingLayer,
+                            new ol.layer.Tile({
+                    source: new ol.source.XYZ({
+                        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                        attributions: [
+                            new ol.Attribution({
+                                html: 'Tiles &copy; <a href="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer">ArcGIS</a>'
+                            })
+                        ]
+                    })
+                }), overlays, vectorBuildingLayer,
                             vectorLayer
                         ],
                         view: new ol.View({
