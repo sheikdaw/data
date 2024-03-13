@@ -146,159 +146,175 @@
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
         <script type="text/javascript">
-        class GeoJSONStyle {
-    constructor(fillColor, strokeColor, strokeWidth) {
-        this.fill = new ol.style.Fill({
-            color: fillColor
-        });
-        this.stroke = new ol.style.Stroke({
-            color: strokeColor,
-            width: strokeWidth
-        });
-        this.image = new ol.style.Circle({
-            radius: 6,
-            fill: new ol.style.Fill({
-                color: fillColor
-            })
-        });
-    }
-}
+            class GeoJSONStyle {
+                constructor(fillColor, strokeColor, strokeWidth) {
+                    this.fill = new ol.style.Fill({
+                        color: fillColor
+                    });
+                    this.stroke = new ol.style.Stroke({
+                        color: strokeColor,
+                        width: strokeWidth
+                    });
+                    this.image = new ol.style.Circle({
+                        radius: 6,
+                        fill: new ol.style.Fill({
+                            color: fillColor
+                        })
+                    });
+                }
+            }
 
-class GeoJSONLayer {
-    constructor(sourceData) {
-        this.source = new ol.source.Vector({
-            features: (new ol.format.GeoJSON()).readFeatures(sourceData)
-        });
-        this.layer = new ol.layer.Vector({
-            source: this.source
-        });
-    }
-}
+            class GeoJSONLayer {
+                constructor(sourceData) {
+                    this.source = new ol.source.Vector({
+                        features: (new ol.format.GeoJSON()).readFeatures(sourceData)
+                    });
+                    this.layer = new ol.layer.Vector({
+                        source: this.source
+                    });
+                }
+            }
 
-class MarkerLayer {
-    constructor() {
-        this.source = new ol.source.Vector();
-        this.layer = new ol.layer.Vector({
-            source: this.source,
-            style: new ol.style.Style({
-                image: new ol.style.Icon({
-                    anchor: [0.5, 1],
-                    src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+            class MarkerLayer {
+                constructor() {
+                    this.source = new ol.source.Vector();
+                    this.layer = new ol.layer.Vector({
+                        source: this.source,
+                        style: new ol.style.Style({
+                            image: new ol.style.Icon({
+                                anchor: [0.5, 1],
+                                src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+                            })
+                        })
+                    });
+                }
+
+                addMarker(lonLat) {
+                    const pos = ol.proj.fromLonLat(lonLat);
+                    this.source.clear();
+                    const marker = new ol.Feature({
+                        geometry: new ol.geom.Point(pos)
+                    });
+                    this.source.addFeature(marker);
+                }
+            }
+
+            class OverlayLayer {
+                constructor(imageUrl, extent) {
+                    this.layer = new ol.layer.Group({
+                        'title': 'Overlays',
+                        layers: [
+                            new ol.layer.Image({
+                                title: 'Converted Image',
+                                source: new ol.source.ImageStatic({
+                                    url: imageUrl,
+                                    projection: 'EPSG:4326',
+                                    imageExtent: extent
+                                })
+                            })
+                        ]
+                    });
+                }
+            }
+
+            class Map {
+                constructor(targetElement, baseLayer, overlaysLayer, layers) {
+                    this.map = new ol.Map({
+                        target: targetElement,
+                        layers: [baseLayer, overlaysLayer, ...layers],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
+                            zoom: 15
+                        })
+                    });
+                }
+
+                addLayer(layer) {
+                    this.map.addLayer(layer);
+                }
+
+                addInteraction(interaction) {
+                    this.map.addInteraction(interaction);
+                }
+
+                setOnClickHandler(handler) {
+                    this.map.on('click', handler);
+                }
+            }
+
+            // Usage
+            const clickedStyle = new GeoJSONStyle('rgba(255, 0, 0, 0.6)', 'rgba(255, 0, 0, 1)', 2);
+            const completeStyle = new GeoJSONStyle('rgba(0, 48, 143, 0.6)', 'rgba(0, 48, 143, 1)', 2);
+            const filterStyle = new GeoJSONStyle('rgba(255, 215, 0, 0.6)', 'rgba(255, 215, 0, 1)', 2);
+
+            const pointpath = "{{ $point }}";
+            const buildingpath = "{{ asset('public/kovai/building.json') }}";
+            const pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
+
+            const pointJsonPromise = fetch(pointpath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load GeoJSON file');
+                    }
+                    return response.json();
+                });
+
+            const buildingJsonPromise = fetch(buildingpath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load GeoJSON file');
+                    }
+                    return response.json();
+                });
+
+            Promise.all([pointJsonPromise, buildingJsonPromise])
+                .then(responses => {
+                    const pointJsonData = responses[0];
+                    const buildingJsonData = responses[1];
+
+                    const vectorLayer = new GeoJSONLayer(pointJsonData);
+                    const vectorBuildingLayer = new GeoJSONLayer(buildingJsonData);
+                    const overlaysLayer = new OverlayLayer(pngFilePath, [80.0, 13.0, 81.0, 14.0]).layer;
+                    const baseLayer = new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    });
+
+                    const map = new Map('map', baseLayer, overlaysLayer, [vectorBuildingLayer.layer, vectorLayer.layer]);
+
+                    const markerLayer = new MarkerLayer();
+                    map.addLayer(markerLayer.layer);
+
+                    if ('geolocation' in navigator) {
+                        navigator.geolocation.watchPosition(position => {
+                            markerLayer.addMarker([position.coords.longitude, position.coords.latitude]);
+                        }, error => {
+                            console.error('Error getting geolocation:', error);
+                        });
+                    } else {
+                        console.error('Geolocation is not supported by this browser.');
+                    }
+
+                    // Other parts of your code...
                 })
-            })
-        });
+                .catch(error => {
+                    console.error('Error loading files:', error);
+                });
+                var surveyed = @json($surveyed);
+
+var gisIdSet = new Set();
+
+surveyed.forEach(function(survey) {
+    gisIdSet.add(survey.gisid);
+});
+
+features.forEach(function(feature) {
+    var properties = feature.getProperties();
+    if (gisIdSet.has(properties['GIS_ID'])) {
+        feature.setStyle(completeStyle);
+    } else {
+        feature.setStyle(clickedStyle);
     }
-
-    addMarker(lonLat) {
-        const pos = ol.proj.fromLonLat(lonLat);
-        this.source.clear();
-        const marker = new ol.Feature({
-            geometry: new ol.geom.Point(pos)
-        });
-        this.source.addFeature(marker);
-    }
-}
-
-class OverlayLayer {
-    constructor(imageUrl, extent) {
-        this.layer = new ol.layer.Group({
-            'title': 'Overlays',
-            layers: [
-                new ol.layer.Image({
-                    title: 'Converted Image',
-                    source: new ol.source.ImageStatic({
-                        url: imageUrl,
-                        projection: 'EPSG:4326',
-                        imageExtent: extent
-                    })
-                })
-            ]
-        });
-    }
-}
-
-class Map {
-    constructor(targetElement, baseLayer, overlaysLayer, layers) {
-        this.map = new ol.Map({
-            target: targetElement,
-            layers: [baseLayer, overlaysLayer, ...layers],
-            view: new ol.View({
-                center: ol.proj.fromLonLat([80.241610, 13.098640]),
-                zoom: 15
-            })
-        });
-    }
-
-    addLayer(layer) {
-        this.map.addLayer(layer);
-    }
-
-    addInteraction(interaction) {
-        this.map.addInteraction(interaction);
-    }
-
-    setOnClickHandler(handler) {
-        this.map.on('click', handler);
-    }
-}
-
-// Usage
-const clickedStyle = new GeoJSONStyle('rgba(255, 0, 0, 0.6)', 'rgba(255, 0, 0, 1)', 2);
-const completeStyle = new GeoJSONStyle('rgba(0, 48, 143, 0.6)', 'rgba(0, 48, 143, 1)', 2);
-const filterStyle = new GeoJSONStyle('rgba(255, 215, 0, 0.6)', 'rgba(255, 215, 0, 1)', 2);
-
-const pointpath = "{{ $point }}";
-const buildingpath = "{{ asset('public/kovai/building.json') }}";
-const pngFilePath = "{{ asset('public/kovai/Ward.png') }}";
-
-const pointJsonPromise = fetch(pointpath)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to load GeoJSON file');
-        }
-        return response.json();
-    });
-
-const buildingJsonPromise = fetch(buildingpath)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to load GeoJSON file');
-        }
-        return response.json();
-    });
-
-Promise.all([pointJsonPromise, buildingJsonPromise])
-    .then(responses => {
-        const pointJsonData = responses[0];
-        const buildingJsonData = responses[1];
-
-        const vectorLayer = new GeoJSONLayer(pointJsonData);
-        const vectorBuildingLayer = new GeoJSONLayer(buildingJsonData);
-        const overlaysLayer = new OverlayLayer(pngFilePath, [80.0, 13.0, 81.0, 14.0]).layer;
-        const baseLayer = new ol.layer.Tile({
-            source: new ol.source.OSM()
-        });
-
-        const map = new Map('map', baseLayer, overlaysLayer, [vectorBuildingLayer.layer, vectorLayer.layer]);
-
-        const markerLayer = new MarkerLayer();
-        map.addLayer(markerLayer.layer);
-
-        if ('geolocation' in navigator) {
-            navigator.geolocation.watchPosition(position => {
-                markerLayer.addMarker([position.coords.longitude, position.coords.latitude]);
-            }, error => {
-                console.error('Error getting geolocation:', error);
-            });
-        } else {
-            console.error('Geolocation is not supported by this browser.');
-        }
-
-        // Other parts of your code...
-    })
-    .catch(error => {
-        console.error('Error loading files:', error);
-    });
-</script>
+});
+        </script>
     @endpush
 </div>
