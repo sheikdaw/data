@@ -260,15 +260,8 @@
                         target: 'map',
                         layers: [
                             new ol.layer.Tile({
-                    source: new ol.source.XYZ({
-                        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                        attributions: [
-                            new ol.Attribution({
-                                html: 'Tiles &copy; <a href="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer">ArcGIS</a>'
-                            })
-                        ]
-                    })
-                }), overlays, vectorBuildingLayer,
+                                source: new ol.source.OSM()
+                            }), overlays, vectorBuildingLayer,
                             vectorLayer
                         ],
                         view: new ol.View({
