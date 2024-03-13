@@ -294,28 +294,170 @@
                         console.error('Geolocation is not supported by this browser.');
                     }
 
-                    // Other parts of your code...
+                    var features = vectorLayer.source.getFeatures();
+                    var surveyed = @json($surveyed);
+
+                    var gisIdSet = new Set();
+
+                    surveyed.forEach(function(survey) {
+                        gisIdSet.add(survey.gisid);
+                    });
+
+                    features.forEach(function(feature) {
+                        var properties = feature.getProperties();
+                        if (gisIdSet.has(properties['GIS_ID'])) {
+                            feature.setStyle(completeStyle);
+                        } else {
+                            feature.setStyle(clickedStyle);
+                        }
+                    });
+
+                    const typeSelect = document.getElementById('type');
+                    let draw; // global so we can remove it later
+
+                    function addInteraction() {
+                        const value = typeSelect.value;
+                        if (value !== 'None') {
+                            draw = new ol.interaction.Draw({
+                                source: vectorLayer.source,
+                                type: typeSelect.value,
+                            });
+                            map.addInteraction(draw);
+                            draw.on('drawend', function(event) {
+                                const feature = event.feature;
+                                const geometry = feature.getGeometry();
+                                const coordinates = geometry.getCoordinates();
+
+                                // Send an Ajax request to Laravel route to add the feature to JSON
+                                $.ajax({
+                                    url: '/add-feature',
+                                    type: 'POST', // Use POST method
+                                    data: JSON.stringify({
+                                        '_token': '{{ csrf_token() }}',
+                                        'longitude': coordinates[0],
+                                        'latitude': coordinates[1],
+                                        'gis_id': feature.getId() // Assuming you're setting an ID for the feature
+                                    }),
+                                    contentType: 'application/json', // Set content type to JSON
+                                    success: function(response) {
+                                        console.log(response.message);
+                                        // Handle success response
+                                        // Refresh the map and update JSON data after point addition
+                                        refreshMapAndData();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(error);
+                                        // Handle error response
+                                    }
+                                });
+                            });
+                        }
+                    }
+
+                    function refreshMapAndData() {
+                        // Clear the vector source to remove existing features from the map
+                        vectorLayer.source.clear();
+
+                        // Fetch new GeoJSON data
+                        fetch(pointpath)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Failed to load GeoJSON file');
+                                }
+                                return response.json();
+                            })
+                            .then(pointJsonData => {
+                                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+
+                                // Add new features to the vector source
+                                vectorLayer.source.addFeatures(features);
+
+                                // Iterate over features to set style
+                                features.forEach(function(feature) {
+                                    var properties = feature.getProperties();
+                                    if (gisIdSet.has(properties['GIS_ID'])) {
+                                        feature.setStyle(completeStyle);
+                                    } else {
+                                        feature.setStyle(clickedStyle);
+                                    }
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error refreshing map and data:', error);
+                                // Handle error
+                            });
+                    }
+
+                    /**
+                     * Handle change event.
+                     */
+                    typeSelect.onchange = function() {
+                        map.removeInteraction(draw);
+                        addInteraction();
+                    };
+
+                    document.getElementById('undo').addEventListener('click', function() {
+                        // When the element with the ID 'undo' is clicked, execute the following function
+                        $.ajax({
+                            url: '/delete-feature', // URL to send the AJAX request
+                            success: function(response) {
+                                console.log(response.message);
+                                refreshMapAndData();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    });
+
+                    addInteraction();
+
+                    $("#filterBtn").click(function(e) {
+                        e.preventDefault();
+                        var gisidvalue = $("#gisidval").val();
+
+                        // Clear existing features
+                        vectorLayer.source.clear();
+
+                        var features = vectorLayer.source.getFeatures();
+                        features.forEach(function(feature) {
+                            var properties = feature.getProperties();
+                            var newStyle;
+                            if (gisidvalue == properties['GIS_ID']) {
+                                newStyle = new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                        radius: 6,
+                                        fill: new ol.style.Fill({
+                                            color: 'green'
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: 'white'
+                                        })
+                                    })
+                                });
+                            } else {
+                                newStyle = new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                        radius: 6,
+                                        fill: new ol.style.Fill({
+                                            color: 'red'
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: 'white'
+                                        })
+                                    })
+                                });
+                            }
+
+                            feature.setStyle(newStyle);
+                            vectorLayer.source.addFeature(feature); // Add the feature back to the source
+                        });
+                    });
                 })
                 .catch(error => {
                     console.error('Error loading files:', error);
                 });
-                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                var surveyed = @json($surveyed);
-
-var gisIdSet = new Set();
-
-surveyed.forEach(function(survey) {
-    gisIdSet.add(survey.gisid);
-});
-
-features.forEach(function(feature) {
-    var properties = feature.getProperties();
-    if (gisIdSet.has(properties['GIS_ID'])) {
-        feature.setStyle(completeStyle);
-    } else {
-        feature.setStyle(clickedStyle);
-    }
-});
         </script>
+
     @endpush
 </div>
