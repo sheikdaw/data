@@ -299,6 +299,7 @@
                 .catch(error => {
                     console.error('Error loading files:', error);
                 });
+                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
                 var surveyed = @json($surveyed);
 
 var gisIdSet = new Set();
