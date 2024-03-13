@@ -249,7 +249,7 @@ var maxY =  0.5; // Example maximum Y coordinate
                                 title: 'Converted Image',
                                 source: new ol.source.ImageStatic({
                                     url: pngFilePath, // URL of the converted image
-                                    projection: 'EPSG:4326',
+                                    projection: 'EPSG:3857',
                                     imageExtent: imageExtent
                                 })
                             })
