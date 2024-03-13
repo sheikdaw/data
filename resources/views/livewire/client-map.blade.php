@@ -254,14 +254,17 @@
                                 })
                             })
                         ]
-                    });
+                    });var satelliteLayer = new ol.layer.Tile({
+    source: new ol.source.XYZ({
+        url: 'https://{a-c}.sat.owm.io/hd/{z}/{x}/{y}?appid=YOUR_OPENWEATHERMAP_API_KEY',
+        attributions: ['&copy; <a href="https://www.openweathermap.org">OpenWeatherMap</a> contributors']
+    })
+});
 
                     var map = new ol.Map({
                         target: 'map',
                         layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), overlays, vectorBuildingLayer,
+                            satelliteLayer, overlays, vectorBuildingLayer,
                             vectorLayer
                         ],
                         view: new ol.View({
