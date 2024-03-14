@@ -255,7 +255,7 @@
                                 title: 'Converted Image',
                                 source: new ol.source.ImageStatic({
                                     url: pngFilePath, // URL of the converted image
-                                    projection: 'EPSG:4326',
+                                    projection: 'EPSG:3587',
                                     imageExtent: imageExtent,
                                     imageSize:[5328,4048]
                                 })
