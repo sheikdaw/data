@@ -234,48 +234,37 @@
                         source: vectorBuildingSource
                     });
                     var overlays;
+                    var minX = 80.241610; // Example minimum X coordinate
+var minY = 13.098640; // Example minimum Y coordinate
+var maxX = 80.251610; // Example maximum X coordinate
+var maxY = 13.108640; // Example maximum Y coordinate
 
-                    var minX = 80.0; // Example minimum X coordinate
-                    var minY = 13.0; // Example minimum Y coordinate
-                    var maxX = 81.0; // Example maximum X coordinate
-                    var maxY = 14.0; // Example maximum Y coordinate
+var imageExtent = [minX, minY, maxX, maxY];
 
-//                     var minX =  -0.5; // Example minimum X coordinate
-// var minY = -25485.5; // Example minimum Y coordinate
-// var maxX =19040.5; // Example maximum X coordinate
-// var maxY =  0.5; // Example maximum Y coordinate
+var pngFilePath = 'path/to/your/image.png'; // Example path to your image file
 
+var imageLayer = new ol.layer.Image({
+    title: 'Converted Image',
+    source: new ol.source.ImageStatic({
+        url: pngFilePath,
+        imageExtent: imageExtent
+    })
+});
 
-                    var imageExtent = [minX, minY, maxX, maxY];
+var map = new ol.Map({
+    target: 'map',
+    layers: [
+        new ol.layer.Tile({
+            source: new ol.source.OSM()
+        }),
+        imageLayer // Add image layer directly to the map's layers
+    ],
+    view: new ol.View({
+        center: ol.proj.fromLonLat([80.246610, 13.103640]), // Adjusted center coordinates
+        zoom: 15
+    })
+});
 
-                    overlays = new ol.layer.Group({
-                        'title': 'Overlays',
-                        layers: [
-                            new ol.layer.Image({
-                                title: 'Converted Image',
-                                source: new ol.source.ImageStatic({
-                                    url: pngFilePath, // URL of the converted image
-                                    projection: 'EPSG:4326',
-                                    imageExtent: imageExtent,
-                                    imageSize:[5328,4048]
-                                })
-                            })
-                        ]
-                    });
-
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), overlays, vectorBuildingLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
-                            zoom: 15
-                        })
-                    });
 
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
