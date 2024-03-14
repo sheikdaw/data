@@ -268,7 +268,7 @@
                         layers: [
                             new ol.layer.Tile({
                                 source: new ol.source.OSM()
-                            }),new OpenLayers.Layer.XYZ("New Layer", "{{ asset('public/kovai/tiles%20osm/${z}/${x}/${y}.png') }}", {numZoomLevels: 22}), overlays, vectorBuildingLayer,
+                            }),new OpenLayers.Layer.XYZ("New Layer", "{{ asset('public/kovai/osm/${z}/${x}/${y}.png') }}", {numZoomLevels: 22}), overlays, vectorBuildingLayer,
                             vectorLayer
                         ],
                         view: new ol.View({
