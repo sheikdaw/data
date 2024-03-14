@@ -234,44 +234,48 @@
                         source: vectorBuildingSource
                     });
                     var overlays;
-                    var minX = -0.5; // Example minimum X coordinate
-var minY = -25485.5; // Example minimum Y coordinate
-var maxX = 19040.5; // Example maximum X coordinate
-var maxY = 0.5; // Example maximum Y coordinate
 
-var imageExtent = [minX, minY, maxX, maxY];
+                    var minX = 80.0; // Example minimum X coordinate
+                    var minY = 13.0; // Example minimum Y coordinate
+                    var maxX = 81.0; // Example maximum X coordinate
+                    var maxY = 14.0; // Example maximum Y coordinate
 
-// Create the image overlay layer
-var imageLayer = new ol.layer.Image({
-    title: 'Converted Image',
-    source: new ol.source.ImageStatic({
-        url: 'path/to/your/image.png', // Replace 'path/to/your/image.png' with the actual path to your image file
-        imageExtent: imageExtent,
-        imageSize: [5328, 4048] // Adjust the image size according to your image
-    })
-});
+//                     var minX =  -0.5; // Example minimum X coordinate
+// var minY = -25485.5; // Example minimum Y coordinate
+// var maxX =19040.5; // Example maximum X coordinate
+// var maxY =  0.5; // Example maximum Y coordinate
 
-// Create a layer group to hold the image overlay layer
-var overlays = new ol.layer.Group({
-    title: 'Overlays',
-    layers: [imageLayer] // Add the image overlay layer to the layer group
-});
 
-// Create a map instance
-var map = new ol.Map({
-    target: 'map', // The id of the div element where the map will be rendered
-    layers: [
-        new ol.layer.Tile({
-            source: new ol.source.OSM() // OpenStreetMap as the base layer
-        }),
-        overlays // Add the layer group containing the image overlay to the map
-    ],
-    view: new ol.View({
-        center: ol.proj.fromLonLat([80.241610, 13.098640]), // Center of the map, converted from EPSG:4326 to the map's projection
-        zoom: 15 // Initial zoom level
-    })
-});
+                    var imageExtent = [minX, minY, maxX, maxY];
 
+                    overlays = new ol.layer.Group({
+                        'title': 'Overlays',
+                        layers: [
+                            new ol.layer.Image({
+                                title: 'Converted Image',
+                                source: new ol.source.ImageStatic({
+                                    url: pngFilePath, // URL of the converted image
+                                    projection: 'EPSG:4326',
+                                    imageExtent: imageExtent,
+                                    imageSize:[5328,4048]
+                                })
+                            })
+                        ]
+                    });
+
+                    var map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }), overlays, vectorBuildingLayer,
+                            vectorLayer
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
+                            zoom: 15
+                        })
+                    });
 
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
