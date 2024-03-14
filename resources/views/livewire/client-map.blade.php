@@ -250,7 +250,7 @@
                                 source: new ol.source.ImageStatic({
                                     url: pngFilePath,
 
-                                    imageExtent: extent,
+                                    imageExtent: imageExtent,
                                 })
                             })
                         ]
