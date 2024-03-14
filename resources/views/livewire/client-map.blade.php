@@ -240,12 +240,12 @@
                     var maxX = 81.0; // Example maximum X coordinate
                     var maxY = 14.0; // Example maximum Y coordinate
 
-                    var minX = -0.5; // Example minimum X coordinate
-var minY = -25485.5; // Example minimum Y coordinate
-var maxX = 19040.5; // Example maximum X coordinate
-var maxY = 0.5; // Example maximum Y coordinate
+                    var top = 0.5;
+var left = -0.5;
+var right = 19562.5;
+var bottom = -26252.5;
 
-var imageExtent = [minX, minY, maxX, maxY];
+var imageExtent = [left, bottom, right, top];
 
 var overlays = new ol.layer.Group({
     'title': 'Overlays',
