@@ -196,7 +196,7 @@
 
             var pointpath = "{{ $point }}";
             var buildingpath = "{{ asset('public/kovai/building.json') }}";
-            var pngFilePath = "{{ asset('public/kovai/test2png_ProjectRaster21.png') }}";
+            var pngFilePath = "{{ asset('public/kovai/testpng.png') }}";
 
             var pointJsonPromise = fetch(pointpath)
                 .then(response => {
@@ -235,7 +235,7 @@
                     });
                     var overlays;
 
-                    var minX = 8566150.76848; // Example minimum X coordinate
+                    var minX = 80.0; // Example minimum X coordinate
                     var minY = 13.0; // Example minimum Y coordinate
                     var maxX = 81.0; // Example maximum X coordinate
                     var maxY = 14.0; // Example maximum Y coordinate
