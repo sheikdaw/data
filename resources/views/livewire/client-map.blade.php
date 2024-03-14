@@ -234,34 +234,41 @@
                         source: vectorBuildingSource
                     });
                     var overlays;
-                    var minX = 80.241610; // Example minimum X coordinate
-var minY = 13.098640; // Example minimum Y coordinate
-var maxX = 80.251610; // Example maximum X coordinate
-var maxY = 13.108640; // Example maximum Y coordinate
+                    var minX = -0.5; // Example minimum X coordinate
+var minY = -25485.5; // Example minimum Y coordinate
+var maxX = 19040.5; // Example maximum X coordinate
+var maxY = 0.5; // Example maximum Y coordinate
 
 var imageExtent = [minX, minY, maxX, maxY];
 
-var pngFilePath = 'path/to/your/image.png'; // Example path to your image file
-
+// Create the image overlay layer
 var imageLayer = new ol.layer.Image({
     title: 'Converted Image',
     source: new ol.source.ImageStatic({
-        url: pngFilePath,
-        imageExtent: imageExtent
+        url: 'path/to/your/image.png', // Replace 'path/to/your/image.png' with the actual path to your image file
+        imageExtent: imageExtent,
+        imageSize: [5328, 4048] // Adjust the image size according to your image
     })
 });
 
+// Create a layer group to hold the image overlay layer
+var overlays = new ol.layer.Group({
+    title: 'Overlays',
+    layers: [imageLayer] // Add the image overlay layer to the layer group
+});
+
+// Create a map instance
 var map = new ol.Map({
-    target: 'map',
+    target: 'map', // The id of the div element where the map will be rendered
     layers: [
         new ol.layer.Tile({
-            source: new ol.source.OSM()
+            source: new ol.source.OSM() // OpenStreetMap as the base layer
         }),
-        imageLayer // Add image layer directly to the map's layers
+        overlays // Add the layer group containing the image overlay to the map
     ],
     view: new ol.View({
-        center: ol.proj.fromLonLat([80.246610, 13.103640]), // Adjusted center coordinates
-        zoom: 15
+        center: ol.proj.fromLonLat([80.241610, 13.098640]), // Center of the map, converted from EPSG:4326 to the map's projection
+        zoom: 15 // Initial zoom level
     })
 });
 
