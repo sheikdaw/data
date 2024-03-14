@@ -255,7 +255,7 @@ var overlays = new ol.layer.Group({
                 url: pngFilePath, // URL of the converted image
                 imageExtent: imageExtent,
                 projection: 'EPSG:3857', // Assuming the projection is EPSG:3857 (Web Mercator)
-                imageSize: [/* width */, /* height */], // Specify the width and height of the image if necessary
+                imageSize: [100, 100], // Specify the width and height of the image if necessary
             })
         })
     ]
