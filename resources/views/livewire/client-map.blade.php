@@ -236,9 +236,9 @@
                     var overlays;
 
                     var minX = 8566150.76848; // Example minimum X coordinate
-                    var minY = 1232901.87763; // Example minimum Y coordinate
-                    var maxX = 8568107.06848; // Example maximum X coordinate
-                    var maxY = 1235527.17763; // Example maximum Y coordinate
+                    var minY = 13.0; // Example minimum Y coordinate
+                    var maxX = 81.0; // Example maximum X coordinate
+                    var maxY = 14.0; // Example maximum Y coordinate
 
 //                     var minX =  -0.5; // Example minimum X coordinate
 // var minY = -25485.5; // Example minimum Y coordinate
