@@ -276,12 +276,7 @@
                             zoom: 15
                         })
                     });
-                    map.setCenter(new OpenLayers.LonLat(76.96060180663970129,11.01803625470378911) // Center of the map
-          .transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
-          ), 17 // Zoom level
-        );
+
 
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
