@@ -265,9 +265,9 @@
                     var map = new ol.Map({
                         target: 'map',
                         layers: [
-                            // new ol.layer.Tile({
-                            //     source: new ol.source.OSM()
-                            // }),
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }),
                             overlays, vectorBuildingLayer,
                             vectorLayer
                         ],
