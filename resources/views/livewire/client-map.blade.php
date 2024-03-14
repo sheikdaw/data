@@ -267,11 +267,7 @@
                         layers: [
                             new ol.layer.Tile({
                                 source: new ol.source.OSM()
-                            }), new ol.layer.Tile({
-                    source: new ol.source.XYZ({
-                        url: "{{ asset('public/kovai/testpng.png') }}"
-                    })
-                }),overlays, vectorBuildingLayer,
+                            }), overlays, vectorBuildingLayer,
                             vectorLayer
                         ],
                         view: new ol.View({
