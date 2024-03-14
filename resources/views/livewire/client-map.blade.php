@@ -263,7 +263,7 @@
                         ]
                     });
 
-                    map = new OpenLayers.Map("basicMap",{
+                    map = new OpenLayers.Map("map",{
                             controls:[
                                 new OpenLayers.Control.Navigation(),
                                 new OpenLayers.Control.PanZoomBar(),
