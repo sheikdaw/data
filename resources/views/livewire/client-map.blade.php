@@ -278,7 +278,7 @@
                     });
                     var newLayer = new ol.layer.Tile({
     source: new ol.source.XYZ({
-        url: 'file:///E:/aaaaaaa/tiles%20osm/{z}/{x}/{y}.png',
+        url: "{{ asset('public/kovai/osm/{z}/{x}/{y}.png') }}",
         maxZoom: 22 // Adjust as needed
     })
 });
