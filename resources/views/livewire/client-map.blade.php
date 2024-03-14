@@ -235,66 +235,66 @@
                     });
                     var overlays;
                     var minX = 80.0; // Example minimum X coordinate
-var minY = 13.0; // Example minimum Y coordinate
-var maxX = 81.0; // Example maximum X coordinate
-var maxY = 14.0; // Example maximum Y coordinate
+                    var minY = 13.0; // Example minimum Y coordinate
+                    var maxX = 81.0; // Example maximum X coordinate
+                    var maxY = 14.0; // Example maximum Y coordinate
 
-var imageExtent = [minX, minY, maxX, maxY];
+                    var imageExtent = [minX, minY, maxX, maxY];
 
-var overlays = new ol.layer.Group({
-    'title': 'Overlays',
-    layers: [
-        new ol.layer.Image({
-            title: 'Converted Image',
-            source: new ol.source.ImageStatic({
-                url: pngFilePath,
-                projection: 'EPSG:4326',
-                imageExtent: imageExtent,
-                imageSize: [5328, 4048] // Provide the size of your image
-            })
-        })
-    ]
-});
-
-var map = new ol.Map({
-    target: 'map', // The ID of the div element where the map should be rendered
-    layers: [
-        new ol.layer.Tile({
-            source: new ol.source.OSM() // OpenStreetMap as base layer
-        }), overlays
-    ],
-    view: new ol.View({
-        center: ol.proj.fromLonLat([80.241610, 13.098640]), // Center of the map
-        zoom: 15 // Initial zoom level
-    })
-});
-                    var markerLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector(),
-                        style: new ol.style.Style({
-                            image: new ol.style.Icon({
-                                anchor: [0.5, 1],
-                                src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
+                    var overlays = new ol.layer.Group({
+                        'title': 'Overlays',
+                        layers: [
+                            new ol.layer.Image({
+                                title: 'Converted Image',
+                                source: new ol.source.ImageStatic({
+                                    url: pngFilePath,
+                                    projection: 'EPSG:4326',
+                                    imageExtent: imageExtent,
+                                    imageSize: [5328, 4048] // Provide the size of your image
+                                })
                             })
+                        ]
+                    });
+
+                    var map = new ol.Map({
+                        target: 'map', // The ID of the div element where the map should be rendered
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM() // OpenStreetMap as base layer
+                            }), overlays
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([80.241610, 13.098640]), // Center of the map
+                            zoom: 15 // Initial zoom level
                         })
                     });
-                    map.addLayer(markerLayer);
+                    // var markerLayer = new ol.layer.Vector({
+                    //     source: new ol.source.Vector(),
+                    //     style: new ol.style.Style({
+                    //         image: new ol.style.Icon({
+                    //             anchor: [0.5, 1],
+                    //             src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
+                    //         })
+                    //     })
+                    // });
+                    // map.addLayer(markerLayer);
 
-                    if ('geolocation' in navigator) {
-                        navigator.geolocation.watchPosition(function(position) {
-                            var lonLat = [position.coords.longitude, position.coords.latitude];
-                            var pos = ol.proj.fromLonLat(lonLat);
-                            markerLayer.getSource().clear();
-                            var marker = new ol.Feature({
-                                geometry: new ol.geom.Point(pos)
-                            });
-                            markerLayer.getSource().addFeature(marker);
-                            map.getView().setCenter(pos);
-                        }, function(error) {
-                            console.error('Error getting geolocation:', error);
-                        });
-                    } else {
-                        console.error('Geolocation is not supported by this browser.');
-                    }
+                    // if ('geolocation' in navigator) {
+                    //     navigator.geolocation.watchPosition(function(position) {
+                    //         var lonLat = [position.coords.longitude, position.coords.latitude];
+                    //         var pos = ol.proj.fromLonLat(lonLat);
+                    //         markerLayer.getSource().clear();
+                    //         var marker = new ol.Feature({
+                    //             geometry: new ol.geom.Point(pos)
+                    //         });
+                    //         markerLayer.getSource().addFeature(marker);
+                    //         map.getView().setCenter(pos);
+                    //     }, function(error) {
+                    //         console.error('Error getting geolocation:', error);
+                    //     });
+                    // } else {
+                    //     console.error('Geolocation is not supported by this browser.');
+                    // }
 
                     var popup = new ol.Overlay({
                         element: document.getElementById('popup'),
@@ -334,27 +334,28 @@ var map = new ol.Map({
                                 alert("Geometry type: " + geometryType);
                                 if (geometryType == 'Point') {
                                     var content = '';
-                                for (var key in properties) {
-                                    if (key !== 'geometry') {
-                                        content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
+                                    for (var key in properties) {
+                                        if (key !== 'geometry') {
+                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                '</li>';
+                                        }
                                     }
-                                }
-                                document.getElementById('featurePropertiesList').innerHTML = content;
-                                document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                $('#featureModal').modal('show');
-                                var newStyle = new ol.style.Style({
-                                    image: new ol.style.Circle({
-                                        radius: 6,
-                                        fill: new ol.style.Fill({
-                                            color: 'blue' // Change color as desired
-                                        }),
-                                        stroke: new ol.style.Stroke({
-                                            color: 'white'
+                                    document.getElementById('featurePropertiesList').innerHTML = content;
+                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    $('#featureModal').modal('show');
+                                    var newStyle = new ol.style.Style({
+                                        image: new ol.style.Circle({
+                                            radius: 6,
+                                            fill: new ol.style.Fill({
+                                                color: 'blue' // Change color as desired
+                                            }),
+                                            stroke: new ol.style.Stroke({
+                                                color: 'white'
 
+                                            })
                                         })
-                                    })
-                                });
-                                feature.setStyle(newStyle);
+                                    });
+                                    feature.setStyle(newStyle);
                                 }
                             } else {
                                 $('#featureModal').modal('hide');
