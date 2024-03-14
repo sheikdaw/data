@@ -234,49 +234,40 @@
                         source: vectorBuildingSource
                     });
                     var overlays;
-
                     var minX = 80.0; // Example minimum X coordinate
-                    var minY = 13.0; // Example minimum Y coordinate
-                    var maxX = 81.0; // Example maximum X coordinate
-                    var maxY = 14.0; // Example maximum Y coordinate
+var minY = 13.0; // Example minimum Y coordinate
+var maxX = 81.0; // Example maximum X coordinate
+var maxY = 14.0; // Example maximum Y coordinate
 
-//                     var minX =  -0.5; // Example minimum X coordinate
-// var minY = -25485.5; // Example minimum Y coordinate
-// var maxX =19040.5; // Example maximum X coordinate
-// var maxY =  0.5; // Example maximum Y coordinate
+var imageExtent = [minX, minY, maxX, maxY];
 
+var overlays = new ol.layer.Group({
+    'title': 'Overlays',
+    layers: [
+        new ol.layer.Image({
+            title: 'Converted Image',
+            source: new ol.source.ImageStatic({
+                url: pngFilePath,
+                projection: 'EPSG:4326',
+                imageExtent: imageExtent,
+                imageSize: [5328, 4048] // Provide the size of your image
+            })
+        })
+    ]
+});
 
-                    var imageExtent = [minX, minY, maxX, maxY];
-
-                    overlays = new ol.layer.Group({
-                        'title': 'Overlays',
-                        layers: [
-                            new ol.layer.Image({
-                                title: 'Converted Image',
-                                source: new ol.source.ImageStatic({
-                                    url: pngFilePath, // URL of the converted image
-                                    projection: 'EPSG:4326',
-                                    imageExtent: imageExtent,
-                                    imageSize:[5328,4048]
-                                })
-                            })
-                        ]
-                    });
-
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), overlays, vectorBuildingLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
-                            zoom: 15
-                        })
-                    });
-
+var map = new ol.Map({
+    target: 'map', // The ID of the div element where the map should be rendered
+    layers: [
+        new ol.layer.Tile({
+            source: new ol.source.OSM() // OpenStreetMap as base layer
+        }), overlays
+    ],
+    view: new ol.View({
+        center: ol.proj.fromLonLat([80.241610, 13.098640]), // Center of the map
+        zoom: 15 // Initial zoom level
+    })
+});
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                         style: new ol.style.Style({
