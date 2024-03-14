@@ -263,26 +263,29 @@
                         ]
                     });
 
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            // new ol.layer.Tile({
-                            //     source: new ol.source.OSM()
-                            // }), overlays, vectorBuildingLayer,
-                            // vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
-                            zoom: 15
-                        })
-                    });
-                    var newLayer = new ol.layer.Tile({
-    source: new ol.source.XYZ({
-        url: "{{ asset('public/kovai/osm/{z}/{x}/{y}.png') }}",
-        maxZoom: 22 // Adjust as needed
-    })
-});
-map.addLayer(newLayer)
+                    map = new OpenLayers.Map("basicMap",{
+                            controls:[
+                                new OpenLayers.Control.Navigation(),
+                                new OpenLayers.Control.PanZoomBar(),
+                                new OpenLayers.Control.Permalink(),
+                                new OpenLayers.Control.ScaleLine({geodesic: true}),
+                                new OpenLayers.Control.Permalink('permalink'),
+                                new OpenLayers.Control.MousePosition(),
+                                new OpenLayers.Control.Attribution()],
+                            numZoomLevels: 14,
+                            units: 'm',
+                            projection: new OpenLayers.Projection( "EPSG:900913" ),
+                            displayProjection: new OpenLayers.Projection( "EPSG:4326" )
+            });
+        var newLayer = new OpenLayers.Layer.XYZ("New Layer", "{{ asset('public/kovai/osm/{z}/{x}/{y}.png') }}", {numZoomLevels: 22});
+		map.addLayer(newLayer);
+		map.setCenter(new OpenLayers.LonLat(76.96060180663970129,11.01803625470378911) // Center of the map
+          .transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
+          ), 17 // Zoom level
+        );
+
 
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
