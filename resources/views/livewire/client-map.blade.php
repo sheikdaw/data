@@ -266,17 +266,23 @@
                     var map = new ol.Map({
                         target: 'map',
                         layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), overlays, vectorBuildingLayer,
-                            vectorLayer
+                            // new ol.layer.Tile({
+                            //     source: new ol.source.OSM()
+                            // }), overlays, vectorBuildingLayer,
+                            // vectorLayer
                         ],
                         view: new ol.View({
                             center: ol.proj.fromLonLat([80.241610, 13.098640]),
                             zoom: 15
                         })
                     });
-
+                    var newLayer = new ol.layer.Tile({
+    source: new ol.source.XYZ({
+        url: 'file:///E:/aaaaaaa/tiles%20osm/{z}/{x}/{y}.png',
+        maxZoom: 22 // Adjust as needed
+    })
+});
+map.addLayer(newLayer)
 
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
