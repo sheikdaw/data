@@ -234,10 +234,10 @@
                         source: vectorBuildingSource
                     });
                     var overlays;
-                    var minX = 8566314.68023; // Example minimum X coordinate
-                    var minY = 1234116.49926; // Example minimum Y coordinate
-                    var maxX = 8567340.68023; // Example maximum X coordinate
-                    var maxY = 1234605.99926; // Example maximum Y coordinate
+                    var minX = 80.0; // Example minimum X coordinate
+                    var minY = 13.0; // Example minimum Y coordinate
+                    var maxX = 81.0; // Example maximum X coordinate
+                    var maxY = 14.0; // Example maximum Y coordinate
 
                     var imageExtent = [minX, minY, maxX, maxY];
 
