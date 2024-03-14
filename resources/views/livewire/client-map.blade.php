@@ -241,9 +241,9 @@
                     // var maxY = 14.0; // Example maximum Y coordinate
 
                     var minX =  -0.5; // Example minimum X coordinate
-var minY = -25485.5; // Example minimum Y coordinate
-var maxX =19040.5; // Example maximum X coordinate
-var maxY =  0.5; // Example maximum Y coordinate
+var minY = 27565.15; // Example minimum Y coordinate
+var maxX =-20993.35; // Example maximum X coordinate
+var maxY =  40555.35000000001; // Example maximum Y coordinate
 
 
                     var imageExtent = [minX, minY, maxX, maxY];
