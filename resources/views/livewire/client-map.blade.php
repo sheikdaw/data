@@ -145,6 +145,7 @@
     </div>
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
+        <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
         <script type="text/javascript">
             var clickedStyle = new ol.style.Style({
                 fill: new ol.style.Fill({
@@ -267,7 +268,7 @@
                         layers: [
                             new ol.layer.Tile({
                                 source: new ol.source.OSM()
-                            }), overlays, vectorBuildingLayer,
+                            }),new OpenLayers.Layer.XYZ("New Layer", "{{ asset('public/kovai/tiles%20osm/${z}/${x}/${y}.png') }}", {numZoomLevels: 22}), overlays, vectorBuildingLayer,
                             vectorLayer
                         ],
                         view: new ol.View({
