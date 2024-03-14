@@ -257,7 +257,7 @@
                                     url: pngFilePath, // URL of the converted image
                                     projection: 'EPSG:4326',
                                     imageExtent: imageExtent,
-                                    imageSize:[1328,1048]
+                                    imageSize:[5328,4048]
                                 })
                             })
                         ]
