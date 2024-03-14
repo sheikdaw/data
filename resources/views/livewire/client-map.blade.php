@@ -196,7 +196,7 @@
 
             var pointpath = "{{ $point }}";
             var buildingpath = "{{ asset('public/kovai/building.json') }}";
-            var pngFilePath = "{{ asset('public/kovai/new/png1.png') }}";
+            var pngFilePath = "{{ asset('public/kovai/testpng.png') }}";
 
             var pointJsonPromise = fetch(pointpath)
                 .then(response => {
@@ -234,67 +234,75 @@
                         source: vectorBuildingSource
                     });
                     var overlays;
+
                     var minX = 80.0; // Example minimum X coordinate
                     var minY = 13.0; // Example minimum Y coordinate
                     var maxX = 81.0; // Example maximum X coordinate
                     var maxY = 14.0; // Example maximum Y coordinate
 
-                    var imageExtent = [minX, minY, maxX, maxY];
-                    var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
+//                     var minX =  -0.5; // Example minimum X coordinate
+// var minY = -25485.5; // Example minimum Y coordinate
+// var maxX =19040.5; // Example maximum X coordinate
+// var maxY =  0.5; // Example maximum Y coordinate
 
-                    var overlays = new ol.layer.Group({
+
+                    var imageExtent = [minX, minY, maxX, maxY];
+
+                    overlays = new ol.layer.Group({
                         'title': 'Overlays',
                         layers: [
                             new ol.layer.Image({
                                 title: 'Converted Image',
                                 source: new ol.source.ImageStatic({
-                                    url: pngFilePath,
-
-                                    imageExtent: imageExtent,
+                                    url: pngFilePath, // URL of the converted image
+                                    projection: 'EPSG:4326',
+                                    imageExtent: imageExtent
                                 })
                             })
                         ]
                     });
 
                     var map = new ol.Map({
-                        target: 'map', // The ID of the div element where the map should be rendered
+                        target: 'map',
                         layers: [
                             new ol.layer.Tile({
-                                source: new ol.source.OSM() // OpenStreetMap as base layer
-                            }), overlays
+                                source: new ol.source.OSM()
+                            }), overlays, vectorBuildingLayer,
+                            vectorLayer
                         ],
                         view: new ol.View({
-                            center: ol.proj.fromLonLat([80.241610, 13.098640]), // Center of the map
-                            zoom: 15 // Initial zoom level
+                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
+                            zoom: 15
                         })
                     });
-                    // var markerLayer = new ol.layer.Vector({
-                    //     source: new ol.source.Vector(),
-                    //     style: new ol.style.Style({
-                    //         image: new ol.style.Icon({
-                    //             anchor: [0.5, 1],
-                    //             src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
-                    //         })
-                    //     })
-                    // });
-                    // map.addLayer(markerLayer);
 
-                    // if ('geolocation' in navigator) {
-                    //     navigator.geolocation.watchPosition(function(position) {
-                    //         var lonLat = [position.coords.longitude, position.coords.latitude];
-                    //         var pos = ol.proj.fromLonLat(lonLat);
-                    //         markerLayer.getSource().clear();
-                    //         var marker = new ol.Feature({
-                    //             geometry: new ol.geom.Point(pos)
-                    //         });
-                    //         markerLayer.getSource().addFeature(marker);
-                    //         map.getView().setCenter(pos);
-                    //     }, function(error) {
-                    //         console.error('Error getting geolocation:', error);
-                    //     });
-                    // } else {
-                    //     console.error('Geolocation is not supported by this browser.');
-                    // }
+                    var markerLayer = new ol.layer.Vector({
+                        source: new ol.source.Vector(),
+                        style: new ol.style.Style({
+                            image: new ol.style.Icon({
+                                anchor: [0.5, 1],
+                                src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
+                            })
+                        })
+                    });
+                    map.addLayer(markerLayer);
+
+                    if ('geolocation' in navigator) {
+                        navigator.geolocation.watchPosition(function(position) {
+                            var lonLat = [position.coords.longitude, position.coords.latitude];
+                            var pos = ol.proj.fromLonLat(lonLat);
+                            markerLayer.getSource().clear();
+                            var marker = new ol.Feature({
+                                geometry: new ol.geom.Point(pos)
+                            });
+                            markerLayer.getSource().addFeature(marker);
+                            map.getView().setCenter(pos);
+                        }, function(error) {
+                            console.error('Error getting geolocation:', error);
+                        });
+                    } else {
+                        console.error('Geolocation is not supported by this browser.');
+                    }
 
                     var popup = new ol.Overlay({
                         element: document.getElementById('popup'),
@@ -334,28 +342,27 @@
                                 alert("Geometry type: " + geometryType);
                                 if (geometryType == 'Point') {
                                     var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
+                                for (var key in properties) {
+                                    if (key !== 'geometry') {
+                                        content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
                                     }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
-                                    var newStyle = new ol.style.Style({
-                                        image: new ol.style.Circle({
-                                            radius: 6,
-                                            fill: new ol.style.Fill({
-                                                color: 'blue' // Change color as desired
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'white'
+                                }
+                                document.getElementById('featurePropertiesList').innerHTML = content;
+                                document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                $('#featureModal').modal('show');
+                                var newStyle = new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                        radius: 6,
+                                        fill: new ol.style.Fill({
+                                            color: 'blue' // Change color as desired
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: 'white'
 
-                                            })
                                         })
-                                    });
-                                    feature.setStyle(newStyle);
+                                    })
+                                });
+                                feature.setStyle(newStyle);
                                 }
                             } else {
                                 $('#featureModal').modal('hide');
