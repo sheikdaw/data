@@ -240,6 +240,7 @@
                     var maxY = 14.0; // Example maximum Y coordinate
 
                     var imageExtent = [minX, minY, maxX, maxY];
+                    var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
 
                     var overlays = new ol.layer.Group({
                         'title': 'Overlays',
@@ -248,9 +249,8 @@
                                 title: 'Converted Image',
                                 source: new ol.source.ImageStatic({
                                     url: pngFilePath,
-                                    projection: 'EPSG:4326',
-                                    imageExtent: imageExtent,
-                                    imageSize: [5328, 4048] // Provide the size of your image
+
+                                    imageExtent: extent,
                                 })
                             })
                         ]
