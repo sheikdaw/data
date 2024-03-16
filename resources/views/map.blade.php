@@ -14,46 +14,27 @@
 <body>
     <div id="map"></div>
     <script>
-        var pngFilePath = "{{ asset('public/kovai/building.json') }}";
-        var xmlData = `<TreeList><Extent><Top>1235527.17763</Top><Left>8566150.76848</Left><Right>8568107.06848</Right><Bottom>1232901.87763</Bottom></Extent></TreeList>`;
+        // Define the extent of the image
+        var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
 
-        var parser = new DOMParser();
-        var xmlDoc = parser.parseFromString(xmlData, "text/xml");
-
-        var top = parseFloat(xmlDoc.getElementsByTagName("Top")[0].textContent);
-        var left = parseFloat(xmlDoc.getElementsByTagName("Left")[0].textContent);
-        var right = parseFloat(xmlDoc.getElementsByTagName("Right")[0].textContent);
-        var bottom = parseFloat(xmlDoc.getElementsByTagName("Bottom")[0].textContent);
-
-        console.log("Top:", top);
-        console.log("Left:", left);
-        console.log("Right:", right);
-        console.log("Bottom:", bottom);
-
-        var extent = [left, bottom, right, top];
-        var projection = 'EPSG:3857'; // Assuming your coordinates are in Web Mercator projection
-
+        // Create the static image layer
         var imageLayer = new ol.layer.Image({
-            source: new ol.source.ImageStatic({
-                url: pngFilePath,
-                projection: projection,
-                imageExtent: extent
-            })
+          source: new ol.source.ImageStatic({
+            url: "{{ asset('public/kovai/new/png1.png') }}", // Path to your static image
+            imageExtent: extent
+          })
         });
 
+        // Create the map
         var map = new ol.Map({
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM()
-                }),
-                imageLayer
-            ],
-            target: 'map',
-            view: new ol.View({
-                center: ol.extent.getCenter(extent),
-                zoom: 2
-            })
+          target: 'map',
+          layers: [imageLayer],
+          view: new ol.View({
+            projection: 'EPSG:3857',
+            center: ol.extent.getCenter(extent),
+            zoom: 14
+          })
         });
-    </script>
+      </script>
 </body>
 </html>
