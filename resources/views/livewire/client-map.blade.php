@@ -240,7 +240,7 @@
 // Create the static image layer
 var imageLayer = new ol.layer.Image({
   source: new ol.source.ImageStatic({
-    url: "{{ asset('public/kovai/new/png3.png') }}", // Path to your static image
+    url: "{{ asset('public/kovai/new/png1.png') }}", // Path to your static image
     imageExtent: extent
   })
 });
