@@ -15,7 +15,7 @@
     <div id="map"></div>
     <script>
         var extent = [-20037508.34, -20037508.34, 20037508.34, 20037508.34]; // WGS 1984 Web Mercator Auxiliary Sphere extent
-        var projection = 'EPSG:3857'; // WGS 1984 Web Mercator Auxiliary Sphere projection
+        var projection = 'EPSG:4326'; // WGS 1984 Web Mercator Auxiliary Sphere projection
         var pngFilePath = "{{ asset('public/kovai/testpng.png') }}";
         var imageLayer = new ol.layer.Image({
             source: new ol.source.ImageStatic({
