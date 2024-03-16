@@ -2,8 +2,8 @@
 <html>
 <head>
     <title>OpenLayers Image Overlay</title>
-    <script src="https://cdn.jsdelivr.net/npm/ol@v6.5.0/dist/ol.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v6.5.0/css/ol.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/css/ol.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
     <style>
         #map {
             width: 100%;
@@ -14,7 +14,7 @@
 <body>
     <div id="map"></div>
     <script>
-        var pngFilePath = "public/kovai/testpng.png"; // Adjust the file path as needed
+        var pngFilePath = "{{ asset('public/kovai/testpng.png') }}";
         var minX = 80.0; // Example minimum X coordinate
         var minY = 13.0; // Example minimum Y coordinate
         var maxX = 81.0; // Example maximum X coordinate
@@ -29,15 +29,15 @@
                 }),
                 new ol.layer.Image({
                     source: new ol.source.ImageStatic({
-                        url: pngFilePath,
-                        imageExtent: imageExtent,
-                        projection: 'EPSG:4326' // Adjust projection if needed
+                        url: pngFilePath, // Change this to your image path
+                        projection: 'EPSG:3857',
+                        imageExtent: imageExtent // Set the extent of your image
                     })
                 })
             ],
             view: new ol.View({
-                center: ol.proj.fromLonLat([80.5, 13.5]), // Adjust the center to focus on the image area
-                zoom: 8 // Adjust zoom level
+                center: ol.proj.fromLonLat([0, 0]),
+                zoom: 2
             })
         });
     </script>
