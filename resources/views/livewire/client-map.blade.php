@@ -246,7 +246,7 @@ var extent = [-20037508.34, -20037508.34, 20037508.34, 20037508.34];
                                 title: 'Converted Image',
                                 source: new ol.source.ImageStatic({
                                     url: pngFilePath, // URL of the converted image
-                                    projection: 'EPSG:4326',
+                                    projection: 'EPSG:3857',
                                     imageExtent: extent
                                 })
                             })
