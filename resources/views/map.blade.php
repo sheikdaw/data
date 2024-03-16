@@ -30,7 +30,7 @@
                 new ol.layer.Image({
                     source: new ol.source.ImageStatic({
                         url: pngFilePath, // Change this to your image path
-                        projection: 'EPSG:3857',
+                        projection: 'EPSG:4326',
                         imageExtent: imageExtent // Set the extent of your image
                     })
                 })
