@@ -247,7 +247,7 @@
 
 
                 //  var extent = [-20037508.34, -20037508.34, 20037508.34, 20037508.34];
-                     var imageExtent = [minX, minY, maxX, maxY];
+                     var imageExtent = [8566150.76848, 1232901.87763, 8568107.06848];
                     overlays = new ol.layer.Group({
                         'title': 'Overlays',
                         layers: [
