@@ -196,7 +196,7 @@
 
             var pointpath = "{{ $point }}";
             var buildingpath = "{{ asset('public/kovai/building.json') }}";
-            var pngFilePath = "{{ asset('public/kovai/testpng.png') }}";
+            var pngFilePath = "{{ asset('public/kovai/new/png1.png') }}";
 
             var pointJsonPromise = fetch(pointpath)
                 .then(response => {
@@ -246,7 +246,7 @@
 // // var maxY =  0.5; // Example maximum Y coordinate
 
 
-var extent = [-20037508.34, -20037508.34, 0, 0];
+                 var extent = [-20037508.34, -20037508.34, 20037508.34, 20037508.34];
                     //  var imageExtent = [minX, minY, maxX, maxY];
                     overlays = new ol.layer.Group({
                         'title': 'Overlays',
