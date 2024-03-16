@@ -14,29 +14,27 @@
 <body>
     <div id="map"></div>
     <script>
-        var pngFilePath = "{{ asset('public/kovai/testpng.png') }}";
-        var minX = 80.0; // Example minimum X coordinate
-        var minY = 13.0; // Example minimum Y coordinate
-        var maxX = 81.0; // Example maximum X coordinate
-        var maxY = 14.0; // Example maximum Y coordinate
-        var imageExtent = [minX, minY, maxX, maxY];
+        var extent = [-20037508.34, -20037508.34, 20037508.34, 20037508.34]; // WGS 1984 Web Mercator Auxiliary Sphere extent
+        var projection = 'EPSG:3857'; // WGS 1984 Web Mercator Auxiliary Sphere projection
+
+        var imageLayer = new ol.layer.Image({
+            source: new ol.source.ImageStatic({
+                url: 'path_to_your_image.png', // Update with the path to your PNG file
+                projection: projection,
+                imageExtent: extent // Set the extent of your image
+            })
+        });
 
         var map = new ol.Map({
-            target: 'map',
             layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM()
                 }),
-                new ol.layer.Image({
-                    source: new ol.source.ImageStatic({
-                        url: pngFilePath, // Change this to your image path
-                        projection: 'EPSG:4326',
-                        imageExtent: imageExtent // Set the extent of your image
-                    })
-                })
+                imageLayer
             ],
+            target: 'map',
             view: new ol.View({
-                center: ol.proj.fromLonLat([0, 0]),
+                center: [0, 0],
                 zoom: 2
             })
         });
