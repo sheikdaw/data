@@ -324,7 +324,7 @@ var imageLayer = new ol.layer.Image({
                                 var properties = feature.getProperties();
                                 var geometryType = feature.getGeometry().getType();
                                 alert("Geometry type: " + geometryType);
-                                if (geometryType == 'Point') {
+                                if (geometryType == 'MultiPoint') {
                                     var content = '';
                                 for (var key in properties) {
                                     if (key !== 'geometry') {
