@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>OpenLayers Image Overlay</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@6.7.0/dist/ol.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v9.0.0/ol.css">
     <style>
         #map {
             width: 100%;
@@ -12,7 +13,6 @@
 </head>
 <body>
     <div id="map"></div>
-    <script src="https://cdn.jsdelivr.net/npm/ol@6.7.0/dist/ol.js"></script>
     <script>
         var pngFilePath = "{{ asset('public/kovai/testpng.png') }}";
         var minX = 80.0; // Example minimum X coordinate
