@@ -234,44 +234,28 @@
                         source: vectorBuildingSource
                     });
                     var overlays;
+ // Define the extent of the image
+ var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
 
-                    var minX = 80.0; // Example minimum X coordinate
-                    var minY = 13.0; // Example minimum Y coordinate
-                    var maxX = 81.0; // Example maximum X coordinate
-                    var maxY = 14.0; // Example maximum Y coordinate
-
-//                     var minX =  -0.5; // Example minimum X coordinate
-// var minY = -25485.5; // Example minimum Y coordinate
-// // var maxX =19040.5; // Example maximum X coordinate
-// // var maxY =  0.5; // Example maximum Y coordinate
-
-
-                //  var extent = [-20037508.34, -20037508.34, 20037508.34, 20037508.34];
-                     var imageExtent = [8566150.76848, 1232901.87763, 8568107.06848];
-                    overlays = new ol.layer.Group({
-                        'title': 'Overlays',
-                        layers: [
-                            new ol.layer.Image({
-                                title: 'Converted Image',
-                                source: new ol.source.ImageStatic({
-                                    url: pngFilePath, // URL of the converted image
-                                    projection: 'EPSG:3857',
-                                    imageExtent: imageExtent
-                                })
-                            })
-                        ]
-                    });
+// Create the static image layer
+var imageLayer = new ol.layer.Image({
+  source: new ol.source.ImageStatic({
+    url: "{{ asset('public/kovai/new/png1.png') }}", // Path to your static image
+    imageExtent: extent
+  })
+});
 
                     var map = new ol.Map({
                         target: 'map',
                         layers: [
                             new ol.layer.Tile({
                                 source: new ol.source.OSM()
-                            }), overlays, vectorBuildingLayer,
+                            }), imageLayer, vectorBuildingLayer,
                             vectorLayer
                         ],
                         view: new ol.View({
-                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
+                            center: ol.extent.getCenter(extent),
+                            projection: 'EPSG:3857',
                             zoom: 15
                         })
                     });
