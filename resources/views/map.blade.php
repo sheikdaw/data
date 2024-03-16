@@ -16,10 +16,10 @@
     <script>
         var extent = [-20037508.34, -20037508.34, 20037508.34, 20037508.34]; // WGS 1984 Web Mercator Auxiliary Sphere extent
         var projection = 'EPSG:3857'; // WGS 1984 Web Mercator Auxiliary Sphere projection
-
+        var pngFilePath = "{{ asset('public/kovai/testpng.png') }}";
         var imageLayer = new ol.layer.Image({
             source: new ol.source.ImageStatic({
-                url: 'path_to_your_image.png', // Update with the path to your PNG file
+                url: pngFilePath, // Update with the path to your PNG file
                 projection: projection,
                 imageExtent: extent // Set the extent of your image
             })
