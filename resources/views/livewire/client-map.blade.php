@@ -256,7 +256,7 @@ var imageLayer = new ol.layer.Image({
                         view: new ol.View({
                             center: ol.proj.fromLonLat([76.955393,11.020899]),
                             projection: 'EPSG:3857',
-                            zoom: 15
+                            zoom: 20
                         })
                     });
 
