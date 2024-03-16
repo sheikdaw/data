@@ -28,7 +28,9 @@
         // Create the map
         var map = new ol.Map({
           target: 'map',
-          layers: [imageLayer],
+          layers: [new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }),imageLayer],
           view: new ol.View({
             projection: 'EPSG:3857',
             center: ol.extent.getCenter(extent),
