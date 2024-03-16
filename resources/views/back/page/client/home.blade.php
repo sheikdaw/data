@@ -1,6 +1,7 @@
 @extends('back.layout.page-layout')
 
 @section('pagetitle', isset($pagetitle) ? $pagetitle : 'Page Title')
+@livewire('client-map')
 @section('content')
 <style>.map {
     width: 100%;
@@ -23,5 +24,5 @@
                 </div>
             @endforeach
         </div>
-    </div>@livewire('client-map')
+    </div>
 @endsection
