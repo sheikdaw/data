@@ -254,7 +254,7 @@ var imageLayer = new ol.layer.Image({
                             vectorLayer
                         ],
                         view: new ol.View({
-                            center: ol.extent.getCenter(extent),
+                            center: ol.proj.fromLonLat([80.241610, 13.098640]),
                             projection: 'EPSG:3857',
                             zoom: 15
                         })
