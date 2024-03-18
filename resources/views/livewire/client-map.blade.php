@@ -234,16 +234,16 @@
                         source: vectorBuildingSource
                     });
                     var overlays;
- // Define the extent of the image
- var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
+                    // Define the extent of the image
+                    var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
 
-// Create the static image layer
-var imageLayer = new ol.layer.Image({
-  source: new ol.source.ImageStatic({
-    url: "{{ asset('public/kovai/new/png1.png') }}", // Path to your static image
-    imageExtent: extent
-  })
-});
+                    // Create the static image layer
+                    var imageLayer = new ol.layer.Image({
+                        source: new ol.source.ImageStatic({
+                            url: "{{ asset('public/kovai/new/png1.png') }}", // Path to your static image
+                            imageExtent: extent
+                        })
+                    });
 
                     var map = new ol.Map({
                         target: 'map',
@@ -254,7 +254,7 @@ var imageLayer = new ol.layer.Image({
                             vectorLayer
                         ],
                         view: new ol.View({
-                            center: ol.proj.fromLonLat([76.955393,11.020899]),
+                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
                             projection: 'EPSG:3857',
                             zoom: 20
                         })
@@ -323,30 +323,44 @@ var imageLayer = new ol.layer.Image({
                             if (feature) {
                                 var properties = feature.getProperties();
                                 var geometryType = feature.getGeometry().getType();
-                                alert("Geometry type: " + geometryType);
+                                //alert("Geometry type: " + geometryType);
                                 if (geometryType == 'MultiPoint') {
                                     var content = '';
-                                for (var key in properties) {
-                                    if (key !== 'geometry') {
-                                        content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
+                                    for (var key in properties) {
+                                        if (key !== 'geometry') {
+                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                '</li>';
+                                        }
                                     }
-                                }
-                                document.getElementById('featurePropertiesList').innerHTML = content;
-                                document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                $('#featureModal').modal('show');
-                                var newStyle = new ol.style.Style({
-                                    image: new ol.style.Circle({
-                                        radius: 6,
-                                        fill: new ol.style.Fill({
-                                            color: 'blue' // Change color as desired
-                                        }),
-                                        stroke: new ol.style.Stroke({
-                                            color: 'white'
+                                    document.getElementById('featurePropertiesList').innerHTML = content;
+                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    $('#featureModal').modal('show');
+                                    var newStyle = new ol.style.Style({
+                                        image: new ol.style.Circle({
+                                            radius: 6,
+                                            fill: new ol.style.Fill({
+                                                color: 'blue' // Change color as desired
+                                            }),
+                                            stroke: new ol.style.Stroke({
+                                                color: 'white'
 
+                                            })
                                         })
-                                    })
-                                });
-                                feature.setStyle(newStyle);
+                                    });
+                                    feature.setStyle(newStyle);
+                                }
+                                else if (geometryType == 'Polygon') {
+                                    var content = '';
+                                    for (var key in properties) {
+                                        if (key !== 'geometry') {
+                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                '</li>';
+                                        }
+                                    }
+                                    document.getElementById('featurePropertiesList').innerHTML = content;
+                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    $('#featureModal').modal('show');
+
                                 }
                             } else {
                                 $('#featureModal').modal('hide');
