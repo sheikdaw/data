@@ -196,7 +196,7 @@
 
             var pointpath = "{{ $point }}";
             var buildingpath = "{{ asset('public/kovai/building.json') }}";
-            var pngFilePath = "{{ asset('public/kovai/new/png1.png') }}";
+            var pngFilePath = "D:\cloned github\gis\png1.png";
 
             var pointJsonPromise = fetch(pointpath)
                 .then(response => {
