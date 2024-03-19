@@ -388,31 +388,30 @@
                                 const feature = event.feature;
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
-
                                 alert(coordinates);
                                 // Send an Ajax request to Laravel route to add the feature to JSON
-                                // $.ajax({
-                                //     url: '/add-feature',
-                                //     type: 'POST', // Use POST method
-                                //     data: JSON.stringify({
-                                //         '_token': '{{ csrf_token() }}',
-                                //         'longitude': coordinates[0],
-                                //         'latitude': coordinates[1],
-                                //         'gis_id': feature
-                                //             .getId() // Assuming you're setting an ID for the feature
-                                //     }),
-                                //     contentType: 'application/json', // Set content type to JSON
-                                //     success: function(response) {
-                                //         console.log(response.message);
-                                //         // Handle success response
-                                //         // Refresh the map and update JSON data after point addition
-                                //         refreshMapAndData();
-                                //     },
-                                //     error: function(xhr, status, error) {
-                                //         console.error(error);
-                                //         // Handle error response
-                                //     }
-                                // });
+                                $.ajax({
+                                    url: '/add-feature',
+                                    type: 'POST', // Use POST method
+                                    data: JSON.stringify({
+                                        '_token': '{{ csrf_token() }}',
+                                        'longitude': coordinates[0],
+                                        'latitude': coordinates[1],
+                                        'gis_id': feature
+                                            .getId() // Assuming you're setting an ID for the feature
+                                    }),
+                                    contentType: 'application/json', // Set content type to JSON
+                                    success: function(response) {
+                                        console.log(response.message);
+                                        // Handle success response
+                                        // Refresh the map and update JSON data after point addition
+                                        refreshMapAndData();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(error);
+                                        // Handle error response
+                                    }
+                                });
                             });
                         }
                     }
