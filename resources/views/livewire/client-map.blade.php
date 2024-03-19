@@ -388,24 +388,8 @@
                                 const feature = event.feature;
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
-                                const jsonFeature = {
-            "type": "Feature",
-            "id": 1,
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": coordinates
-            },
-            "properties": {
-                "OBJECTID_1": 1,
-                "OBJECTID": 1,
-                "Id": 0,
-                "remarks": " ",
-                "D_Area": 1942.1426419,
-                "Shape_Leng": 55.9976935471,
-                "Shape_Length": 57.26896487708174,
-                "Shape_Area": 187.67781072004243
-            }};
-                                alert(jsonFeature);
+
+                                alert(coordinates);
                                 // Send an Ajax request to Laravel route to add the feature to JSON
                                 // $.ajax({
                                 //     url: '/add-feature',
