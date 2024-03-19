@@ -383,8 +383,8 @@
                                 const feature = event.feature;
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
-
                                 // Send an Ajax request to Laravel route to add the feature to JSON
+                                alert(coordinates);
                                 $.ajax({
                                     url: '/add-feature',
                                     type: 'POST', // Use POST method
