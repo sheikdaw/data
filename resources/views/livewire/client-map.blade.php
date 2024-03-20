@@ -384,7 +384,7 @@
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
                                 // Send an Ajax request to Laravel route to add the feature to JSON
-                                if(value == "Polygen"){
+                                if(value == "Polygon"){
                                 alert(coordinates);
                                 }
                                 $.ajax({
