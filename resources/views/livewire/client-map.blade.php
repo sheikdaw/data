@@ -297,11 +297,11 @@
                     });
                     map.addOverlay(popup);
 
-                    var surveyed = @json($surveyed);
+                    var surveyed_img = @json($surveyed_img);
 
                     var gisIdSet = new Set();
 
-                    surveyed.forEach(function(survey) {
+                    surveyed_img.forEach(function(survey) {
                         gisIdSet.add(survey.gisid);
                     });
 
