@@ -390,7 +390,7 @@ class AdminController extends Controller
             "type" => "Feature",
             "id" => count($features), // Assigning an ID based on the current number of features
             "geometry" => [
-                "type" => "Point",
+                "type" => "MultiPoint",
                 "coordinates" => [
                     $request->input('longitude'),
                     $request->input('latitude')
