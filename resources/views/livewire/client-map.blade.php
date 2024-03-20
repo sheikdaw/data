@@ -334,7 +334,7 @@
                                     }
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    // $('#featureModal').modal('show');
+                                    $('#featureModal').modal('show');
                                     // var newStyle = new ol.style.Style({
                                     //     image: new ol.style.Circle({
                                     //         radius: 6,
@@ -347,7 +347,7 @@
                                     //         })
                                     //     })
                                     // });
-                                    feature.setStyle(newStyle);
+                                    // feature.setStyle(newStyle);
                                 }
                                 else if (geometryType == 'Polygon') {
                                     var content = '';
