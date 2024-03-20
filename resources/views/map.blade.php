@@ -1,524 +1,485 @@
-<div>
-    @push('style')
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
-        <style>
-            .map {
-                width: 100%;
-                height: 600px;
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Imports\UsersImport; // Import the UsersImport class;
+
+use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use constGuards;
+use constDefaults;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
+use App\Models\Admin;
+use App\Models\surveyed;
+use App\Models\mis;
+use App\Models\Client;
+use App\Models\image;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+
+
+class AdminController extends Controller
+{
+    use ValidatesRequests;
+    public function showqr($id)
+{
+    $surveys = Surveyed::with('images')
+        ->where('gisid', $id)
+        ->get();
+
+    $data = [
+        'surveys' => $surveys,
+    ];
+
+    return view('back.page.admin.showqr', $data);
+}
+
+    public function home()
+    {
+        $totalMisCount = DB::table('mis')->count();
+        $totalSueveyCount = DB::table('surveyeds')->count();
+        $line = DB::table('mis')
+            ->select('road_name', DB::raw('COUNT(*) as count'))
+            ->groupBy('road_name')
+            ->orderByDesc('count')
+            ->get()
+            ->toArray();
+
+        $labels = array_column($line, 'road_name');
+        $values = array_column($line, 'count');
+        $complete = DB::table('surveyeds')
+            ->select('workername', DB::raw('COUNT(*) as count'))
+            ->groupBy('workername') // Adjusted to include 'workername' in GROUP BY
+            ->orderByDesc('count')
+            ->get()
+            ->toArray();
+
+        $comlabels = array_column($complete, 'workername');
+        $comvalues = array_column($complete, 'count');
+        $totalRoadCount = mis::distinct('road_name')
+            ->selectRaw('road_name, count(*) as total_road_count')->groupBy('road_name')
+            ->get();
+
+            $streetsNotInSurveyed = mis::whereNotIn('assessment', function ($query) {
+                $query->select('assessment')->from('surveyeds');
+            })
+            ->selectRaw('road_name, COUNT(*) as road_count')
+            ->groupBy('road_name')
+            ->get();
+
+
+
+        return view('back.page.admin.home', compact('labels', 'values', 'comlabels', 'comvalues', 'totalMisCount', 'totalSueveyCount', 'streetsNotInSurveyed', 'totalRoadCount'));
+    }
+
+    public function loginHandler(Request $request)
+    {
+        $fieldType = filter_var($request->login_id, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        if ($fieldType == 'email') {
+            $request->validate([
+                'login_id' => 'required|email|exists:admins,email', // Corrected the usage of exists validation rule
+                'password' => 'required|min:5|max:45',
+            ], [
+                'login_id.required' => "Email or Username required",
+                'login_id.email' => "Invalid Email address",
+                'login_id.exists' => "Email not exist in System",
+                'password.required' => "Password required",
+            ]);
+        } else {
+            $request->validate([
+                'login_id' => 'required|exists:admins,username', // Corrected the usage of exists validation rule
+                'password' => 'required|min:5|max:45',
+            ], [
+                'login_id.required' => "Email or Username required",
+                'login_id.exists' => "Username not exist in System",
+                'password.required' => "Password required",
+            ]);
+        }
+
+        $creds = [
+            $fieldType => $request->login_id,
+            'password' => $request->password,
+        ];
+
+        if (auth('admin')->attempt($creds)) {
+            return redirect()->route('admin.home');
+        } else {
+            session()->flash('fail', 'Incorrect credentials');
+            return redirect()->route('admin.login');
+        }
+    }
+
+    public function logoutHandler(Request $request)
+    {
+        Auth::guard('admin')->logout();
+        Session()->flash('fail', "You are Logged outs");
+        return redirect()->route('admin.login');
+    }
+    public function sendpasswordresetlink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:admins,email'
+        ], [
+            'email.required' => "Email required",
+            'email.email' => "Invalid Email address",
+            'email.exists' => "Email not exist in System",
+        ]);
+        $admin = Admin::where('email', $request->email)->first();
+        $token = base64_encode(Str::random(64));
+        $oldToken = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->where('guard', constGuards::ADMIN)
+            ->first();
+
+
+        if ($oldToken) {
+            DB::table('password_reset_tokens')
+                ->where('email', $request->email)
+                ->where('guard', constGuards::ADMIN)
+                ->update([
+                    'token' => $token,
+                    'created_at' => Carbon::now()
+                ]);
+        } else {
+            DB::table('password_reset_tokens')->insert([
+                'email' => $request->email,
+                'guard' => constGuards::ADMIN,
+                'token' => $token,
+                'created_at' => Carbon::now()
+
+            ]);
+        }
+        $actionLink = route('admin.reset-password', ['token' => $token, 'email' => $request->email]);
+        $data = array(
+            'actionLink' => $actionLink,
+            'admin' => $admin
+        );
+        $mail_body = view('email-templates.admin-forgot-email-template', $data)->render();
+
+        $mailConfig = array(
+            'mail_from_email' => env('MAIL_FROM_ADDRESS'),
+            'mail_from_name' => env('MAIL_FROM_NAME'),
+            'mail_recipient_email' => $admin->email,
+            'mail_recipient_name' => $admin->name,
+            'mail_subject' => 'Reset password',
+            'mail_body' => $mail_body
+        );
+        if (sendEmail($mailConfig)) {
+            Session()->flash('success', "We have e-mailed your password");
+            return redirect()->route('admin.forgot-password');
+        } else {
+            Session()->flash('fail', "Something went wrong");
+            return redirect()->route('admin.forgot-password');
+        }
+    }
+
+    public function profileView(Request $request)
+    {
+        $admin = null;
+        if (Auth::guard('admin')->check()) {
+            $admin = Admin::findOrFail(auth()->id());
+        }
+        return view('back.page.admin.profile', compact('admin'));
+    }
+
+    public function changeProfilePicture(Request $request)
+    {
+        try {
+            $path = '/images/admin/';
+
+            $file = $request->file('adminProfilePictureFile');
+            $new_image_name = 'UIMG' . date('Ymd') . uniqid() . '.jpg';
+            $file->move(public_path($path), $new_image_name);
+
+            // Retrieve old profile picture path
+            $adminId = Auth::guard('admin')->id();
+            $admin = Admin::find($adminId);
+            $oldpicture = $admin->getAttribute('picture');
+
+            // if ($oldpicture != '') {
+            //     $oldPicturePath = public_path($oldpicture);
+
+            //     // Example condition: Delete the old picture if its file size is greater than 1 MB
+            //     if (file_exists($oldPicturePath) && filesize($oldPicturePath) > 1024 * 1024) {
+            //         unlink($oldPicturePath); // Delete the old picture
+            //     }
+            // }
+
+            // Update the admin's picture attribute with the new image path
+            $admin->picture = $new_image_name;
+            $admin->save();
+
+            return response()->json(['status' => 1, 'msg' => 'Image has been cropped successfully.', 'name' => $new_image_name]);
+        } catch (\Exception $e) {
+            Log::error('Error in changeProfilePicture: ' . $e->getMessage());
+            return response()->json(['status' => 0, 'msg' => 'An error occurred. Please check the server logs for more information.', 'name' => $new_image_name]);
+        }
+    }
+    public function getProfilePicture()
+    {
+        if (Auth::guard('admin')->check()) {
+            $admin = Admin::findOrFail(auth()->id());
+
+            return response()->json(['status' => 1, 'picture' => $admin->picture ]);
+        }
+
+        return response()->json(['status' => 0, 'msg' => 'User not authenticated']);
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        // Get the uploaded file
+        $file = $request->file('file');
+
+        // Process the Excel file and import data
+        Excel::import(new UsersImport, $file);
+
+        // Success message if the import is successful
+        Session::flash('success', 'Excel file imported successfully!');
+
+        return redirect()->back();
+    }
+
+
+    public function uploadExel()
+    {
+        return view('back.page.upload-exel');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $request->validate([
+            'property' => 'required',
+            'value' => 'required',
+        ]);
+
+        if ($request->property == "all") {
+            $surveys = Surveyed::all();
+        }else{
+        $surveys = Surveyed::with('images')
+            ->where($request->property, $request->value)
+            ->get();
+        }
+
+        $data = [
+            'surveys' => $surveys,
+        ];
+    //dd($surveys);
+        $pdf = PDF::loadView('back.page.admin.exportpdf', $data);
+        $pdf->setPaper('a3', 'landscape');
+        return $pdf->download('report.pdf');
+    }
+
+    // Add Client details
+
+    public function addClient(){
+        return view('back.page.client.add-client');
+
+    }
+
+    public function register_handler(Request $request){
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'user_name' => 'required|unique:clients,username',
+            'password' => 'required|max:7',
+            'email' => 'required|email|unique:clients,email'
+        ]);
+
+        // Create a new Client instance
+        $client = new Client();
+        $client->name = $validatedData['name'];
+        $client->username = $validatedData['user_name'];
+        $client->password = bcrypt($validatedData['password']); // Assuming you want to hash the password
+        $client->email = $validatedData['email'];
+
+        // Save the client to the database
+        $client->save();
+
+        // Optionally, you may return a response indicating success
+        return back()->with('success', 'Client registered successfully');
+    }
+    public function clientView(){
+        $totalclient=Client::all();
+        return view('back.page.admin.client-view',compact('totalclient'));
+
+    }
+    public function clientEdit($id){
+        $client = Client::find($id);
+
+        // Pass the client data to the view
+        return view('back.page.admin.client-seller-profile', ['client' => $client]);
+    }
+    public function clientRemove($id){
+        $client = Client::find($id);
+
+        $client->delete();
+        return back()->with('success', 'Client Removed successfully');
+    }
+
+    public function changeClientProfilePicture(Request $request)
+    {
+        try {
+            $path = '/images/client/';
+
+            $file = $request->file('clientProfilePictureFile');
+            $new_image_name = 'UIMG' . date('Ymd') . uniqid() . '.jpg';
+            $file->move(public_path($path), $new_image_name);
+
+            // Retrieve old profile picture path
+            $clientId = Auth::guard('client')->id();
+            $client = Client::find($clientId);
+            $oldpicture = $client->getAttribute('picture');
+
+            if ($oldpicture != '') {
+                $oldPicturePath = public_path($oldpicture);
+
+                // Example condition: Delete the old picture if its file size is greater than 1 MB
+                if (file_exists($oldPicturePath) && filesize($oldPicturePath) > 1024 * 1024) {
+                    unlink($oldPicturePath); // Delete the old picture
+                }
             }
 
-            .ol-popup {
-                position: absolute;
-                background-color: white;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-                padding: 15px;
-                border-radius: 10px;
-                border: 1px solid #cccccc;
-                bottom: 12px;
-                left: -50px;
-                min-width: 280px;
-            }
+            // Update the client's picture attribute with the new image path
+            $client->picture = $path . $new_image_name;
+            $client->save();
 
-            .ol-popup:after,
-            .ol-popup:before {
-                top: 100%;
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                pointer-events: none;
-            }
+            return response()->json(['status' => 1, 'msg' => 'Image has been cropped successfully.', 'name' => $new_image_name]);
+        } catch (\Exception $e) {
+            Log::error('Error in changeProfilePicture: ' . $e->getMessage());
+            return response()->json(['status' => 0, 'msg' => 'An error occurred. Please check the server logs for more information.', 'name' => $new_image_name]);
+        }
+    }
+    public function getClientProfilePicture(Request $request)
+    {
+            $client = Client::find($request->x);
 
-            .ol-popup:after {
-                border-top-color: white;
-                border-width: 10px;
-                left: 48px;
-                margin-left: -10px;
-            }
+                return response()->json(['status' => 1, 'picture' => $client->picture ?? null]);
 
-            .ol-popup:before {
-                border-top-color: #cccccc;
-                border-width: 11px;
-                left: 48px;
-                margin-left: -11px;
-            }
-
-            .ol-popup-closer {
-                text-decoration: none;
-                position: absolute;
-                top: 2px;
-                right: 8px;
-            }
-
-            .ol-popup-closer:after {
-                content: "✖";
-            }
-        </style>
-    @endpush
-
-    <form class="form-inline">
-        <label for="type">Geometry type: &nbsp;</label>
-        <select class="form-control mr-2 mb-2 mt-2" id="type">
-            <option value="None">None</option>
-            <option value="Point">Point</option>
-            <option value="LineString">LineString</option>
-            <option value="Polygon">Polygon</option>
-            <option value="Circle">Circle</option>
-        </select>
-        <input class="form-control mr-2 mb-2 mt-2" type="button" value="Undo" id="undo">
-    </form>
-    <div id="map" class="map"></div>
-
-    <div id="popup" class="ol-popup">
-        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-        <div id="popup-content"></div>
-    </div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-        Filter
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="filter">
-                        <input type="type" value="gis" id="gisidval">
-                        <input type="button" value="save" id="filterBtn">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="featureModalLabel">Feature Properties</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h4>Feature Properties</h4>
-                    <ul id="featurePropertiesList">
-                        <!-- Feature properties will be displayed here -->
-                    </ul>
-                    <hr>
-                    <h4>Feature Form</h4>
-                    <form action="{{ route('client.gis-images-upload') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-body">
-                            <div id="alertBox" class="alert alert-danger" style="display: none;">
-                            </div>
-                            <div class="form-group">
-                                <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                            </div>
-                            <div class="form-group">
-                                <label for="value">Picture</label>
-                                <input type="file" name="image" id="image" class="form-control">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <!-- Moved submit button inside the form -->
-                            <button type="submit" class="btn btn-primary">Save image</button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    @push('script')
-        <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
-        <script type="text/javascript">
-            var clickedStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255, 0, 0, 1)', // Red color for outline
-                    width: 2 // Outline width
-                }),
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
-                    })
-                })
-            });
-
-            var completeStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(0, 48, 143, 1)', // Green color for outline
-                    width: 2 // Outline width
-                }),
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
-                    })
-                })
-            });
-
-            var filterStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 215, 0, 0.6)' // Dark yellow color with some opacity
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255, 215, 0, 1)', // Dark yellow color for outline
-                    width: 2 // Outline width
-                }),
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 215, 0, 1)' // Dark yellow color for point symbol
-                    })
-                })
-            });
-
-            var pointpath = "{{ $point }}";
-            var buildingpath = "{{ asset('public/kovai/building.json') }}";
-            var pngFilePath = "D:\cloned github\gis\png1.png";
-
-            var pointJsonPromise = fetch(pointpath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load GeoJSON file');
-                    }
-                    return response.json();
-                });
-            var buildingJsonPromise = fetch(buildingpath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load GeoJSON file');
-                    }
-                    return response.json();
-                });
-            Promise.all([pointJsonPromise, buildingJsonPromise])
-                .then(responses => {
-                    var pointJsonData = responses[0];
-                    var buildingJsonData = responses[1];
-                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                    var buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-
-                    var vectorSource = new ol.source.Vector({
-                        features: features
-                    });
-                    var vectorLayer = new ol.layer.Vector({
-                        source: vectorSource
-                    });
-
-
-                    var vectorBuildingSource = new ol.source.Vector({
-                        features: buildingfeatures
-                    });
-                    var vectorBuildingLayer = new ol.layer.Vector({
-                        source: vectorBuildingSource
-                    });
-                    var overlays;
-                    // Define the extent of the image
-                    var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
-
-                    // Create the static image layer
-                    var imageLayer = new ol.layer.Image({
-                        source: new ol.source.ImageStatic({
-                            url: "{{ asset('public/kovai/new/png1.png') }}", // Path to your static image
-                            imageExtent: extent
-                        })
-                    });
-
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), imageLayer, vectorBuildingLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
-                            projection: 'EPSG:3857',
-                            zoom: 20
-                        })
-                    });
-
-                    var markerLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector(),
-                        style: new ol.style.Style({
-                            image: new ol.style.Icon({
-                                anchor: [0.5, 1],
-                                src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
-                            })
-                        })
-                    });
-                    map.addLayer(markerLayer);
-
-                    if ('geolocation' in navigator) {
-                        navigator.geolocation.watchPosition(function(position) {
-                            var lonLat = [position.coords.longitude, position.coords.latitude];
-                            var pos = ol.proj.fromLonLat(lonLat);
-                            markerLayer.getSource().clear();
-                            var marker = new ol.Feature({
-                                geometry: new ol.geom.Point(pos)
-                            });
-                            markerLayer.getSource().addFeature(marker);
-                            map.getView().setCenter(pos);
-                        }, function(error) {
-                            console.error('Error getting geolocation:', error);
-                        });
-                    } else {
-                        console.error('Geolocation is not supported by this browser.');
-                    }
-
-                    var popup = new ol.Overlay({
-                        element: document.getElementById('popup'),
-                        autoPan: true,
-                        autoPanAnimation: {
-                            duration: 250
-                        }
-                    });
-                    map.addOverlay(popup);
-
-                    var surveyed = @json($surveyed);
-
-                    var gisIdSet = new Set();
-
-                    surveyed.forEach(function(survey) {
-                        gisIdSet.add(survey.gisid);
-                    });
-
-                    features.forEach(function(feature) {
-                        var properties = feature.getProperties();
-                        if (gisIdSet.has(properties['GIS_ID'])) {
-                            feature.setStyle(completeStyle);
-                        } else {
-                            feature.setStyle(clickedStyle);
-                        }
-                    });
-
-                    map.on('click', function(event) {
-                        if (document.getElementById('type').value == 'None') {
-                            var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-                                return feature;
-                            });
-
-                            if (feature) {
-                                var properties = feature.getProperties();
-                                var geometryType = feature.getGeometry().getType();
-                                //alert("Geometry type: " + geometryType);
-                                if (geometryType == 'MultiPoint') {
-                                    var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
-                                    }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
-                                    var newStyle = new ol.style.Style({
-                                        image: new ol.style.Circle({
-                                            radius: 6,
-                                            fill: new ol.style.Fill({
-                                                color: 'blue' // Change color as desired
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'white'
-
-                                            })
-                                        })
-                                    });
-                                    feature.setStyle(newStyle);
-                                }
-                                else if (geometryType == 'Polygon') {
-                                    var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
-                                    }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
-
-                                }
-                            } else {
-                                $('#featureModal').modal('hide');
-                            }
-                        }
-                    });
-                    const typeSelect = document.getElementById('type');
-
-                    let draw; // global so we can remove it later
-
-                    function addInteraction() {
-                        const value = typeSelect.value;
-                        if (value !== 'None') {
-                            draw = new ol.interaction.Draw({
-                                source: vectorSource,
-                                type: typeSelect.value,
-                            });
-                            map.addInteraction(draw);
-                            draw.on('drawend', function(event) {
-                                const feature = event.feature;
-                                const geometry = feature.getGeometry();
-                                const coordinates = geometry.getCoordinates();
-                                // Send an Ajax request to Laravel route to add the feature to JSON
-                                alert(coordinates);
-                                $.ajax({
-                                    url: '/add-feature',
-                                    type: 'POST', // Use POST method
-                                    data: JSON.stringify({
-                                        '_token': '{{ csrf_token() }}',
-                                        'longitude': coordinates[0],
-                                        'latitude': coordinates[1],
-                                        'gis_id': feature
-                                            .getId() // Assuming you're setting an ID for the feature
-                                    }),
-                                    contentType: 'application/json', // Set content type to JSON
-                                    success: function(response) {
-                                        console.log(response.message);
-                                        // Handle success response
-                                        // Refresh the map and update JSON data after point addition
-                                        refreshMapAndData();
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error(error);
-                                        // Handle error response
-                                    }
-                                });
-                            });
-                        }
-                    }
-
-                    function refreshMapAndData() {
-                        // Clear the vector source to remove existing features from the map
-                        vectorSource.clear();
-
-                        // Fetch new GeoJSON data
-                        fetch(pointpath)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Failed to load GeoJSON file');
-                                }
-                                return response.json();
-                            })
-                            .then(pointJsonData => {
-                                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                                // Add new features to the vector source
-                                vectorSource.addFeatures(features);
-
-                                // Iterate over features to set style
-                                features.forEach(function(feature) {
-                                    var properties = feature.getProperties();
-                                    if (gisIdSet.has(properties['GIS_ID'])) {
-                                        feature.setStyle(completeStyle);
-                                    } else {
-                                        feature.setStyle(clickedStyle);
-                                    }
-                                });
-                            })
-                            .catch(error => {
-                                console.error('Error refreshing map and data:', error);
-                                // Handle error
-                            });
-                    }
-                    /**
-                     * Handle change event.
-                     */
-                    typeSelect.onchange = function() {
-                        map.removeInteraction(draw);
-                        addInteraction();
-                    };
-                    document.getElementById('undo').addEventListener('click', function() {
-                        // When the element with the ID 'undo' is clicked, execute the following function
-                        $.ajax({
-                            url: '/delete-feature', // URL to send the AJAX request
-                            success: function(response) {
-                                console.log(response
-                                    .message);
-                                refreshMapAndData();
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(error);
-                            }
-                        });
-                    });
-
-
-                    addInteraction();
-
-
-                    $("#filterBtn").click(function(e) {
-                        e.preventDefault();
-                        var gisidvalue = $("#gisidval").val();
-
-                        // Clear existing features
-                        vectorSource.clear();
-
-                        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                        features.forEach(function(feature) {
-                            var properties = feature.getProperties();
-                            var newStyle;
-                            if (gisidvalue == properties['GIS_ID']) {
-                                newStyle = new ol.style.Style({
-                                    image: new ol.style.Circle({
-                                        radius: 6,
-                                        fill: new ol.style.Fill({
-                                            color: 'green'
-                                        }),
-                                        stroke: new ol.style.Stroke({
-                                            color: 'white'
-                                        })
-                                    })
-                                });
-                            } else {
-                                newStyle = new ol.style.Style({
-                                    image: new ol.style.Circle({
-                                        radius: 6,
-                                        fill: new ol.style.Fill({
-                                            color: 'red'
-                                        }),
-                                        stroke: new ol.style.Stroke({
-                                            color: 'white'
-                                        })
-                                    })
-                                });
-                            }
-
-                            feature.setStyle(newStyle);
-                            vectorSource.addFeature(feature); // Add the feature back to the source
-                        });
-                    });
+        return response()->json(['status' => 0, 'msg' => 'User not authenticated']);
+    }
 
 
 
+    public function addFeature(Request $request)
+    {
+        if ($request->type == "polygon") { // Corrected "polygon" spelling
+            $data = json_decode(file_get_contents(public_path('public/kovai/building.json')), true);
 
-                })
-                .catch(error => {
-                    console.error('Error loading files:', error);
-                });
-        </script>
-    @endpush
-</div>
+            // Assuming 'features' is an existing array in your JSON data
+            $features = $data['features'];
+
+            // Primary GIS ID
+            $primaryGisId = $request->input('primary_gis_id');
+
+            // Corrected coordinates structure for Polygon
+            $coordinates = $request->input('coordinates');
+
+            // Prepare the new feature
+            $newFeature = [
+                "type" => "Feature",
+                "id" => count($features), // Assigning an ID based on the current number of features
+                "geometry" => [
+                    "type" => "Polygon",
+                    "coordinates" => $coordinates // Use the provided coordinates
+                ],
+                "properties" => [
+                    "FID" => count($features), // Using the same ID as 'id' for simplicity
+                    "Id" => 0,
+                    "GIS_ID" => count($features) + 1
+                ]
+            ];
+
+            // Add the new feature to the existing features array
+            $features[] = $newFeature;
+
+            // Update the 'features' array in the JSON data
+            $data['features'] = $features;
+
+            // Write the updated JSON data back to the file
+            file_put_contents(public_path('public/kovai/building.json'), json_encode($data, JSON_PRETTY_PRINT));
+
+            return response()->json(['message' => 'Feature added successfully']);
+        }
+        //point
+        if ($request->type == "point") {
+            $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
+
+            // Assuming 'features' is an existing array in your JSON data
+            $features = $data['features'];
+
+            // Primary GIS ID
+            $primaryGisId = $request->input('primary_gis_id');
+
+            // Prepare the new feature
+            $newFeature = [
+                "type" => "Feature",
+                "id" => count($features), // Assigning an ID based on the current number of features
+                "geometry" => [
+                    "type" => "Point",
+                    "coordinates" => [
+                        $request->input('longitude'),
+                        $request->input('latitude')
+                    ]
+                ],
+                "properties" => [
+                    "FID" => count($features), // Using the same ID as 'id' for simplicity
+                    "Id" => 0,
+                    "GIS_ID" => count($features) + 1
+                ]
+            ];
+
+            // Add the new feature to the existing features array
+            $features[] = $newFeature;
+
+            // Update the 'features' array in the JSON data
+            $data['features'] = $features;
+
+            // Write the updated JSON data back to the file
+            file_put_contents(public_path('kovai/test.json'), json_encode($data, JSON_PRETTY_PRINT));
+
+            return response()->json(['message' => 'Feature added successfully']);
+        }
+    }
+
+    public function deleteLastFeature()
+    {
+        // Read the JSON file
+        $jsonFilePath = public_path('kovai/test.json');
+        $jsonData = file_get_contents($jsonFilePath);
+
+        // Decode JSON data to an associative array
+        $data = json_decode($jsonData, true);
+
+        // Check if the 'features' array exists in the JSON data
+        if (isset($data['features'])) {
+            // Remove the last feature from the 'features' array
+            array_pop($data['features']);
+
+            // Encode the modified array back to JSON
+            $jsonData = json_encode($data, JSON_PRETTY_PRINT);
+
+            // Write the updated JSON data back to the file
+            file_put_contents($jsonFilePath, $jsonData);
+
+            return response()->json(['message' => 'Last feature deleted successfully']);
+        } else {
+            return response()->json(['message' => 'No features found in JSON data'], 404);
+        }
+    }
+
+}

@@ -196,7 +196,7 @@
 
             var pointpath = "{{ $point }}";
             var buildingpath = "{{ asset('public/kovai/building.json') }}";
-            var pngFilePath = "{{ asset('public/kovai/new/png2.png') }}";
+            var pngFilePath = "D:\cloned github\gis\png1.png";
 
             var pointJsonPromise = fetch(pointpath)
                 .then(response => {
@@ -384,56 +384,31 @@
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
                                 // Send an Ajax request to Laravel route to add the feature to JSON
-                                if (value == "Polygon") {
-    $.ajax({
-        url: '/add-feature',
-        type: 'POST', // Use POST method
-        data: JSON.stringify({
-            '_token': '{{ csrf_token() }}',
-            'type': 'polygon', // Specify the feature type
-            'coordinates': coordinates,
-            'primary_gis_id': feature.getId() // Assuming you're setting an ID for the feature
-        }),
-        contentType: 'application/json', // Set content type to JSON
-        success: function(response) {
-            console.log(response.message);
-            // Handle success response
-            // Refresh the map and update JSON data after feature addition
-            refreshMapAndData();
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-            // Handle error response
-        }
-    });
-}
-
-if (value == 'Point') {
-    $.ajax({
-        url: '/add-feature',
-        type: 'POST', // Use POST method
-        data: JSON.stringify({
-            '_token': '{{ csrf_token() }}',
-            'type': 'point', // Specify the feature type
-            'longitude': coordinates[0],
-            'latitude': coordinates[1],
-            'primary_gis_id': feature.getId() // Assuming you're setting an ID for the feature
-        }),
-        contentType: 'application/json', // Set content type to JSON
-        success: function(response) {
-            console.log(response.message);
-            // Handle success response
-            // Refresh the map and update JSON data after feature addition
-            refreshMapAndData();
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-            // Handle error response
-        }
-    });
-}
-
-                            }
+                                if(value == "Polygen"){
+                                alert(coordinates);
+                                }
+                                $.ajax({
+                                    url: '/add-feature',
+                                    type: 'POST', // Use POST method
+                                    data: JSON.stringify({
+                                        '_token': '{{ csrf_token() }}',
+                                        'longitude': coordinates[0],
+                                        'latitude': coordinates[1],
+                                        'gis_id': feature
+                                            .getId() // Assuming you're setting an ID for the feature
+                                    }),
+                                    contentType: 'application/json', // Set content type to JSON
+                                    success: function(response) {
+                                        console.log(response.message);
+                                        // Handle success response
+                                        // Refresh the map and update JSON data after point addition
+                                        refreshMapAndData();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(error);
+                                        // Handle error response
+                                    }
+                                });
                             });
                         }
                     }
