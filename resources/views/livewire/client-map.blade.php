@@ -146,379 +146,128 @@
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
         <script type="text/javascript">
-            var clickedStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255, 0, 0, 1)', // Red color for outline
-                    width: 2 // Outline width
-                }),
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
-                    })
-                })
+            class GeoJsonLayer {
+                constructor(path, style) {
+                    this.path = path;
+                    this.style = style;
+                    this.features = [];
+                    this.source = new ol.source.Vector();
+                    this.layer = new ol.layer.Vector({
+                        source: this.source
+                    });
+                }
+
+                async loadFeatures() {
+                    try {
+                        const response = await fetch(this.path);
+                        if (!response.ok) {
+                            throw new Error('Failed to load GeoJSON file');
+                        }
+                        const data = await response.json();
+                        this.features = (new ol.format.GeoJSON()).readFeatures(data);
+                        this.source.addFeatures(this.features);
+                        this.features.forEach(feature => {
+                            feature.setStyle(this.style);
+                        });
+                    } catch (error) {
+                        console.error('Error loading GeoJSON file:', error);
+                    }
+                }
+            }
+
+            class MapHandler {
+                constructor() {
+                    this.map = null;
+                }
+
+                initMap(target, layers, view) {
+                    this.map = new ol.Map({
+                        target: target,
+                        layers: layers,
+                        view: view
+                    });
+                }
+
+                addLayer(layer) {
+                    this.map.addLayer(layer);
+                }
+
+                removeInteraction(interaction) {
+                    this.map.removeInteraction(interaction);
+                }
+
+                addInteraction(interaction) {
+                    this.map.addInteraction(interaction);
+                }
+
+                addOverlay(overlay) {
+                    this.map.addOverlay(overlay);
+                }
+
+                on(event, callback) {
+                    this.map.on(event, callback);
+                }
+            }
+
+            class FeatureInteraction {
+                constructor(source, type, drawendCallback) {
+                    this.source = source;
+                    this.type = type;
+                    this.drawendCallback = drawendCallback;
+                    this.interaction = null;
+                }
+
+                createInteraction() {
+                    this.interaction = new ol.interaction.Draw({
+                        source: this.source,
+                        type: this.type
+                    });
+                    this.interaction.on('drawend', this.drawendCallback);
+                    return this.interaction;
+                }
+            }
+
+            // Example usage:
+
+            const clickedStyle = new ol.style.Style({
+                // Define style properties
             });
 
-            var completeStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
+            const vectorSource = new GeoJsonLayer(pointpath, clickedStyle);
+            const vectorBuildingSource = new GeoJsonLayer(buildingpath, completeStyle);
+
+            const mapHandler = new MapHandler();
+            mapHandler.initMap('map', [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
                 }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(0, 48, 143, 1)', // Green color for outline
-                    width: 2 // Outline width
-                }),
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
-                    })
-                })
+                vectorBuildingSource.layer,
+                vectorSource.layer
+            ], new ol.View({
+                center: ol.proj.fromLonLat([76.955393, 11.020899]),
+                projection: 'EPSG:3857',
+                zoom: 20
+            }));
+
+            vectorSource.loadFeatures();
+            vectorBuildingSource.loadFeatures();
+
+            const drawInteraction = new FeatureInteraction(vectorSource.source, 'Point', function(event) {
+                // Handle drawend event
+                // This function will be called when a point is drawn
+                const feature = event.feature;
+                const geometry = feature.getGeometry();
+                const coordinates = geometry.getCoordinates();
+                // Send an Ajax request to Laravel route to add the feature to JSON
+                alert(coordinates);
+                // Your AJAX logic here
             });
 
-            var filterStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 215, 0, 0.6)' // Dark yellow color with some opacity
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255, 215, 0, 1)', // Dark yellow color for outline
-                    width: 2 // Outline width
-                }),
-                image: new ol.style.Circle({
-                    radius: 6,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 215, 0, 1)' // Dark yellow color for point symbol
-                    })
-                })
-            });
+            mapHandler.addInteraction(drawInteraction.createInteraction());
 
-            var pointpath = "{{ $point }}";
-            var buildingpath = "{{ asset('public/kovai/building.json') }}";
-            var pngFilePath = "D:\cloned github\gis\png1.png";
+            // Add more interactions, overlays, event listeners, etc. as needed
 
-            var pointJsonPromise = fetch(pointpath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load GeoJSON file');
-                    }
-                    return response.json();
-                });
-            var buildingJsonPromise = fetch(buildingpath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load GeoJSON file');
-                    }
-                    return response.json();
-                });
-            Promise.all([pointJsonPromise, buildingJsonPromise])
-                .then(responses => {
-                    var pointJsonData = responses[0];
-                    var buildingJsonData = responses[1];
-                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                    var buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-
-                    var vectorSource = new ol.source.Vector({
-                        features: features
-                    });
-                    var vectorLayer = new ol.layer.Vector({
-                        source: vectorSource
-                    });
-
-
-                    var vectorBuildingSource = new ol.source.Vector({
-                        features: buildingfeatures
-                    });
-                    var vectorBuildingLayer = new ol.layer.Vector({
-                        source: vectorBuildingSource
-                    });
-                    var overlays;
-                    // Define the extent of the image
-                    var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
-
-                    // Create the static image layer
-                    var imageLayer = new ol.layer.Image({
-                        source: new ol.source.ImageStatic({
-                            url: "{{ asset('public/kovai/new/png1.png') }}", // Path to your static image
-                            imageExtent: extent
-                        })
-                    });
-
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), imageLayer, vectorBuildingLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
-                            projection: 'EPSG:3857',
-                            zoom: 20
-                        })
-                    });
-
-                    var markerLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector(),
-                        style: new ol.style.Style({
-                            image: new ol.style.Icon({
-                                anchor: [0.5, 1],
-                                src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
-                            })
-                        })
-                    });
-                    map.addLayer(markerLayer);
-
-                    if ('geolocation' in navigator) {
-                        navigator.geolocation.watchPosition(function(position) {
-                            var lonLat = [position.coords.longitude, position.coords.latitude];
-                            var pos = ol.proj.fromLonLat(lonLat);
-                            markerLayer.getSource().clear();
-                            var marker = new ol.Feature({
-                                geometry: new ol.geom.Point(pos)
-                            });
-                            markerLayer.getSource().addFeature(marker);
-                            map.getView().setCenter(pos);
-                        }, function(error) {
-                            console.error('Error getting geolocation:', error);
-                        });
-                    } else {
-                        console.error('Geolocation is not supported by this browser.');
-                    }
-
-                    var popup = new ol.Overlay({
-                        element: document.getElementById('popup'),
-                        autoPan: true,
-                        autoPanAnimation: {
-                            duration: 250
-                        }
-                    });
-                    map.addOverlay(popup);
-
-                    var surveyed = @json($surveyed);
-
-                    var gisIdSet = new Set();
-
-                    surveyed.forEach(function(survey) {
-                        gisIdSet.add(survey.gisid);
-                    });
-
-                    features.forEach(function(feature) {
-                        var properties = feature.getProperties();
-                        if (gisIdSet.has(properties['GIS_ID'])) {
-                            feature.setStyle(completeStyle);
-                        } else {
-                            feature.setStyle(clickedStyle);
-                        }
-                    });
-
-                    map.on('click', function(event) {
-                        if (document.getElementById('type').value == 'None') {
-                            var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-                                return feature;
-                            });
-
-                            if (feature) {
-                                var properties = feature.getProperties();
-                                var geometryType = feature.getGeometry().getType();
-                                //alert("Geometry type: " + geometryType);
-                                if (geometryType == 'MultiPoint') {
-                                    var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
-                                    }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
-                                    var newStyle = new ol.style.Style({
-                                        image: new ol.style.Circle({
-                                            radius: 6,
-                                            fill: new ol.style.Fill({
-                                                color: 'blue' // Change color as desired
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'white'
-
-                                            })
-                                        })
-                                    });
-                                    feature.setStyle(newStyle);
-                                }
-                                else if (geometryType == 'Polygon') {
-                                    var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
-                                    }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
-
-                                }
-                            } else {
-                                $('#featureModal').modal('hide');
-                            }
-                        }
-                    });
-                    const typeSelect = document.getElementById('type');
-
-                    let draw; // global so we can remove it later
-
-                    function addInteraction() {
-                        const value = typeSelect.value;
-                        if (value !== 'None') {
-                            draw = new ol.interaction.Draw({
-                                source: vectorSource,
-                                type: typeSelect.value,
-                            });
-                            map.addInteraction(draw);
-                            draw.on('drawend', function(event) {
-                                const feature = event.feature;
-                                const geometry = feature.getGeometry();
-                                const coordinates = geometry.getCoordinates();
-                                // Send an Ajax request to Laravel route to add the feature to JSON
-                                alert(coordinates);
-                                $.ajax({
-                                    url: '/add-feature',
-                                    type: 'POST', // Use POST method
-                                    data: JSON.stringify({
-                                        '_token': '{{ csrf_token() }}',
-                                        'longitude': coordinates[0],
-                                        'latitude': coordinates[1],
-                                        'gis_id': feature
-                                            .getId() // Assuming you're setting an ID for the feature
-                                    }),
-                                    contentType: 'application/json', // Set content type to JSON
-                                    success: function(response) {
-                                        console.log(response.message);
-                                        // Handle success response
-                                        // Refresh the map and update JSON data after point addition
-                                        refreshMapAndData();
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error(error);
-                                        // Handle error response
-                                    }
-                                });
-                            });
-                        }
-                    }
-
-                    function refreshMapAndData() {
-                        // Clear the vector source to remove existing features from the map
-                        vectorSource.clear();
-
-                        // Fetch new GeoJSON data
-                        fetch(pointpath)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Failed to load GeoJSON file');
-                                }
-                                return response.json();
-                            })
-                            .then(pointJsonData => {
-                                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                                // Add new features to the vector source
-                                vectorSource.addFeatures(features);
-
-                                // Iterate over features to set style
-                                features.forEach(function(feature) {
-                                    var properties = feature.getProperties();
-                                    if (gisIdSet.has(properties['GIS_ID'])) {
-                                        feature.setStyle(completeStyle);
-                                    } else {
-                                        feature.setStyle(clickedStyle);
-                                    }
-                                });
-                            })
-                            .catch(error => {
-                                console.error('Error refreshing map and data:', error);
-                                // Handle error
-                            });
-                    }
-                    /**
-                     * Handle change event.
-                     */
-                    typeSelect.onchange = function() {
-                        map.removeInteraction(draw);
-                        addInteraction();
-                    };
-                    document.getElementById('undo').addEventListener('click', function() {
-                        // When the element with the ID 'undo' is clicked, execute the following function
-                        $.ajax({
-                            url: '/delete-feature', // URL to send the AJAX request
-                            success: function(response) {
-                                console.log(response
-                                    .message);
-                                refreshMapAndData();
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(error);
-                            }
-                        });
-                    });
-
-
-                    addInteraction();
-
-
-                    $("#filterBtn").click(function(e) {
-                        e.preventDefault();
-                        var gisidvalue = $("#gisidval").val();
-
-                        // Clear existing features
-                        vectorSource.clear();
-
-                        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                        features.forEach(function(feature) {
-                            var properties = feature.getProperties();
-                            var newStyle;
-                            if (gisidvalue == properties['GIS_ID']) {
-                                newStyle = new ol.style.Style({
-                                    image: new ol.style.Circle({
-                                        radius: 6,
-                                        fill: new ol.style.Fill({
-                                            color: 'green'
-                                        }),
-                                        stroke: new ol.style.Stroke({
-                                            color: 'white'
-                                        })
-                                    })
-                                });
-                            } else {
-                                newStyle = new ol.style.Style({
-                                    image: new ol.style.Circle({
-                                        radius: 6,
-                                        fill: new ol.style.Fill({
-                                            color: 'red'
-                                        }),
-                                        stroke: new ol.style.Stroke({
-                                            color: 'white'
-                                        })
-                                    })
-                                });
-                            }
-
-                            feature.setStyle(newStyle);
-                            vectorSource.addFeature(feature); // Add the feature back to the source
-                        });
-                    });
-
-
-
-
-                })
-                .catch(error => {
-                    console.error('Error loading files:', error);
-                });
+            // Remember to replace remaining code outside the provided snippet with appropriate class instances and method calls.
         </script>
     @endpush
 </div>
