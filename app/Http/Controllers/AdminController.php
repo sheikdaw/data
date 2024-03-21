@@ -392,7 +392,7 @@ class AdminController extends Controller
             // Prepare the new feature
             $newFeature = [
                 "type" => "Feature",
-                "id" => count($features), // Assigning an ID based on the current number of features
+                "id" => count($features)+1, // Assigning an ID based on the current number of features
                 "geometry" => [
                     "type" => "Polygon",
                     "coordinates" => $coordinates // Use the provided coordinates
