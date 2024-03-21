@@ -259,7 +259,7 @@
                         })
                     });
                     // Function to create style with text label and red border
-                    var createLabelStyleFunction = function(text) {
+var createLabelStyleFunction = function(text) {
     return new ol.style.Style({
         text: new ol.style.Text({
             text: text.toString(), // Convert Id to string
@@ -342,30 +342,57 @@ vectorBuildingLayer.setStyle(function(feature) {
                     });
 
                     map.on('click', function(event) {
-    var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-        return feature;
-    });
+                        if (document.getElementById('type').value == 'None') {
+                            var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+                                return feature;
+                            });
 
-    if (feature) {
-        var properties = feature.getProperties();
-        console.log('Clicked Feature Properties:', properties);
+                            if (feature) {
+                                var properties = feature.getProperties();
+                                var geometryType = feature.getGeometry().getType();
+                                //alert("Geometry type: " + geometryType);
+                                if (geometryType == 'MultiPoint') {
+                                    var content = '';
+                                    for (var key in properties) {
+                                        if (key !== 'geometry') {
+                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                '</li>';
+                                        }
+                                    }
+                                    document.getElementById('featurePropertiesList').innerHTML = content;
+                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    $('#featureModal').modal('show');
+                                    // var newStyle = new ol.style.Style({
+                                    //     image: new ol.style.Circle({
+                                    //         radius: 6,
+                                    //         fill: new ol.style.Fill({
+                                    //             color: 'blue' // Change color as desired
+                                    //         }),
+                                    //         stroke: new ol.style.Stroke({
+                                    //             color: 'white'
 
-        var content = '';
-        for (var key in properties) {
-            if (key !== 'geometry') {
-                content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                    '</li>';
-            }
-        }
-        document.getElementById('featurePropertiesList').innerHTML = content;
-        document.getElementById('gisIdInput').value = properties['Id']; // Adjusted to 'Id' assuming it's the property name for polygon features
-        $('#featureModal').modal('show');
-    } else {
-        console.log('No feature clicked.');
-        $('#featureModal').modal('hide');
-    }
-});
+                                    //         })
+                                    //     })
+                                    // });
+                                    // feature.setStyle(newStyle);
+                                } else if (geometryType == 'Polygon') {
+                                    var content = '';
+                                    for (var key in properties) {
+                                        if (key !== 'geometry') {
+                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                '</li>';
+                                        }
+                                    }
+                                    document.getElementById('featurePropertiesList').innerHTML = content;
+                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    $('#featureModal').modal('show');
 
+                                }
+                            } else {
+                                $('#featureModal').modal('hide');
+                            }
+                        }
+                    });
                     const typeSelect = document.getElementById('type');
 
                     let draw; // global so we can remove it later
@@ -490,10 +517,10 @@ vectorBuildingLayer.setStyle(function(feature) {
                                     return response.json();
                                 })
                                 .then(buildingJsonData => {
-                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                                    var buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
                                     // Add new features to the vector source
-                                    vectorSource.addFeatures(features);
+                                    vectorSource.addFeatures(buildingFeatures);
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
