@@ -272,11 +272,12 @@ var createLabelStyleFunction = function(text) {
             textBaseline: 'bottom',
             placement: 'point',
             maxAngle: Math.PI / 4
-        }),
-        stroke: new ol.style.Stroke({
-            color: 'red',
-            width: 2
         })
+        // ,
+        // stroke: new ol.style.Stroke({
+        //     color: 'red',
+        //     width: 2
+        // })
     });
 };
 
