@@ -490,10 +490,10 @@ vectorBuildingLayer.setStyle(function(feature) {
                                     return response.json();
                                 })
                                 .then(buildingJsonData => {
-                                    var buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
                                     // Add new features to the vector source
-                                    vectorSource.addFeatures(buildingFeatures);
+                                    vectorSource.addFeatures(features);
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
