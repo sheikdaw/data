@@ -347,8 +347,7 @@
                                     //     })
                                     // });
                                     // feature.setStyle(newStyle);
-                                }
-                                else if (geometryType == 'Polygon') {
+                                } else if (geometryType == 'Polygon') {
                                     var content = '';
                                     for (var key in properties) {
                                         if (key !== 'geometry') {
@@ -383,14 +382,39 @@
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
                                 // Send an Ajax request to Laravel route to add the feature to JSON
-                                if(value == "Polygen"){
-                                alert(coordinates);
-                                }
-                                $.ajax({
+                                if (value == "Polygon") {
+                                    alert(coordinates);
+                                    $.ajax({
                                     url: '/add-feature',
                                     type: 'POST', // Use POST method
                                     data: JSON.stringify({
                                         '_token': '{{ csrf_token() }}',
+                                        'type': 'Polygon',
+                                        'coordinates': coordinates,
+                                        'gis_id': feature
+                                            .getId() // Assuming you're setting an ID for the feature
+                                    }),
+                                    contentType: 'application/json', // Set content type to JSON
+                                    success: function(response) {
+                                        console.log(response.message);
+                                        // Handle success response
+                                        // Refresh the map and update JSON data after point addition
+                                        refreshMapAndData();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(error);
+                                        // Handle error response
+                                    }
+                                });
+                                }
+                                if (value == 'Point') {
+                                    alert(coordinates);
+                                    $.ajax({
+                                    url: '/add-feature',
+                                    type: 'POST', // Use POST method
+                                    data: JSON.stringify({
+                                        '_token': '{{ csrf_token() }}',
+                                        'type': 'Point',
                                         'longitude': coordinates[0],
                                         'latitude': coordinates[1],
                                         'gis_id': feature
@@ -408,6 +432,8 @@
                                         // Handle error response
                                     }
                                 });
+                                }
+
                             });
                         }
                     }
