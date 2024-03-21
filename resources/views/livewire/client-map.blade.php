@@ -281,8 +281,8 @@ var createLabelStyleFunction = function(text) {
 };
 
 // Apply the style function to the vector building layer
-vectorBuildingLayer.setStyle(function(feature) {
-    var id = feature.get('Id'); // Extract Id from feature properties
+vectorLayer.setStyle(function(feature) {
+    var id = feature.get('GIS_ID'); // Extract Id from feature properties
     return createLabelStyleFunction(id);
 });
 
