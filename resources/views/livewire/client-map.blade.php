@@ -272,18 +272,17 @@ var createLabelStyleFunction = function(text) {
             textBaseline: 'bottom',
             placement: 'point',
             maxAngle: Math.PI / 4
+        }),
+        stroke: new ol.style.Stroke({
+            color: 'red',
+            width: 2
         })
-        // ,
-        // stroke: new ol.style.Stroke({
-        //     color: 'red',
-        //     width: 2
-        // })
     });
 };
 
 // Apply the style function to the vector building layer
-vectorLayer.setStyle(function(feature) {
-    var id = feature.get('GIS_ID'); // Extract Id from feature properties
+vectorBuildingLayer.setStyle(function(feature) {
+    var id = feature.get('Id'); // Extract Id from feature properties
     return createLabelStyleFunction(id);
 });
 
