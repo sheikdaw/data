@@ -389,8 +389,8 @@
                                     type: 'POST', // Use POST method
                                     data: JSON.stringify({
                                         '_token': '{{ csrf_token() }}',
-                                        'longitude': coordinates[0],
-                                        'latitude': coordinates[1],
+                                        'type': 'Polygon',
+                                        'coordinates': coordinates,
                                         'gis_id': feature
                                             .getId() // Assuming you're setting an ID for the feature
                                     }),
@@ -414,6 +414,7 @@
                                     type: 'POST', // Use POST method
                                     data: JSON.stringify({
                                         '_token': '{{ csrf_token() }}',
+                                        'type': 'Point',
                                         'longitude': coordinates[0],
                                         'latitude': coordinates[1],
                                         'gis_id': feature
