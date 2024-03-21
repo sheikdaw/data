@@ -489,10 +489,10 @@
                                     return response.json();
                                 })
                                 .then(buildingJsonData => {
-                                    var buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
                                     // Add new features to the vector source
-                                    vectorBuildingSource.addFeatures(buildingFeatures);
+                                    vectorBuildingSource.addFeatures(features);
 
                                     // // Iterate over features to set style
                                     // buildingFeatures.forEach(function(feature) {
