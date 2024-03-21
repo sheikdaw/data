@@ -265,7 +265,7 @@ var createLabelStyleFunction = function(text) {
             text: text.toString(), // Convert Id to string
             font: '12px Calibri,sans-serif',
             fill: new ol.style.Fill({ color: '##ffff00' }),
-            stroke: new ol.style.Stroke({ color: '#fff', width: 2 }),
+            stroke: new ol.style.Stroke({ color: '#ffff00', width: 2 }),
             offsetX: 0,
             offsetY: -20,
             textAlign: 'center',
