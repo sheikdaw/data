@@ -134,8 +134,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <!-- Moved submit button inside the form -->
-                            <button type="submit" class="btn btn-primary">Save image</button>
+                            <button type="submit" id="pointSubmit" class="btn btn-primary">Save image</button>
                         </div>
                     </form>
 
