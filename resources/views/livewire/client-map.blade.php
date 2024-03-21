@@ -243,21 +243,6 @@
                             imageExtent: extent
                         })
                     });
-
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), imageLayer, vectorBuildingLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
-                            projection: 'EPSG:3857',
-                            zoom: 20
-                        })
-                    });
                     // Function to create style with text label and red border
                     var createLabelStyleFunction = function(text) {
     return new ol.style.Style({
@@ -285,6 +270,22 @@ vectorBuildingLayer.setStyle(function(feature) {
     var id = feature.get('OBJECTID'); // Extract Id from feature properties
     return createLabelStyleFunction(id);
 });
+
+
+                    var map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }), imageLayer, vectorBuildingLayer,
+                            vectorLayer
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
+                            projection: 'EPSG:3857',
+                            zoom: 20
+                        })
+                    });
 
 
                     var markerLayer = new ol.layer.Vector({
