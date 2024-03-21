@@ -258,6 +258,30 @@
                             zoom: 20
                         })
                     });
+                    // Function to create style with text label
+var createLabelStyleFunction = function(text) {
+    return new ol.style.Style({
+        text: new ol.style.Text({
+            text: text.toString(), // Convert Id to string
+            font: '12px Calibri,sans-serif',
+            fill: new ol.style.Fill({ color: '#000' }),
+            stroke: new ol.style.Stroke({ color: '#fff', width: 2 }),
+            offsetX: 0,
+            offsetY: -20,
+            textAlign: 'center',
+            textBaseline: 'bottom',
+            placement: 'point',
+            maxAngle: Math.PI / 4
+        })
+    });
+};
+
+// Apply the style function to the vector building layer
+vectorBuildingLayer.setStyle(function(feature) {
+    var id = feature.get('Id'); // Extract Id from feature properties
+    return createLabelStyleFunction(id);
+});
+
 
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
