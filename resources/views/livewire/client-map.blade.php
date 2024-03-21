@@ -459,15 +459,15 @@
                                     // Add new features to the vector source
                                     vectorSource.addFeatures(features);
 
-                                    // Iterate over features to set style
-                                    features.forEach(function(feature) {
-                                        var properties = feature.getProperties();
-                                        if (gisIdSet.has(properties['GIS_ID'])) {
-                                            feature.setStyle(completeStyle);
-                                        } else {
-                                            feature.setStyle(clickedStyle);
-                                        }
-                                    });
+                                    // // Iterate over features to set style
+                                    // features.forEach(function(feature) {
+                                    //     var properties = feature.getProperties();
+                                    //     if (gisIdSet.has(properties['GIS_ID'])) {
+                                    //         feature.setStyle(completeStyle);
+                                    //     } else {
+                                    //         feature.setStyle(clickedStyle);
+                                    //     }
+                                    // });
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
