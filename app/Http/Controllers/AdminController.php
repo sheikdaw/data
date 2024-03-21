@@ -378,7 +378,7 @@ class AdminController extends Controller
     public function addFeature(Request $request)
     {
         if ($request->type == "Polygon") { // Corrected "polygon" spelling
-            $data = json_decode(file_get_contents(public_path('public/kovai/building.json')), true);
+            $data = json_decode(file_get_contents(public_path('kovai/building.json')), true);
 
             // Assuming 'features' is an existing array in your JSON data
             $features = $data['features'];
@@ -411,7 +411,7 @@ class AdminController extends Controller
             $data['features'] = $features;
 
             // Write the updated JSON data back to the file
-            file_put_contents(public_path('public/kovai/building.json'), json_encode($data, JSON_PRETTY_PRINT));
+            file_put_contents(public_path('kovai/building.json'), json_encode($data, JSON_PRETTY_PRINT));
 
             return response()->json(['message' => 'Feature added successfully']);
         }
