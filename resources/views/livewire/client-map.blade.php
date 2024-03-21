@@ -383,6 +383,7 @@
                                 const coordinates = geometry.getCoordinates();
                                 // Send an Ajax request to Laravel route to add the feature to JSON
                                 if (value == "Polygon") {
+                                    alert(coordinates);
                                     $.ajax({
                                     url: '/add-feature',
                                     type: 'POST', // Use POST method
@@ -407,6 +408,7 @@
                                 });
                                 }
                                 if (value == 'Point') {
+                                    alert(coordinates);
                                     $.ajax({
                                     url: '/add-feature',
                                     type: 'POST', // Use POST method
