@@ -342,28 +342,27 @@ vectorBuildingLayer.setStyle(function(feature) {
                     });
 
                     map.on('click', function(event) {
-    if (document.getElementById('type').value == 'None') {
-        var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-            return feature;
-        });
+    var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+        return feature;
+    });
 
-        if (feature) {
-            var properties = feature.getProperties();
-            var geometryType = feature.getGeometry().getType();
+    if (feature) {
+        var properties = feature.getProperties();
+        console.log('Clicked Feature Properties:', properties);
 
-            var content = '';
-            for (var key in properties) {
-                if (key !== 'geometry') {
-                    content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                        '</li>';
-                }
+        var content = '';
+        for (var key in properties) {
+            if (key !== 'geometry') {
+                content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                    '</li>';
             }
-            document.getElementById('featurePropertiesList').innerHTML = content;
-            document.getElementById('gisIdInput').value = properties['Id']; // Adjusted to 'Id' assuming it's the property name for polygon features
-            $('#featureModal').modal('show');
-        } else {
-            $('#featureModal').modal('hide');
         }
+        document.getElementById('featurePropertiesList').innerHTML = content;
+        document.getElementById('gisIdInput').value = properties['Id']; // Adjusted to 'Id' assuming it's the property name for polygon features
+        $('#featureModal').modal('show');
+    } else {
+        console.log('No feature clicked.');
+        $('#featureModal').modal('hide');
     }
 });
 
