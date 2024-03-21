@@ -282,7 +282,7 @@ var createLabelStyleFunction = function(text) {
 
 // Apply the style function to the vector building layer
 vectorBuildingLayer.setStyle(function(feature) {
-    var id = feature.get('Id'); // Extract Id from feature properties
+    var id = feature.get('OBJECTID'); // Extract Id from feature properties
     return createLabelStyleFunction(id);
 });
 
