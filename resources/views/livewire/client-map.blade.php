@@ -258,34 +258,6 @@
                             zoom: 20
                         })
                     });
-                    // Function to create style with text label and red border
-var createLabelStyleFunction = function(text) {
-    return new ol.style.Style({
-        text: new ol.style.Text({
-            text: text.toString(), // Convert Id to string
-            font: '25px Calibri,sans-serif',
-            fill: new ol.style.Fill({ color: '##ffff00' }),
-            stroke: new ol.style.Stroke({ color: '#ffff00', width: 2 }),
-            offsetX: 0,
-            offsetY: -20,
-            textAlign: 'center',
-            textBaseline: 'bottom',
-            placement: 'point',
-            maxAngle: Math.PI / 4
-        }),
-        stroke: new ol.style.Stroke({
-            color: 'red',
-            width: 2
-        })
-    });
-};
-
-// Apply the style function to the vector building layer
-vectorBuildingLayer.setStyle(function(feature) {
-    var id = feature.get('OBJECTID'); // Extract Id from feature properties
-    return createLabelStyleFunction(id);
-});
-
 
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
@@ -375,7 +347,8 @@ vectorBuildingLayer.setStyle(function(feature) {
                                     //     })
                                     // });
                                     // feature.setStyle(newStyle);
-                                } else if (geometryType == 'Polygon') {
+                                }
+                                else if (geometryType == 'Polygon') {
                                     var content = '';
                                     for (var key in properties) {
                                         if (key !== 'geometry') {
@@ -410,124 +383,67 @@ vectorBuildingLayer.setStyle(function(feature) {
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
                                 // Send an Ajax request to Laravel route to add the feature to JSON
-                                if (value == "Polygon") {
-                                    alert(coordinates);
-                                    $.ajax({
-                                        url: '/add-feature',
-                                        type: 'POST', // Use POST method
-                                        data: JSON.stringify({
-                                            '_token': '{{ csrf_token() }}',
-                                            'type': 'Polygon',
-                                            'coordinates': coordinates,
-                                            'gis_id': feature
-                                                .getId() // Assuming you're setting an ID for the feature
-                                        }),
-                                        contentType: 'application/json', // Set content type to JSON
-                                        success: function(response) {
-                                            console.log(response.message);
-                                            // Handle success response
-                                            // Refresh the map and update JSON data after point addition
-                                            refreshMapAndData("Polygen");
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error(error);
-                                            // Handle error response
-                                        }
-                                    });
+                                if(value == "Polygen"){
+                                alert(coordinates);
                                 }
-                                if (value == 'Point') {
-                                    alert(coordinates);
-                                    $.ajax({
-                                        url: '/add-feature',
-                                        type: 'POST', // Use POST method
-                                        data: JSON.stringify({
-                                            '_token': '{{ csrf_token() }}',
-                                            'type': 'Point',
-                                            'longitude': coordinates[0],
-                                            'latitude': coordinates[1],
-                                            'gis_id': feature
-                                                .getId() // Assuming you're setting an ID for the feature
-                                        }),
-                                        contentType: 'application/json', // Set content type to JSON
-                                        success: function(response) {
-                                            console.log(response.message);
-                                            // Handle success response
-                                            // Refresh the map and update JSON data after point addition
-                                            refreshMapAndData("point");
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error(error);
-                                            // Handle error response
-                                        }
-                                    });
-                                }
-
+                                $.ajax({
+                                    url: '/add-feature',
+                                    type: 'POST', // Use POST method
+                                    data: JSON.stringify({
+                                        '_token': '{{ csrf_token() }}',
+                                        'longitude': coordinates[0],
+                                        'latitude': coordinates[1],
+                                        'gis_id': feature
+                                            .getId() // Assuming you're setting an ID for the feature
+                                    }),
+                                    contentType: 'application/json', // Set content type to JSON
+                                    success: function(response) {
+                                        console.log(response.message);
+                                        // Handle success response
+                                        // Refresh the map and update JSON data after point addition
+                                        refreshMapAndData();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(error);
+                                        // Handle error response
+                                    }
+                                });
                             });
                         }
                     }
-                    var type;
 
-                    function refreshMapAndData(type) {
-                        if (type == "Point") {
+                    function refreshMapAndData() {
+                        // Clear the vector source to remove existing features from the map
+                        vectorSource.clear();
 
-                            // Clear the vector source to remove existing features from the map
-                            vectorSource.clear();
+                        // Fetch new GeoJSON data
+                        fetch(pointpath)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Failed to load GeoJSON file');
+                                }
+                                return response.json();
+                            })
+                            .then(pointJsonData => {
+                                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
-                            // Fetch new GeoJSON data
-                            fetch(pointpath)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to load GeoJSON file');
+                                // Add new features to the vector source
+                                vectorSource.addFeatures(features);
+
+                                // Iterate over features to set style
+                                features.forEach(function(feature) {
+                                    var properties = feature.getProperties();
+                                    if (gisIdSet.has(properties['GIS_ID'])) {
+                                        feature.setStyle(completeStyle);
+                                    } else {
+                                        feature.setStyle(clickedStyle);
                                     }
-                                    return response.json();
-                                })
-                                .then(pointJsonData => {
-                                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                                    // Add new features to the vector source
-                                    vectorSource.addFeatures(features);
-
-                                    // Iterate over features to set style
-                                    features.forEach(function(feature) {
-                                        var properties = feature.getProperties();
-                                        if (gisIdSet.has(properties['GIS_ID'])) {
-                                            feature.setStyle(completeStyle);
-                                        } else {
-                                            feature.setStyle(clickedStyle);
-                                        }
-                                    });
-                                })
-                                .catch(error => {
-                                    console.error('Error refreshing map and data:', error);
-                                    // Handle error
                                 });
-
-
-                        } else if (type == "Polygon") {
-
-                            // Clear the vector source to remove existing features from the map
-                            vectorBuildingSource.clear();
-
-                            // Fetch new GeoJSON data
-                            fetch(buildingpath)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to load GeoJSON file');
-                                    }
-                                    return response.json();
-                                })
-                                .then(buildingJsonData => {
-                                    var buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-
-                                    // Add new features to the vector source
-                                    vectorSource.addFeatures(buildingFeatures);
-                                })
-                                .catch(error => {
-                                    console.error('Error refreshing map and data:', error);
-                                    // Handle error
-                                });
-
-                        }
+                            })
+                            .catch(error => {
+                                console.error('Error refreshing map and data:', error);
+                                // Handle error
+                            });
                     }
                     /**
                      * Handle change event.
