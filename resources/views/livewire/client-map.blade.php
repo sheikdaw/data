@@ -492,10 +492,10 @@
                                     var buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
                                     // Add new features to the vector source
-                                    vectorSource.addFeatures(buildingFeatures);
+                                    vectorBuildingSource.addFeatures(buildingFeatures);
 
                                     // Iterate over features to set style
-                                    features.forEach(function(feature) {
+                                    buildingFeatures.forEach(function(feature) {
                                         var properties = feature.getProperties();
                                         if (gisIdSet.has(properties['GIS_ID'])) {
                                             feature.setStyle(completeStyle);
