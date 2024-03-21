@@ -323,7 +323,7 @@
                                 var properties = feature.getProperties();
                                 var geometryType = feature.getGeometry().getType();
                                 //alert("Geometry type: " + geometryType);
-                                if (geometryType == 'MultiPoint') {
+                                if (geometryType == 'Point') {
                                     var content = '';
                                     for (var key in properties) {
                                         if (key !== 'geometry') {
