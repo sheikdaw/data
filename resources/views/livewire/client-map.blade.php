@@ -321,6 +321,7 @@
 
                             if (feature) {
                                 var properties = feature.getProperties();
+                                alert(properties);
                                 var geometryType = feature.getGeometry().getType();
                                 //alert("Geometry type: " + geometryType);
                                 if (geometryType == 'Point') {
