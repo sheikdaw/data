@@ -243,6 +243,21 @@
                             imageExtent: extent
                         })
                     });
+
+                    var map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }), imageLayer, vectorBuildingLayer,
+                            vectorLayer
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
+                            projection: 'EPSG:3857',
+                            zoom: 20
+                        })
+                    });
                     // Function to create style with text label and red border
                     var createLabelStyleFunction = function(text) {
     return new ol.style.Style({
@@ -270,22 +285,6 @@ vectorBuildingLayer.setStyle(function(feature) {
     var id = feature.get('OBJECTID'); // Extract Id from feature properties
     return createLabelStyleFunction(id);
 });
-
-
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), imageLayer, vectorBuildingLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
-                            projection: 'EPSG:3857',
-                            zoom: 20
-                        })
-                    });
 
 
                     var markerLayer = new ol.layer.Vector({
@@ -343,57 +342,31 @@ vectorBuildingLayer.setStyle(function(feature) {
                     });
 
                     map.on('click', function(event) {
-                        if (document.getElementById('type').value == 'None') {
-                            var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-                                return feature;
-                            });
+    if (document.getElementById('type').value == 'None') {
+        var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+            return feature;
+        });
 
-                            if (feature) {
-                                var properties = feature.getProperties();
-                                var geometryType = feature.getGeometry().getType();
-                                //alert("Geometry type: " + geometryType);
-                                if (geometryType == 'MultiPoint') {
-                                    var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
-                                    }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
-                                    // var newStyle = new ol.style.Style({
-                                    //     image: new ol.style.Circle({
-                                    //         radius: 6,
-                                    //         fill: new ol.style.Fill({
-                                    //             color: 'blue' // Change color as desired
-                                    //         }),
-                                    //         stroke: new ol.style.Stroke({
-                                    //             color: 'white'
+        if (feature) {
+            var properties = feature.getProperties();
+            var geometryType = feature.getGeometry().getType();
 
-                                    //         })
-                                    //     })
-                                    // });
-                                    // feature.setStyle(newStyle);
-                                } else if (geometryType == 'Polygon') {
-                                    var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
-                                    }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
+            var content = '';
+            for (var key in properties) {
+                if (key !== 'geometry') {
+                    content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                        '</li>';
+                }
+            }
+            document.getElementById('featurePropertiesList').innerHTML = content;
+            document.getElementById('gisIdInput').value = properties['Id']; // Adjusted to 'Id' assuming it's the property name for polygon features
+            $('#featureModal').modal('show');
+        } else {
+            $('#featureModal').modal('hide');
+        }
+    }
+});
 
-                                }
-                            } else {
-                                $('#featureModal').modal('hide');
-                            }
-                        }
-                    });
                     const typeSelect = document.getElementById('type');
 
                     let draw; // global so we can remove it later
