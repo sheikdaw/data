@@ -276,6 +276,9 @@
         stroke: new ol.style.Stroke({
             color: 'red',
             width: 2
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0.1)' // Red fill with opacity
         })
     });
 };
