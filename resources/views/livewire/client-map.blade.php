@@ -399,7 +399,7 @@
                                             console.log(response.message);
                                             // Handle success response
                                             // Refresh the map and update JSON data after point addition
-                                            refreshMapAndData("Polygen");
+                                            refreshMapAndData("Polygon");
                                         },
                                         error: function(xhr, status, error) {
                                             console.error(error);
