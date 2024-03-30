@@ -409,32 +409,32 @@ vectorBuildingLayer.setStyle(function(feature) {
                                 const feature = event.feature;
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
-                                // Send an Ajax request to Laravel route to add the feature to JSON
-                                if (value == "Polygon") {
-                                    alert(coordinates);
-                                    $.ajax({
-                                        url: '/add-feature',
-                                        type: 'POST', // Use POST method
-                                        data: JSON.stringify({
-                                            '_token': '{{ csrf_token() }}',
-                                            'type': 'Polygon',
-                                            'coordinates': coordinates,
-                                            'gis_id': feature
-                                                .getId() // Assuming you're setting an ID for the feature
-                                        }),
-                                        contentType: 'application/json', // Set content type to JSON
-                                        success: function(response) {
-                                            console.log(response.message);
-                                            // Handle success response
-                                            // Refresh the map and update JSON data after point addition
-                                            refreshMapAndData("Polygen");
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error(error);
-                                            // Handle error response
-                                        }
-                                    });
-                                }
+                                // // Send an Ajax request to Laravel route to add the feature to JSON
+                                // if (value == "Polygon") {
+                                //     alert(coordinates);
+                                //     $.ajax({
+                                //         url: '/add-feature',
+                                //         type: 'POST', // Use POST method
+                                //         data: JSON.stringify({
+                                //             '_token': '{{ csrf_token() }}',
+                                //             'type': 'Polygon',
+                                //             'coordinates': coordinates,
+                                //             'gis_id': feature
+                                //                 .getId() // Assuming you're setting an ID for the feature
+                                //         }),
+                                //         contentType: 'application/json', // Set content type to JSON
+                                //         success: function(response) {
+                                //             console.log(response.message);
+                                //             // Handle success response
+                                //             // Refresh the map and update JSON data after point addition
+                                //             refreshMapAndData("Polygen");
+                                //         },
+                                //         error: function(xhr, status, error) {
+                                //             console.error(error);
+                                //             // Handle error response
+                                //         }
+                                //     });
+                                // }
                                 if (value == 'Point') {
                                     alert(coordinates);
                                     $.ajax({
@@ -503,31 +503,32 @@ vectorBuildingLayer.setStyle(function(feature) {
                                 });
 
 
-                        } else if (type == "Polygon") {
-
-                            // Clear the vector source to remove existing features from the map
-                            vectorBuildingSource.clear();
-
-                            // Fetch new GeoJSON data
-                            fetch(buildingpath)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to load GeoJSON file');
-                                    }
-                                    return response.json();
-                                })
-                                .then(buildingJsonData => {
-                                    var buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-
-                                    // Add new features to the vector source
-                                    vectorSource.addFeatures(buildingFeatures);
-                                })
-                                .catch(error => {
-                                    console.error('Error refreshing map and data:', error);
-                                    // Handle error
-                                });
-
                         }
+                        // else if (type == "Polygon") {
+
+                        //     // Clear the vector source to remove existing features from the map
+                        //     vectorBuildingSource.clear();
+
+                        //     // Fetch new GeoJSON data
+                        //     fetch(buildingpath)
+                        //         .then(response => {
+                        //             if (!response.ok) {
+                        //                 throw new Error('Failed to load GeoJSON file');
+                        //             }
+                        //             return response.json();
+                        //         })
+                        //         .then(buildingJsonData => {
+                        //             var buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+
+                        //             // Add new features to the vector source
+                        //             vectorSource.addFeatures(buildingFeatures);
+                        //         })
+                        //         .catch(error => {
+                        //             console.error('Error refreshing map and data:', error);
+                        //             // Handle error
+                        //         });
+
+                        // }
                     }
                     /**
                      * Handle change event.
