@@ -255,7 +255,8 @@
                         view: new ol.View({
                             center: ol.proj.fromLonLat([76.955393, 11.020899]),
                             projection: 'EPSG:3857',
-                            zoom: 20
+                            zoom: 20,
+                            minZoom: 10
                         })
                     });
                     // Function to create style with text label and red border
