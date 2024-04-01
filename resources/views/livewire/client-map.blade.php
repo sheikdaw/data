@@ -259,34 +259,34 @@
                         })
                     });
                     // Function to create style with text label and red border
-                    // var createLabelStyleFunction = function(text) {
-                    //     return new ol.style.Style({
-                    //         text: new ol.style.Text({
-                    //             text: text.toString(), // Convert Id to string
-                    //             font: '25px Calibri,sans-serif',
-                    //             fill: new ol.style.Fill({
-                    //                 color: '##ffff00'
-                    //             }),
-                    //             stroke: new ol.style.Stroke({
-                    //                 color: '#ffff00',
-                    //                 width: 2
-                    //             }),
-                    //             offsetX: 0,
-                    //             offsetY: -20,
-                    //             textAlign: 'center',
-                    //             textBaseline: 'bottom',
-                    //             placement: 'point',
-                    //             maxAngle: Math.PI / 4
-                    //         }),
-                    //         stroke: new ol.style.Stroke({
-                    //             color: 'red',
-                    //             width: 2
-                    //         }),
-                    //         fill: new ol.style.Fill({
-                    //             color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
-                    //         })
-                    //     });
-                    // };
+                    var createLabelStyleFunction = function(text) {
+                        return new ol.style.Style({
+                            text: new ol.style.Text({
+                                text: text, // Convert Id to string
+                                font: '25px Calibri,sans-serif',
+                                fill: new ol.style.Fill({
+                                    color: '##ffff00'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#ffff00',
+                                    width: 2
+                                }),
+                                offsetX: 0,
+                                offsetY: -20,
+                                textAlign: 'center',
+                                textBaseline: 'bottom',
+                                placement: 'point',
+                                maxAngle: Math.PI / 4
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: 2
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                            })
+                        });
+                    };
 
                     // Apply the style function to the vector building layer
                     vectorBuildingLayer.setStyle(function(feature) {
