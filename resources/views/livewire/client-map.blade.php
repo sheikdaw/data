@@ -163,44 +163,44 @@
                         });
                 }
 
-                configureMapLayersAndInteractions(pointJsonData, buildingJsonData) {
-                    console.log('Point JSON data:', pointJsonData);
-                    console.log('Building JSON data:', buildingJsonData);
-                    const features = new ol.format.GeoJSON().readFeatures(pointJsonData);
-                    const buildingFeatures = new ol.format.GeoJSON().readFeatures(buildingJsonData);
+                // configureMapLayersAndInteractions(pointJsonData, buildingJsonData) {
+                //     console.log('Point JSON data:', pointJsonData);
+                //     console.log('Building JSON data:', buildingJsonData);
+                //     const features = new ol.format.GeoJSON().readFeatures(pointJsonData);
+                //     const buildingFeatures = new ol.format.GeoJSON().readFeatures(buildingJsonData);
 
-                    const vectorLayer = new ol.layer.Vector({
-                        source: this.vectorSource
-                    });
+                //     const vectorLayer = new ol.layer.Vector({
+                //         source: this.vectorSource
+                //     });
 
-                    const vectorBuildingLayer = new ol.layer.Vector({
-                        source: this.vectorBuildingSource
-                    });
+                //     const vectorBuildingLayer = new ol.layer.Vector({
+                //         source: this.vectorBuildingSource
+                //     });
 
-                    const imageLayer = new ol.layer.Image({
-                        source: new ol.source.ImageStatic({
-                            url: "{{ asset('public/kovai/new/png2.png') }}",
-                            imageExtent: [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763]
-                        })
-                    });
+                //     const imageLayer = new ol.layer.Image({
+                //         source: new ol.source.ImageStatic({
+                //             url: "{{ asset('public/kovai/new/png2.png') }}",
+                //             imageExtent: [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763]
+                //         })
+                //     });
 
-                    const map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }),
-                            imageLayer,
-                            vectorBuildingLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
-                            projection: 'EPSG:3857',
-                            zoom: 20
-                        })
-                    });
-                }
+                //     const map = new ol.Map({
+                //         target: 'map',
+                //         layers: [
+                //             new ol.layer.Tile({
+                //                 source: new ol.source.OSM()
+                //             }),
+                //             imageLayer,
+                //             vectorBuildingLayer,
+                //             vectorLayer
+                //         ],
+                //         view: new ol.View({
+                //             center: ol.proj.fromLonLat([76.955393, 11.020899]),
+                //             projection: 'EPSG:3857',
+                //             zoom: 20
+                //         })
+                //     });
+                // }
 
                 initialize() {
                     var pointJsonPromise = fetch(pointpath)
