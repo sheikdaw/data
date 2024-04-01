@@ -398,7 +398,7 @@ class AdminController extends Controller
                     "coordinates" => $coordinates // Use the provided coordinates
                 ],
                 "properties" => [
-                    "FID" => count($features), // Using the same ID as 'id' for simplicity
+                    "FID" => count($features)+1, // Using the same ID as 'id' for simplicity
                     "Id" => 0,
                     "GIS_ID" => count($features) + 1
                 ]

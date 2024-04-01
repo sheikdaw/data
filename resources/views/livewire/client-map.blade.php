@@ -292,271 +292,271 @@
                         }
                     };
 
-                    console.log('Building features:', buildingfeatures);
-                    // Apply the style function to the vector building layer
-                    vectorBuildingLayer.setStyle(function(buildingfeatures) {
-                        var id = buildingfeatures.get('OBJECTID'); // Extract Id from feature properties
-                        return createLabelStyleFunction(id);
+                        console.log('Building features:', buildingfeatures);
+                        // Apply the style function to the vector building layer
+                        vectorBuildingLayer.setStyle(function(buildingfeatures) {
+                            var id = buildingfeatures.get('OBJECTID'); // Extract Id from feature properties
+                            return createLabelStyleFunction(id);
 
-                    });
-                    var markerLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector(),
-                        style: new ol.style.Style({
-                            image: new ol.style.Icon({
-                                anchor: [0.5, 1],
-                                src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
-                            })
-                        })
-                    });
-                    map.addLayer(markerLayer);
-
-                    if ('geolocation' in navigator) {
-                        navigator.geolocation.watchPosition(function(position) {
-                            var lonLat = [position.coords.longitude, position.coords.latitude];
-                            var pos = ol.proj.fromLonLat(lonLat);
-                            markerLayer.getSource().clear();
-                            var marker = new ol.Feature({
-                                geometry: new ol.geom.Point(pos)
-                            });
-                            markerLayer.getSource().addFeature(marker);
-                            map.getView().setCenter(pos);
-                        }, function(error) {
-                            console.error('Error getting geolocation:', error);
                         });
-                    } else {
-                        console.error('Geolocation is not supported by this browser.');
-                    }
+                        var markerLayer = new ol.layer.Vector({
+                            source: new ol.source.Vector(),
+                            style: new ol.style.Style({
+                                image: new ol.style.Icon({
+                                    anchor: [0.5, 1],
+                                    src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
+                                })
+                            })
+                        });
+                        map.addLayer(markerLayer);
 
-                    var popup = new ol.Overlay({
-                        element: document.getElementById('popup'),
-                        autoPan: true,
-                        autoPanAnimation: {
-                            duration: 250
-                        }
-                    });
-                    map.addOverlay(popup);
-
-                    var surveyed_img = @json($surveyed_img);
-
-                    var gisIdSet = new Set();
-
-                    surveyed_img.forEach(function(survey) {
-                        gisIdSet.add(survey.gisid);
-                    });
-
-                    features.forEach(function(feature) {
-                        var properties = feature.getProperties();
-                        if (gisIdSet.has(properties['GIS_ID'])) {
-                            feature.setStyle(completeStyle);
-                        } else {
-                            feature.setStyle(clickedStyle);
-                        }
-                    });
-
-                    map.on('click', function(event) {
-                        if (document.getElementById('type').value == 'None') {
-                            var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-                                return feature;
+                        if ('geolocation' in navigator) {
+                            navigator.geolocation.watchPosition(function(position) {
+                                var lonLat = [position.coords.longitude, position.coords.latitude];
+                                var pos = ol.proj.fromLonLat(lonLat);
+                                markerLayer.getSource().clear();
+                                var marker = new ol.Feature({
+                                    geometry: new ol.geom.Point(pos)
+                                });
+                                markerLayer.getSource().addFeature(marker);
+                                map.getView().setCenter(pos);
+                            }, function(error) {
+                                console.error('Error getting geolocation:', error);
                             });
+                        } else {
+                            console.error('Geolocation is not supported by this browser.');
+                        }
 
-                            if (feature) {
-                                var properties = feature.getProperties();
-                                alert(properties);
-                                var geometryType = feature.getGeometry().getType();
-                                //alert("Geometry type: " + geometryType);
-                                if (geometryType == 'Point') {
-                                    var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
-                                    }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
-                                    // var newStyle = new ol.style.Style({
-                                    //     image: new ol.style.Circle({
-                                    //         radius: 6,
-                                    //         fill: new ol.style.Fill({
-                                    //             color: 'blue' // Change color as desired
-                                    //         }),
-                                    //         stroke: new ol.style.Stroke({
-                                    //             color: 'white'
+                        var popup = new ol.Overlay({
+                            element: document.getElementById('popup'),
+                            autoPan: true,
+                            autoPanAnimation: {
+                                duration: 250
+                            }
+                        });
+                        map.addOverlay(popup);
 
-                                    //         })
-                                    //     })
-                                    // });
-                                    // feature.setStyle(newStyle);
-                                } else if (geometryType == 'Polygon') {
-                                    var content = '';
-                                    for (var key in properties) {
-                                        if (key !== 'geometry') {
-                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                '</li>';
-                                        }
-                                    }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
+                        var surveyed_img = @json($surveyed_img);
 
-                                }
+                        var gisIdSet = new Set();
+
+                        surveyed_img.forEach(function(survey) {
+                            gisIdSet.add(survey.gisid);
+                        });
+
+                        features.forEach(function(feature) {
+                            var properties = feature.getProperties();
+                            if (gisIdSet.has(properties['GIS_ID'])) {
+                                feature.setStyle(completeStyle);
                             } else {
-                                $('#featureModal').modal('hide');
+                                feature.setStyle(clickedStyle);
+                            }
+                        });
+
+                        map.on('click', function(event) {
+                            if (document.getElementById('type').value == 'None') {
+                                var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+                                    return feature;
+                                });
+
+                                if (feature) {
+                                    var properties = feature.getProperties();
+                                    alert(properties);
+                                    var geometryType = feature.getGeometry().getType();
+                                    //alert("Geometry type: " + geometryType);
+                                    if (geometryType == 'Point') {
+                                        var content = '';
+                                        for (var key in properties) {
+                                            if (key !== 'geometry') {
+                                                content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                    '</li>';
+                                            }
+                                        }
+                                        document.getElementById('featurePropertiesList').innerHTML = content;
+                                        document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                        $('#featureModal').modal('show');
+                                        // var newStyle = new ol.style.Style({
+                                        //     image: new ol.style.Circle({
+                                        //         radius: 6,
+                                        //         fill: new ol.style.Fill({
+                                        //             color: 'blue' // Change color as desired
+                                        //         }),
+                                        //         stroke: new ol.style.Stroke({
+                                        //             color: 'white'
+
+                                        //         })
+                                        //     })
+                                        // });
+                                        // feature.setStyle(newStyle);
+                                    } else if (geometryType == 'Polygon') {
+                                        var content = '';
+                                        for (var key in properties) {
+                                            if (key !== 'geometry') {
+                                                content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                    '</li>';
+                                            }
+                                        }
+                                        document.getElementById('featurePropertiesList').innerHTML = content;
+                                        document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                        $('#featureModal').modal('show');
+
+                                    }
+                                } else {
+                                    $('#featureModal').modal('hide');
+                                }
+                            }
+                        });
+                        const typeSelect = document.getElementById('type');
+
+                        let draw; // global so we can remove it later
+
+                        function addInteraction() {
+                            const value = typeSelect.value;
+                            if (value !== 'None') {
+                                draw = new ol.interaction.Draw({
+                                    source: vectorSource,
+                                    type: typeSelect.value,
+                                });
+                                map.addInteraction(draw);
+                                draw.on('drawend', function(event) {
+                                    const feature = event.feature;
+                                    const geometry = feature.getGeometry();
+                                    const coordinates = geometry.getCoordinates();
+                                    // Send an Ajax request to Laravel route to add the feature to JSON
+                                    if (value == "Polygon") {
+                                        alert(coordinates);
+                                        $.ajax({
+                                            url: '/add-feature',
+                                            type: 'POST', // Use POST method
+                                            data: JSON.stringify({
+                                                '_token': '{{ csrf_token() }}',
+                                                'type': 'Polygon',
+                                                'coordinates': coordinates,
+                                                'gis_id': feature
+                                                    .getId() // Assuming you're setting an ID for the feature
+                                            }),
+                                            contentType: 'application/json', // Set content type to JSON
+                                            success: function(response) {
+                                                console.log(response.message);
+                                                // Handle success response
+                                                // Refresh the map and update JSON data after point addition
+                                                refreshMapAndData("Polygon");
+                                            },
+                                            error: function(xhr, status, error) {
+                                                console.error(error);
+                                                // Handle error response
+                                            }
+                                        });
+                                    }
+                                    if (value == 'Point') {
+                                        alert(coordinates);
+                                        $.ajax({
+                                            url: '/add-feature',
+                                            type: 'POST', // Use POST method
+                                            data: JSON.stringify({
+                                                '_token': '{{ csrf_token() }}',
+                                                'type': 'Point',
+                                                'longitude': coordinates[0],
+                                                'latitude': coordinates[1],
+                                                'gis_id': feature
+                                                    .getId() // Assuming you're setting an ID for the feature
+                                            }),
+                                            contentType: 'application/json', // Set content type to JSON
+                                            success: function(response) {
+                                                console.log(response.message);
+                                                // Handle success response
+                                                // Refresh the map and update JSON data after point addition
+                                                refreshMapAndData("Point");
+                                            },
+                                            error: function(xhr, status, error) {
+                                                console.error(error);
+                                                // Handle error response
+                                            }
+                                        });
+                                    }
+
+                                });
                             }
                         }
-                    });
-                    const typeSelect = document.getElementById('type');
+                        var type;
 
-                    let draw; // global so we can remove it later
+                        function refreshMapAndData(type) {
+                            if (type === "Point") {
+                                vectorSource.clear();
 
-                    function addInteraction() {
-                        const value = typeSelect.value;
-                        if (value !== 'None') {
-                            draw = new ol.interaction.Draw({
-                                source: vectorSource,
-                                type: typeSelect.value,
-                            });
-                            map.addInteraction(draw);
-                            draw.on('drawend', function(event) {
-                                const feature = event.feature;
-                                const geometry = feature.getGeometry();
-                                const coordinates = geometry.getCoordinates();
-                                // Send an Ajax request to Laravel route to add the feature to JSON
-                                if (value == "Polygon") {
-                                    alert(coordinates);
-                                    $.ajax({
-                                        url: '/add-feature',
-                                        type: 'POST', // Use POST method
-                                        data: JSON.stringify({
-                                            '_token': '{{ csrf_token() }}',
-                                            'type': 'Polygon',
-                                            'coordinates': coordinates,
-                                            'gis_id': feature
-                                                .getId() // Assuming you're setting an ID for the feature
-                                        }),
-                                        contentType: 'application/json', // Set content type to JSON
-                                        success: function(response) {
-                                            console.log(response.message);
-                                            // Handle success response
-                                            // Refresh the map and update JSON data after point addition
-                                            refreshMapAndData("Polygon");
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error(error);
-                                            // Handle error response
+                                fetch(pointpath)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Failed to load GeoJSON file');
                                         }
+                                        return response.json();
+                                    })
+                                    .then(pointJsonData => {
+                                        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+
+                                        vectorSource.addFeatures(features);
+
+                                        // Debugging: Log features to check if they are correctly loaded
+                                        console.log('Point features:', features);
+
+                                        // Optionally, set map view extent based on the added features
+                                        // map.getView().fit(vectorSource.getExtent());
+
+                                        // Debugging: Log map view extent to verify if it covers the added features
+                                        // console.log('Map view extent:', map.getView().calculateExtent());
+
+                                        // Apply style to features
+                                        features.forEach(function(feature) {
+                                            // Set style based on feature properties or any other condition
+                                            feature.setStyle(clickedStyle);
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Error refreshing map and data:', error);
                                     });
-                                }
-                                if (value == 'Point') {
-                                    alert(coordinates);
-                                    $.ajax({
-                                        url: '/add-feature',
-                                        type: 'POST', // Use POST method
-                                        data: JSON.stringify({
-                                            '_token': '{{ csrf_token() }}',
-                                            'type': 'Point',
-                                            'longitude': coordinates[0],
-                                            'latitude': coordinates[1],
-                                            'gis_id': feature
-                                                .getId() // Assuming you're setting an ID for the feature
-                                        }),
-                                        contentType: 'application/json', // Set content type to JSON
-                                        success: function(response) {
-                                            console.log(response.message);
-                                            // Handle success response
-                                            // Refresh the map and update JSON data after point addition
-                                            refreshMapAndData("Point");
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error(error);
-                                            // Handle error response
+                            } else if (type === "Polygon") {
+                                vectorBuildingSource.clear();
+
+                                fetch(buildingpath)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Failed to load GeoJSON file');
                                         }
-                                    });
-                                }
+                                        return response.json();
+                                    })
+                                    .then(buildingJsonData => {
+                                        var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
-                            });
+                                        vectorBuildingSource.addFeatures(features);
+
+                                        // Debugging: Log features to check if they are correctly loaded
+                                        console.log('Building features:', features);
+
+                                        // Optionally, set map view extent based on the added features
+                                        // map.getView().fit(vectorBuildingSource.getExtent());
+
+                                        // Debugging: Log map view extent to verify if it covers the added features
+                                        // console.log('Map view extent:', map.getView().calculateExtent());
+
+                                        // Apply style to features
+                                        features.forEach(function(feature) {
+                                            // Set style based on feature properties or any other condition
+                                            feature.setStyle(createLabelStyleFunction(feature.getId()));
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Error refreshing map and data:', error);
+                                    });
+                            }
                         }
-                    }
-                    var type;
 
-                    function refreshMapAndData(type) {
-                        if (type === "Point") {
-                            vectorSource.clear();
-
-                            fetch(pointpath)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to load GeoJSON file');
-                                    }
-                                    return response.json();
-                                })
-                                .then(pointJsonData => {
-                                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
-                                    vectorSource.addFeatures(features);
-
-                                    // Debugging: Log features to check if they are correctly loaded
-                                    console.log('Point features:', features);
-
-                                    // Optionally, set map view extent based on the added features
-                                    // map.getView().fit(vectorSource.getExtent());
-
-                                    // Debugging: Log map view extent to verify if it covers the added features
-                                    // console.log('Map view extent:', map.getView().calculateExtent());
-
-                                    // Apply style to features
-                                    features.forEach(function(feature) {
-                                        // Set style based on feature properties or any other condition
-                                        feature.setStyle(clickedStyle);
-                                    });
-                                })
-                                .catch(error => {
-                                    console.error('Error refreshing map and data:', error);
-                                });
-                        } else if (type === "Polygon") {
-                            vectorBuildingSource.clear();
-
-                            fetch(buildingpath)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to load GeoJSON file');
-                                    }
-                                    return response.json();
-                                })
-                                .then(buildingJsonData => {
-                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-
-                                    vectorBuildingSource.addFeatures(features);
-
-                                    // Debugging: Log features to check if they are correctly loaded
-                                    console.log('Building features:', features);
-
-                                    // Optionally, set map view extent based on the added features
-                                    // map.getView().fit(vectorBuildingSource.getExtent());
-
-                                    // Debugging: Log map view extent to verify if it covers the added features
-                                    // console.log('Map view extent:', map.getView().calculateExtent());
-
-                                    // Apply style to features
-                                    features.forEach(function(feature) {
-                                        // Set style based on feature properties or any other condition
-                                        feature.setStyle(createLabelStyleFunction(feature.getId()));
-                                    });
-                                })
-                                .catch(error => {
-                                    console.error('Error refreshing map and data:', error);
-                                });
-                        }
-                    }
-
-                    /**
-                     * Handle change event.
-                     */
-                    typeSelect.onchange = function() {
-                        map.removeInteraction(draw);
-                        addInteraction();
-                    };
+                        /**
+                         * Handle change event.
+                         */
+                        typeSelect.onchange = function() {
+                            map.removeInteraction(draw);
+                            addInteraction();
+                        };
                     document.getElementById('undo').addEventListener('click', function() {
                         // When the element with the ID 'undo' is clicked, execute the following function
                         $.ajax({
