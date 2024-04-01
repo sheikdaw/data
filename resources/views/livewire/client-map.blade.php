@@ -537,6 +537,10 @@ Promise.all([pointJsonPromise, buildingJsonPromise])
                                     //         feature.setStyle(clickedStyle);
                                     //     }
                                     // });
+                                    vectorBuildingLayer.setStyle(function (feature) {
+            var id = feature.get('OBJECTID'); // Extract Id from feature properties
+            return createLabelStyleFunction(id);
+        });
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
