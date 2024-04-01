@@ -246,6 +246,9 @@
 
 
                 initialize() {
+                    this.pointpath = "{{ $point }}";
+                    this.buildingpath = "{{ asset('public/kovai/building.json') }}";
+                    this.pngFilePath = "D:\cloned github\gis\png1.png";
                     const pointJsonPromise = fetch(pointpath)
                 .then(response => {
                     if (!response.ok) {
