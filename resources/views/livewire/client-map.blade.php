@@ -528,6 +528,9 @@
 
                                     // Add new features to the vector source
                                     vectorBuildingSource.addFeatures(features);
+                                    var vectorBuildingLayer = new ol.layer.Vector({
+                        source: vectorBuildingSource
+                    });
                                     vectorBuildingLayer.setStyle(function (feature) {
                                         var id = feature.get('OBJECTID'); // Extract Id from feature properties
                                         return createLabelStyleFunction(id);
