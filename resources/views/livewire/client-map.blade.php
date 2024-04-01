@@ -195,104 +195,103 @@
 
             var pointpath = "{{ $point }}";
             var buildingpath = "{{ asset('public/kovai/building.json') }}";
-            var pngFilePath = "D:\cloned github\gis\png1.png";
+var pngFilePath = "D:\\cloned github\\gis\\png1.png"; // Note the double backslashes to escape correctly
 
-            var pointJsonPromise = fetch(pointpath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load GeoJSON file');
-                    }
-                    return response.json();
-                });
-            var buildingJsonPromise = fetch(buildingpath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load GeoJSON file');
-                    }
-                    return response.json();
-                });
-            Promise.all([pointJsonPromise, buildingJsonPromise])
-                .then(responses => {
-                    var pointJsonData = responses[0];
-                    var buildingJsonData = responses[1];
-                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                    var buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+var pointJsonPromise = fetch(pointpath)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load GeoJSON file');
+        }
+        return response.json();
+    });
+var buildingJsonPromise = fetch(buildingpath)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load GeoJSON file');
+        }
+        return response.json();
+    });
+Promise.all([pointJsonPromise, buildingJsonPromise])
+    .then(responses => {
+        var pointJsonData = responses[0];
+        var buildingJsonData = responses[1];
+        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+        var buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
-                    var vectorSource = new ol.source.Vector({
-                        features: features
-                    });
-                    var vectorLayer = new ol.layer.Vector({
-                        source: vectorSource
-                    });
+        var vectorSource = new ol.source.Vector({
+            features: features
+        });
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource
+        });
 
+        var vectorBuildingSource = new ol.source.Vector({
+            features: buildingfeatures
+        });
+        var vectorBuildingLayer = new ol.layer.Vector({
+            source: vectorBuildingSource
+        });
+        var overlays;
+        // Define the extent of the image
+        var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
 
-                    var vectorBuildingSource = new ol.source.Vector({
-                        features: buildingfeatures
-                    });
-                    var vectorBuildingLayer = new ol.layer.Vector({
-                        source: vectorBuildingSource
-                    });
-                    var overlays;
-                    // Define the extent of the image
-                    var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
+        // Create the static image layer
+        var imageLayer = new ol.layer.Image({
+            source: new ol.source.ImageStatic({
+                url: "{{ asset('public/kovai/new/png2.png') }}", // Path to your static image
+                imageExtent: extent
+            })
+        });
 
-                    // Create the static image layer
-                    var imageLayer = new ol.layer.Image({
-                        source: new ol.source.ImageStatic({
-                            url: "{{ asset('public/kovai/new/png2.png') }}", // Path to your static image
-                            imageExtent: extent
-                        })
-                    });
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                }), imageLayer, vectorBuildingLayer,
+                vectorLayer
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([76.955393, 11.020899]),
+                projection: 'EPSG:3857',
+                zoom: 20
+            })
+        });
+        // Function to create style with text label and red border
+        var createLabelStyleFunction = function (text) {
+            return new ol.style.Style({
+                text: new ol.style.Text({
+                    text: text.toString(), // Convert Id to string
+                    font: '25px Calibri,sans-serif',
+                    fill: new ol.style.Fill({
+                        color: '#ffff00' // Removed extra "#" here
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#ffff00',
+                        width: 2
+                    }),
+                    offsetX: 0,
+                    offsetY: -20,
+                    textAlign: 'center',
+                    textBaseline: 'bottom',
+                    placement: 'point',
+                    maxAngle: Math.PI / 4
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'red',
+                    width: 2
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                })
+            });
+        };
 
-                    var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                            new ol.layer.Tile({
-                                source: new ol.source.OSM()
-                            }), imageLayer, vectorBuildingLayer,
-                            vectorLayer
-                        ],
-                        view: new ol.View({
-                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
-                            projection: 'EPSG:3857',
-                            zoom: 20
-                        })
-                    });
-                    // Function to create style with text label and red border
-                    var createLabelStyleFunction= function (text) {
-                        return new ol.style.Style({
-                            text: new ol.style.Text({
-                                text: text.toString(), // Convert Id to string
-                                font: '25px Calibri,sans-serif',
-                                fill: new ol.style.Fill({
-                                    color: '##ffff00'
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#ffff00',
-                                    width: 2
-                                }),
-                                offsetX: 0,
-                                offsetY: -20,
-                                textAlign: 'center',
-                                textBaseline: 'bottom',
-                                placement: 'point',
-                                maxAngle: Math.PI / 4
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'red',
-                                width: 2
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
-                            })
-                        });
-                    };
-
-                    // Apply the style function to the vector building layer
-                    vectorBuildingLayer.setStyle(function (feature) {
-                        var id = feature.get('OBJECTID'); // Extract Id from feature properties
-                        return createLabelStyleFunction(id);
-                    });
+        // Apply the style function to the vector building layer
+        vectorBuildingLayer.setStyle(function (feature) {
+            var id = feature.get('OBJECTID'); // Extract Id from feature properties
+            return createLabelStyleFunction(id);
+        });
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                         style: new ol.style.Style({
