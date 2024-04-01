@@ -259,7 +259,7 @@
                         })
                     });
                     // Function to create style with text label and red border
-                    var createLabelStyleFunction = function (text) {
+                    var createLabelStyleFunction= function (text) {
                         return new ol.style.Style({
                             text: new ol.style.Text({
                                 text: text.toString(), // Convert Id to string
