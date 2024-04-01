@@ -231,7 +231,7 @@
                     var vectorBuildingLayer = new ol.layer.Vector({
     source: vectorBuildingSource,
     style: function(feature) {
-        var text = feature.get('Id'); // Assuming building name is stored in a property called 'building_name'
+        var text = feature.get('OBJECTID'); // Assuming building name is stored in a property called 'building_name'
         return new ol.style.Style({
             text: new ol.style.Text({
                 text: text, // Display the building name as text
