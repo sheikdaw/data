@@ -335,7 +335,6 @@
                             }
                         });
                         map.addOverlay(popup);
-
                         var surveyed_img = @json($surveyed_img);
 
                         var gisIdSet = new Set();
@@ -440,7 +439,7 @@
                                                 console.log(response.message);
                                                 // Handle success response
                                                 // Refresh the map and update JSON data after point addition
-                                                refreshMapAndData("Polygon");
+                                                polygenRefresh();
                                             },
                                             error: function(xhr, status, error) {
                                                 console.error(error);
@@ -466,7 +465,7 @@
                                                 console.log(response.message);
                                                 // Handle success response
                                                 // Refresh the map and update JSON data after point addition
-                                                refreshMapAndData("Point");
+                                                pointRefresh();
                                             },
                                             error: function(xhr, status, error) {
                                                 console.error(error);
@@ -480,8 +479,8 @@
                         }
                         var type;
 
-                        function refreshMapAndData(type) {
-                            if (type === "Point") {
+                        function pointRefresh() {
+
                                 vectorSource.clear();
 
                                 fetch(pointpath)
@@ -514,7 +513,9 @@
                                     .catch(error => {
                                         console.error('Error refreshing map and data:', error);
                                     });
-                            } if (type === "Polygon") {
+                             }
+                             function polygenRefresh(){
+
                                 vectorBuildingSource.clear();
 
                                 fetch(buildingpath)
@@ -547,7 +548,6 @@
                                     .catch(error => {
                                         console.error('Error refreshing map and data:', error);
                                     });
-                            }
                         }
 
                         /**
