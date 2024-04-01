@@ -149,12 +149,51 @@
                 constructor() {
                     this.clickedStyle = new ol.style.Style({
                         // Define clicked style
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(255, 0, 0, 1)', // Red color for outline
+                            width: 2 // Outline width
+                        }),
+                        image: new ol.style.Circle({
+                            radius: 6,
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
+                            })
+                        })
                     });
                     this.completeStyle = new ol.style.Style({
                         // Define complete style
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 48, 143, 1)', // Green color for outline
+                            width: 2 // Outline width
+                        }),
+                        image: new ol.style.Circle({
+                            radius: 6,
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
+                            })
+                        })
                     });
                     this.filterStyle = new ol.style.Style({
                         // Define filter style
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 215, 0, 0.6)' // Dark yellow color with some opacity
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(255, 215, 0, 1)', // Dark yellow color for outline
+                            width: 2 // Outline width
+                        }),
+                        image: new ol.style.Circle({
+                            radius: 6,
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 215, 0, 1)' // Dark yellow color for point symbol
+                            })
+                        })
                     });
                     this.vectorSource = new ol.source.Vector();
                     this.vectorBuildingSource = new ol.source.Vector();
@@ -220,6 +259,9 @@
 
                 initialize() {
                     // Initialize map application
+                    var pointpath = "{{ $point }}";
+                    var buildingpath = "{{ asset('public/kovai/building.json') }}";
+                    var pngFilePath = "D:\cloned github\gis\png1.png";
                     const pointJsonPromise = this.loadGeoJsonData(pointpath, this.vectorSource);
                     const buildingJsonPromise = this.loadGeoJsonData(buildingpath, this.vectorBuildingSource);
                     Promise.all([pointJsonPromise, buildingJsonPromise])
