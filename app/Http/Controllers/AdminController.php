@@ -397,7 +397,7 @@ class AdminController extends Controller
                 ],
                 "properties" => [
                     "OBJECTID_1" => count($features)+1, // Using the same ID as 'id' for simplicity
-                    "OBJECTID" => 0,
+                    "OBJECTID" =>  count($features)+1,
                     "Id" => 0,
                     "remarks" => "",
                     "D_Area" => 0,
