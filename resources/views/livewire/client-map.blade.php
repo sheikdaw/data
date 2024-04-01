@@ -229,17 +229,38 @@
                         features: buildingfeatures
                     });
                     var vectorBuildingLayer = new ol.layer.Vector({
-                        source: vectorBuildingSource,
-                        style: new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: 'red', // Red stroke color
-                                width: 2
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0)' // Red fill color with transparency (fully transparent)
-                            })
-                        })
-                    });
+    source: vectorBuildingSource,
+    style: function(feature) {
+        var text = feature.get('building_name'); // Assuming building name is stored in a property called 'building_name'
+        return new ol.style.Style({
+            text: new ol.style.Text({
+                text: text, // Display the building name as text
+                font: '12px Calibri,sans-serif',
+                fill: new ol.style.Fill({
+                    color: '#000' // Text color
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#fff', // Outline color
+                    width: 2
+                }),
+                offsetX: 0,
+                offsetY: -10,
+                textAlign: 'center',
+                textBaseline: 'bottom',
+                placement: 'point',
+                maxAngle: Math.PI / 4
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'red', // Building outline color
+                width: 2
+            }),
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 0, 0, 0)' // Building fill color with transparency (fully transparent)
+            })
+        });
+    }
+});
+
 
                     var overlays;
                     // Define the extent of the image
