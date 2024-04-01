@@ -222,7 +222,14 @@
                             }
                             return response.json();
                         })
-
+                        .then(data => {
+                            const features = new ol.format.GeoJSON().readFeatures(data);
+                            source.addFeatures(features);
+                            return features;
+                        })
+                        .catch(error => {
+                            console.error('Error loading GeoJSON data:', error);
+                        });
                 }
 
                 createLabelStyle(text) {
