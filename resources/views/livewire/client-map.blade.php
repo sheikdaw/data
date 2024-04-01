@@ -246,14 +246,14 @@
 
 
                 initialize() {
-                    var pointJsonPromise = fetch(pointpath)
+                    consts pointJsonPromise = fetch(pointpath)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to load GeoJSON file');
                     }
                     return response.json();
                 });
-            var buildingJsonPromise = fetch(buildingpath)
+            consts buildingJsonPromise = fetch(buildingpath)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to load GeoJSON file');
