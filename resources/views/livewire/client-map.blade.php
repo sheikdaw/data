@@ -214,23 +214,7 @@
                     // Other properties...
                 }
 
-                loadGeoJsonData(url, source) {
-                    return fetch(url)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to load GeoJSON file');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            const features = new ol.format.GeoJSON().readFeatures(data);
-                            source.addFeatures(features);
-                            return features;
-                        })
-                        .catch(error => {
-                            console.error('Error loading GeoJSON data:', error);
-                        });
-                }
+
 
                 createLabelStyle(text) {
                     // Create label style
@@ -260,39 +244,61 @@
                     // Handle filter button click
                 }
 
-                // Other methods...
-                configureMapLayersAndInteractions(pointJsonData, buildingJsonData) {
-                    // Read features from JSON data
-                    console.log('Point JSON data:', pointJsonData);
-                    console.log('Building JSON data:', buildingJsonData);
+
+                initialize() {
+                    var pointJsonPromise = fetch(pointpath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load GeoJSON file');
+                    }
+                    return response.json();
+                });
+            var buildingJsonPromise = fetch(buildingpath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load GeoJSON file');
+                    }
+                    return response.json();
+                });
+            Promise.all([pointJsonPromise, buildingJsonPromise])
+                .then(responses => {
+                    const pointJsonData = responses[0];
+                    const buildingJsonData = responses[1];
                     const features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                    const buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                    const buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
-                    // Create vector layers and image layer
+                    const vectorSource = new ol.source.Vector({
+                        features: features
+                    });
                     const vectorLayer = new ol.layer.Vector({
-                        source: this.vectorSource
+                        source: vectorSource
                     });
 
+
+                    const vectorBuildingSource = new ol.source.Vector({
+                        features: buildingfeatures
+                    });
                     const vectorBuildingLayer = new ol.layer.Vector({
-                        source: this.vectorBuildingSource
+                        source: vectorBuildingSource
                     });
+                    const overlays;
+                    // Define the extent of the image
+                    const extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
 
+                    // Create the static image layer
                     const imageLayer = new ol.layer.Image({
                         source: new ol.source.ImageStatic({
-                            url: "{{ asset('public/kovai/new/png2.png') }}",
-                            imageExtent: [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763]
+                            url: "{{ asset('public/kovai/new/png2.png') }}", // Path to your static image
+                            imageExtent: extent
                         })
                     });
 
-                    // Configure map with layers
                     const map = new ol.Map({
                         target: 'map',
                         layers: [
                             new ol.layer.Tile({
                                 source: new ol.source.OSM()
-                            }),
-                            imageLayer,
-                            vectorBuildingLayer,
+                            }), imageLayer, vectorBuildingLayer,
                             vectorLayer
                         ],
                         view: new ol.View({
@@ -301,19 +307,12 @@
                             zoom: 20
                         })
                     });
-                }
 
-                initialize() {
-                    const pointJsonPromise = this.loadGeoJsonData(this.pointpath, this.vectorSource);
-                    const buildingJsonPromise = this.loadGeoJsonData(this.buildingpath, this.vectorBuildingSource);
 
-                    Promise.all([pointJsonPromise, buildingJsonPromise])
-                        .then(([pointJsonData, buildingJsonData]) => {
-                            this.configureMapLayersAndInteractions(pointJsonData, buildingJsonData);
-                        })
-                        .catch(error => {
-                            console.error('Initialization error:', error);
-                        });
+                })
+                .catch(error => {
+                    console.error('Error loading files:', error);
+                });
                 }
             }
 
