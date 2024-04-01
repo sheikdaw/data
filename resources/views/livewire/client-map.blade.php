@@ -229,37 +229,8 @@
                         features: buildingfeatures
                     });
                     var vectorBuildingLayer = new ol.layer.Vector({
-    source: vectorBuildingSource,
-    style: function(feature) {
-        var text = feature.get('OBJECTID'); // Assuming building name is stored in a property called 'building_name'
-        return new ol.style.Style({
-            text: new ol.style.Text({
-                text: text, // Display the building name as text
-                font: '12px Calibri,sans-serif',
-                fill: new ol.style.Fill({
-                    color: '#000' // Text color
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#fff', // Outline color
-                    width: 2
-                }),
-                offsetX: 0,
-                offsetY: -10,
-                textAlign: 'center',
-                textBaseline: 'bottom',
-                placement: 'point',
-                maxAngle: Math.PI / 4
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'red', // Building outline color
-                width: 2
-            }),
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 0, 0, 0)' // Building fill color with transparency (fully transparent)
-            })
-        });
-    }
-});
+                        source: vectorBuildingSource
+                    });
 
 
                     var overlays;
@@ -287,6 +258,41 @@
                             projection: 'EPSG:3857',
                             zoom: 20
                         })
+                    });
+                     // Function to create style with text label and red border
+                    var createLabelStyleFunction= function (text) {
+                        return new ol.style.Style({
+                            text: new ol.style.Text({
+                                text: text.toString(), // Convert Id to string
+                                font: '25px Calibri,sans-serif',
+                                fill: new ol.style.Fill({
+                                    color: '##ffff00'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#ffff00',
+                                    width: 2
+                                }),
+                                offsetX: 0,
+                                offsetY: -20,
+                                textAlign: 'center',
+                                textBaseline: 'bottom',
+                                placement: 'point',
+                                maxAngle: Math.PI / 4
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: 2
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                            })
+                        });
+                    };
+
+                    // Apply the style function to the vector building layer
+                    vectorBuildingLayer.setStyle(function (feature) {
+                        var id = feature.get('OBJECTID'); // Extract Id from feature properties
+                        return createLabelStyleFunction(id);
                     });
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
@@ -497,6 +503,7 @@
                                     var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
                                     // Add new features to the vector source
                                     vectorBuildingSource.addFeatures(features);
+
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
