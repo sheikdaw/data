@@ -203,12 +203,67 @@
                 }
 
                 initialize() {
-                    const pointJsonPromise = this.loadGeoJsonData(this.pointpath, this.vectorSource);
-                    const buildingJsonPromise = this.loadGeoJsonData(this.buildingpath, this.vectorBuildingSource);
+                    var pointJsonPromise = fetch(pointpath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load GeoJSON file');
+                    }
+                    return response.json();
+                });
+            var buildingJsonPromise = fetch(buildingpath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load GeoJSON file');
+                    }
+                    return response.json();
+                });
+            Promise.all([pointJsonPromise, buildingJsonPromise])
+                .then(responses => {
+                    const pointJsonData = responses[0];
+                    const buildingJsonData = responses[1];
+                    const features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                    const buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
-                    Promise.all([pointJsonPromise, buildingJsonPromise])
-                        .then(([pointJsonData, buildingJsonData]) => {
-                            this.configureMapLayersAndInteractions(pointJsonData, buildingJsonData);
+                    const vectorSource = new ol.source.Vector({
+                        features: features
+                    });
+                    const vectorLayer = new ol.layer.Vector({
+                        source: vectorSource
+                    });
+
+
+                    const vectorBuildingSource = new ol.source.Vector({
+                        features: buildingfeatures
+                    });
+                    const vectorBuildingLayer = new ol.layer.Vector({
+                        source: vectorBuildingSource
+                    });
+                    const overlays;
+                    // Define the extent of the image
+                    const extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
+
+                    // Create the static image layer
+                    const imageLayer = new ol.layer.Image({
+                        source: new ol.source.ImageStatic({
+                            url: "{{ asset('public/kovai/new/png2.png') }}", // Path to your static image
+                            imageExtent: extent
+                        })
+                    });
+
+                    const map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }), imageLayer, vectorBuildingLayer,
+                            vectorLayer
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
+                            projection: 'EPSG:3857',
+                            zoom: 20
+                        })
+                    });
                         })
                         .catch(error => {
                             console.error('Initialization error:', error);
