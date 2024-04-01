@@ -260,37 +260,37 @@
                     });
                     // Function to create style with text label and red border
                     var createLabelStyleFunction = function(text) {
-    if (text !== undefined && text !== null) { // Add null check
-        return new ol.style.Style({
-            text: new ol.style.Text({
-                text: text.toString(), // Convert Id to string
-                font: '25px Calibri,sans-serif',
-                fill: new ol.style.Fill({
-                    color: '#ffff00'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#ffff00',
-                    width: 1
-                }),
-                offsetX: 0,
-                offsetY: -20,
-                textAlign: 'center',
-                textBaseline: 'bottom',
-                placement: 'point',
-                maxAngle: Math.PI / 4
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'red',
-                width: 2
-            }),
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
-            })
-        });
-    } else {
-        return new ol.style.Style({}); // Return an empty style if text is undefined or null
-    }
-};
+                        if (text !== undefined && text !== null) { // Add null check
+                            return new ol.style.Style({
+                                text: new ol.style.Text({
+                                    text: text.toString(), // Convert Id to string
+                                    font: '25px Calibri,sans-serif',
+                                    fill: new ol.style.Fill({
+                                        color: '#ffff00'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#ffff00',
+                                        width: 1
+                                    }),
+                                    offsetX: 0,
+                                    offsetY: -20,
+                                    textAlign: 'center',
+                                    textBaseline: 'bottom',
+                                    placement: 'point',
+                                    maxAngle: Math.PI / 4
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: 'red',
+                                    width: 2
+                                }),
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                                })
+                            });
+                        } else {
+                            return new ol.style.Style({}); // Return an empty style if text is undefined or null
+                        }
+                    };
 
 
                     // Apply the style function to the vector building layer
@@ -516,7 +516,6 @@
 
 
                         } else if (type == "Polygon") {
-
                             // Clear the vector source to remove existing features from the map
                             vectorBuildingSource.clear();
 
@@ -534,14 +533,13 @@
                                     // Add new features to the vector source
                                     vectorBuildingSource.addFeatures(features);
                                     var id = vectorBuildingSource.get('OBJECTID'); // Extract Id from feature properties
-                        return createLabelStyleFunction(id);
+                                    return createLabelStyleFunction(id);
 
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
                                     // Handle error
                                 });
-
                         }
                     }
                     /**
