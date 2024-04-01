@@ -466,7 +466,7 @@
                                                 console.log(response.message);
                                                 // Handle success response
                                                 // Refresh the map and update JSON data after point addition
-                                                pointRefresh("Point");
+                                                refreshMapAndData("Point");
                                             },
                                             error: function(xhr, status, error) {
                                                 console.error(error);
@@ -480,7 +480,7 @@
                         }
                         var type;
 
-                        function pointRefresh(type) {
+                        function refreshMapAndData(type) {
                             if (type === "Point") {
                                 vectorSource.clear();
 
