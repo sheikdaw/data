@@ -292,12 +292,12 @@
                         }
                     };
 
-
+                    console.log('Building features:', buildingfeatures);
                     // Apply the style function to the vector building layer
                     vectorBuildingLayer.setStyle(function(buildingfeatures) {
                         var id = buildingfeatures.get('OBJECTID'); // Extract Id from feature properties
                         return createLabelStyleFunction(id);
-                        console.log('Building features:', buildingfeatures);
+
                     });
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
