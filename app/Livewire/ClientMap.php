@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Http\Livewire;
 
 use App\Models\Surveyed;
-use App\Models\image;
+use App\Models\Image;
 use Livewire\Component;
 
 class ClientMap extends Component
@@ -25,8 +25,10 @@ class ClientMap extends Component
     {
         // Fetch surveyed data and assign it to the property
         $this->point = asset('public/kovai/test.json');
+        $this->buildingpath = asset('public/kovai/building.json');
+        $this->pngFilePath = asset('public/kovai/new/png2.png');
         $this->surveyed = Surveyed::all();
-        $this->surveyed_img = image::all();
+        $this->surveyed_img = Image::all();
     }
 
     public function render()

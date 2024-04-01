@@ -258,41 +258,41 @@
                             zoom: 20
                         })
                     });
-                    // Function to create style with text label and red border
-                    var createLabelStyleFunction = function(text) {
-                        return new ol.style.Style({
-                            text: new ol.style.Text({
-                                text: text.toString(), // Convert Id to string
-                                font: '25px Calibri,sans-serif',
-                                fill: new ol.style.Fill({
-                                    color: '##ffff00'
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#ffff00',
-                                    width: 2
-                                }),
-                                offsetX: 0,
-                                offsetY: -20,
-                                textAlign: 'center',
-                                textBaseline: 'bottom',
-                                placement: 'point',
-                                maxAngle: Math.PI / 4
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'red',
-                                width: 2
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
-                            })
-                        });
-                    };
+                    // // Function to create style with text label and red border
+                    // var createLabelStyleFunction= function (text) {
+                    //     return new ol.style.Style({
+                    //         text: new ol.style.Text({
+                    //             text: text.toString(), // Convert Id to string
+                    //             font: '25px Calibri,sans-serif',
+                    //             fill: new ol.style.Fill({
+                    //                 color: '##ffff00'
+                    //             }),
+                    //             stroke: new ol.style.Stroke({
+                    //                 color: '#ffff00',
+                    //                 width: 2
+                    //             }),
+                    //             offsetX: 0,
+                    //             offsetY: -20,
+                    //             textAlign: 'center',
+                    //             textBaseline: 'bottom',
+                    //             placement: 'point',
+                    //             maxAngle: Math.PI / 4
+                    //         }),
+                    //         stroke: new ol.style.Stroke({
+                    //             color: 'red',
+                    //             width: 2
+                    //         }),
+                    //         fill: new ol.style.Fill({
+                    //             color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                    //         })
+                    //     });
+                    // };
 
-                    // Apply the style function to the vector building layer
-                    vectorBuildingLayer.setStyle(function(feature) {
-                        var id = feature.get('OBJECTID'); // Extract Id from feature properties
-                        return createLabelStyleFunction(id);
-                    });
+                    // // Apply the style function to the vector building layer
+                    // vectorBuildingLayer.setStyle(function (feature) {
+                    //     var id = feature.get('OBJECTID'); // Extract Id from feature properties
+                    //     return createLabelStyleFunction(id);
+                    // });
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                         style: new ol.style.Style({
@@ -305,7 +305,7 @@
                     map.addLayer(markerLayer);
 
                     if ('geolocation' in navigator) {
-                        navigator.geolocation.watchPosition(function(position) {
+                        navigator.geolocation.watchPosition(function (position) {
                             var lonLat = [position.coords.longitude, position.coords.latitude];
                             var pos = ol.proj.fromLonLat(lonLat);
                             markerLayer.getSource().clear();
@@ -314,7 +314,7 @@
                             });
                             markerLayer.getSource().addFeature(marker);
                             map.getView().setCenter(pos);
-                        }, function(error) {
+                        }, function (error) {
                             console.error('Error getting geolocation:', error);
                         });
                     } else {
@@ -334,11 +334,11 @@
 
                     var gisIdSet = new Set();
 
-                    surveyed_img.forEach(function(survey) {
+                    surveyed_img.forEach(function (survey) {
                         gisIdSet.add(survey.gisid);
                     });
 
-                    features.forEach(function(feature) {
+                    features.forEach(function (feature) {
                         var properties = feature.getProperties();
                         if (gisIdSet.has(properties['GIS_ID'])) {
                             feature.setStyle(completeStyle);
@@ -347,9 +347,9 @@
                         }
                     });
 
-                    map.on('click', function(event) {
+                    map.on('click', function (event) {
                         if (document.getElementById('type').value == 'None') {
-                            var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+                            var feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
                                 return feature;
                             });
 
@@ -412,7 +412,7 @@
                                 type: typeSelect.value,
                             });
                             map.addInteraction(draw);
-                            draw.on('drawend', function(event) {
+                            draw.on('drawend', function (event) {
                                 const feature = event.feature;
                                 const geometry = feature.getGeometry();
                                 const coordinates = geometry.getCoordinates();
@@ -430,13 +430,13 @@
                                                 .getId() // Assuming you're setting an ID for the feature
                                         }),
                                         contentType: 'application/json', // Set content type to JSON
-                                        success: function(response) {
+                                        success: function (response) {
                                             console.log(response.message);
                                             // Handle success response
                                             // Refresh the map and update JSON data after point addition
                                             refreshMapAndData("Polygon");
                                         },
-                                        error: function(xhr, status, error) {
+                                        error: function (xhr, status, error) {
                                             console.error(error);
                                             // Handle error response
                                         }
@@ -456,13 +456,13 @@
                                                 .getId() // Assuming you're setting an ID for the feature
                                         }),
                                         contentType: 'application/json', // Set content type to JSON
-                                        success: function(response) {
+                                        success: function (response) {
                                             console.log(response.message);
                                             // Handle success response
                                             // Refresh the map and update JSON data after point addition
                                             refreshMapAndData("Point");
                                         },
-                                        error: function(xhr, status, error) {
+                                        error: function (xhr, status, error) {
                                             console.error(error);
                                             // Handle error response
                                         }
@@ -495,7 +495,7 @@
                                     vectorSource.addFeatures(features);
 
                                     // Iterate over features to set style
-                                    features.forEach(function(feature) {
+                                    features.forEach(function (feature) {
                                         var properties = feature.getProperties();
                                         if (gisIdSet.has(properties['GIS_ID'])) {
                                             feature.setStyle(completeStyle);
@@ -549,20 +549,20 @@
                     /**
                      * Handle change event.
                      */
-                    typeSelect.onchange = function() {
+                    typeSelect.onchange = function () {
                         map.removeInteraction(draw);
                         addInteraction();
                     };
-                    document.getElementById('undo').addEventListener('click', function() {
+                    document.getElementById('undo').addEventListener('click', function () {
                         // When the element with the ID 'undo' is clicked, execute the following function
                         $.ajax({
                             url: '/delete-feature', // URL to send the AJAX request
-                            success: function(response) {
+                            success: function (response) {
                                 console.log(response
                                     .message);
                                 refreshMapAndData();
                             },
-                            error: function(xhr, status, error) {
+                            error: function (xhr, status, error) {
                                 console.error(error);
                             }
                         });
@@ -572,7 +572,7 @@
                     addInteraction();
 
 
-                    $("#filterBtn").click(function(e) {
+                    $("#filterBtn").click(function (e) {
                         e.preventDefault();
                         var gisidvalue = $("#gisidval").val();
 
@@ -580,7 +580,7 @@
                         vectorSource.clear();
 
                         var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                        features.forEach(function(feature) {
+                        features.forEach(function (feature) {
                             var properties = feature.getProperties();
                             var newStyle;
                             if (gisidvalue == properties['GIS_ID']) {
