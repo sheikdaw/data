@@ -527,7 +527,7 @@
                                     var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
                                     // Add new features to the vector source
-                                    vectorBuildingSource.addFeatures(feature);
+                                    vectorBuildingSource.addFeatures(features);
                                     vectorBuildingLayer.setStyle(function (feature) {
                                         var id = feature.get('OBJECTID'); // Extract Id from feature properties
                                         return createLabelStyleFunction(id);
