@@ -263,6 +263,8 @@
                 // Other methods...
                 configureMapLayersAndInteractions(pointJsonData, buildingJsonData) {
                     // Read features from JSON data
+                    console.log('Point JSON data:', pointJsonData);
+                    console.log('Building JSON data:', buildingJsonData);
                     const features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
                     const buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
