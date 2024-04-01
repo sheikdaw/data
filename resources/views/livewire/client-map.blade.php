@@ -147,6 +147,11 @@
         <script type="text/javascript">
             class MapApplication {
                 constructor() {
+                    this.pointpath = "{{ $point }}";
+                    this.buildingpath = "{{ asset('public/kovai/building.json') }}";
+                    this.pngFilePath = "D:\cloned github\gis\png1.png";
+                    this.vectorSource = new ol.source.Vector();
+                    this.vectorBuildingSource = new ol.source.Vector();
                     this.clickedStyle = new ol.style.Style({
                         // Define clicked style
                         fill: new ol.style.Fill({
@@ -256,17 +261,53 @@
                 }
 
                 // Other methods...
+                configureMapLayersAndInteractions(pointJsonData, buildingJsonData) {
+                    // Read features from JSON data
+                    const features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                    const buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+
+                    // Create vector layers and image layer
+                    const vectorLayer = new ol.layer.Vector({
+                        source: this.vectorSource
+                    });
+
+                    const vectorBuildingLayer = new ol.layer.Vector({
+                        source: this.vectorBuildingSource
+                    });
+
+                    const imageLayer = new ol.layer.Image({
+                        source: new ol.source.ImageStatic({
+                            url: "{{ asset('public/kovai/new/png2.png') }}",
+                            imageExtent: [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763]
+                        })
+                    });
+
+                    // Configure map with layers
+                    const map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }),
+                            imageLayer,
+                            vectorBuildingLayer,
+                            vectorLayer
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
+                            projection: 'EPSG:3857',
+                            zoom: 20
+                        })
+                    });
+                }
 
                 initialize() {
-                    // Initialize map application
-                    var pointpath = "{{ $point }}";
-                    var buildingpath = "{{ asset('public/kovai/building.json') }}";
-                    var pngFilePath = "D:\cloned github\gis\png1.png";
-                    const pointJsonPromise = this.loadGeoJsonData(pointpath, this.vectorSource);
-                    const buildingJsonPromise = this.loadGeoJsonData(buildingpath, this.vectorBuildingSource);
+                    const pointJsonPromise = this.loadGeoJsonData(this.pointpath, this.vectorSource);
+                    const buildingJsonPromise = this.loadGeoJsonData(this.buildingpath, this.vectorBuildingSource);
+
                     Promise.all([pointJsonPromise, buildingJsonPromise])
-                        .then(() => {
-                            // Configure map layers, interactions, etc.
+                        .then(([pointJsonData, buildingJsonData]) => {
+                            this.configureMapLayersAndInteractions(pointJsonData, buildingJsonData);
                         })
                         .catch(error => {
                             console.error('Initialization error:', error);
