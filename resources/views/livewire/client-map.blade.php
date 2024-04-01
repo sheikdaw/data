@@ -259,7 +259,7 @@
                         })
                     });
                     // Function to create style with text label and red border
-var createLabelStyleFunction = function(text) {
+                    var createLabelStyleFunction = function(text) {
     return new ol.style.Style({
         text: new ol.style.Text({
             text: text.toString(), // Convert Id to string
@@ -276,6 +276,9 @@ var createLabelStyleFunction = function(text) {
         stroke: new ol.style.Stroke({
             color: 'red',
             width: 2
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
         })
     });
 };
@@ -285,8 +288,6 @@ vectorBuildingLayer.setStyle(function(feature) {
     var id = feature.get('OBJECTID'); // Extract Id from feature properties
     return createLabelStyleFunction(id);
 });
-
-
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                         style: new ol.style.Style({
@@ -349,9 +350,10 @@ vectorBuildingLayer.setStyle(function(feature) {
 
                             if (feature) {
                                 var properties = feature.getProperties();
+                                alert(properties);
                                 var geometryType = feature.getGeometry().getType();
                                 //alert("Geometry type: " + geometryType);
-                                if (geometryType == 'MultiPoint') {
+                                if (geometryType == 'Point') {
                                     var content = '';
                                     for (var key in properties) {
                                         if (key !== 'geometry') {
@@ -427,7 +429,7 @@ vectorBuildingLayer.setStyle(function(feature) {
                                             console.log(response.message);
                                             // Handle success response
                                             // Refresh the map and update JSON data after point addition
-                                            refreshMapAndData("Polygen");
+                                            refreshMapAndData("Polygon");
                                         },
                                         error: function(xhr, status, error) {
                                             console.error(error);
@@ -453,7 +455,7 @@ vectorBuildingLayer.setStyle(function(feature) {
                                             console.log(response.message);
                                             // Handle success response
                                             // Refresh the map and update JSON data after point addition
-                                            refreshMapAndData("point");
+                                            refreshMapAndData("Point");
                                         },
                                         error: function(xhr, status, error) {
                                             console.error(error);
@@ -517,10 +519,20 @@ vectorBuildingLayer.setStyle(function(feature) {
                                     return response.json();
                                 })
                                 .then(buildingJsonData => {
-                                    var buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
                                     // Add new features to the vector source
-                                    vectorSource.addFeatures(buildingFeatures);
+                                    vectorBuildingSource.addFeatures(features);
+
+                                    // // Iterate over features to set style
+                                    // buildingFeatures.forEach(function(feature) {
+                                    //     var properties = feature.getProperties();
+                                    //     if (gisIdSet.has(properties['GIS_ID'])) {
+                                    //         feature.setStyle(completeStyle);
+                                    //     } else {
+                                    //         feature.setStyle(clickedStyle);
+                                    //     }
+                                    // });
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
