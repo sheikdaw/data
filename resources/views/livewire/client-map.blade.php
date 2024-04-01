@@ -258,41 +258,41 @@
                             zoom: 20
                         })
                     });
-                    // // Function to create style with text label and red border
-                    // var createLabelStyleFunction= function (text) {
-                    //     return new ol.style.Style({
-                    //         text: new ol.style.Text({
-                    //             text: text.toString(), // Convert Id to string
-                    //             font: '25px Calibri,sans-serif',
-                    //             fill: new ol.style.Fill({
-                    //                 color: '##ffff00'
-                    //             }),
-                    //             stroke: new ol.style.Stroke({
-                    //                 color: '#ffff00',
-                    //                 width: 2
-                    //             }),
-                    //             offsetX: 0,
-                    //             offsetY: -20,
-                    //             textAlign: 'center',
-                    //             textBaseline: 'bottom',
-                    //             placement: 'point',
-                    //             maxAngle: Math.PI / 4
-                    //         }),
-                    //         stroke: new ol.style.Stroke({
-                    //             color: 'red',
-                    //             width: 2
-                    //         }),
-                    //         fill: new ol.style.Fill({
-                    //             color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
-                    //         })
-                    //     });
-                    // };
+                    // Function to create style with text label and red border
+                    var createLabelStyleFunction= function (text) {
+                        return new ol.style.Style({
+                            text: new ol.style.Text({
+                                text: text.toString(), // Convert Id to string
+                                font: '25px Calibri,sans-serif',
+                                fill: new ol.style.Fill({
+                                    color: '##ffff00'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#ffff00',
+                                    width: 2
+                                }),
+                                offsetX: 0,
+                                offsetY: -20,
+                                textAlign: 'center',
+                                textBaseline: 'bottom',
+                                placement: 'point',
+                                maxAngle: Math.PI / 4
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: 2
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                            })
+                        });
+                    };
 
-                    // // Apply the style function to the vector building layer
-                    // vectorBuildingLayer.setStyle(function (feature) {
-                    //     var id = feature.get('OBJECTID'); // Extract Id from feature properties
-                    //     return createLabelStyleFunction(id);
-                    // });
+                    // Apply the style function to the vector building layer
+                    vectorBuildingLayer.setStyle(function (buildingfeatures) {
+                        var id = feature.get('OBJECTID'); // Extract Id from feature properties
+                        return createLabelStyleFunction(id);
+                    });
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                         style: new ol.style.Style({
@@ -528,6 +528,10 @@
 
                                     // Add new features to the vector source
                                     vectorBuildingSource.addFeatures(features);
+                                    vectorBuildingLayer.setStyle(function (features) {
+                                        var id = feature.get('OBJECTID'); // Extract Id from feature properties
+                                        return createLabelStyleFunction(id);
+                                    });
 
                                     // // Iterate over features to set style
                                     // buildingFeatures.forEach(function(feature) {
