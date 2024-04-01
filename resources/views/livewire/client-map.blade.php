@@ -149,69 +149,8 @@
                 constructor() {
                     this.pointpath = "{{ $point }}";
                     this.buildingpath = "{{ asset('public/kovai/building.json') }}";
-                    this.pngFilePath = "D:\cloned github\gis\png1.png";
                     this.vectorSource = new ol.source.Vector();
                     this.vectorBuildingSource = new ol.source.Vector();
-                    this.clickedStyle = new ol.style.Style({
-                        // Define clicked style
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(255, 0, 0, 1)', // Red color for outline
-                            width: 2 // Outline width
-                        }),
-                        image: new ol.style.Circle({
-                            radius: 6,
-                            fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
-                            })
-                        })
-                    });
-                    this.completeStyle = new ol.style.Style({
-                        // Define complete style
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(0, 48, 143, 1)', // Green color for outline
-                            width: 2 // Outline width
-                        }),
-                        image: new ol.style.Circle({
-                            radius: 6,
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
-                            })
-                        })
-                    });
-                    this.filterStyle = new ol.style.Style({
-                        // Define filter style
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 215, 0, 0.6)' // Dark yellow color with some opacity
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(255, 215, 0, 1)', // Dark yellow color for outline
-                            width: 2 // Outline width
-                        }),
-                        image: new ol.style.Circle({
-                            radius: 6,
-                            fill: new ol.style.Fill({
-                                color: 'rgba(255, 215, 0, 1)' // Dark yellow color for point symbol
-                            })
-                        })
-                    });
-                    this.vectorSource = new ol.source.Vector();
-                    this.vectorBuildingSource = new ol.source.Vector();
-                    this.markerLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector(),
-                        style: new ol.style.Style({
-                            // Define marker style
-                        })
-                    });
-                    this.map = new ol.Map({
-                        // Define map properties
-                    });
-                    // Other properties...
                 }
 
                 loadGeoJsonData(url, source) {
@@ -221,54 +160,15 @@
                                 throw new Error('Failed to load GeoJSON file');
                             }
                             return response.json();
-                        })
-                        .then(data => {
-                            const features = new ol.format.GeoJSON().readFeatures(data);
-                            source.addFeatures(features);
-                            return features;
-                        })
-                        .catch(error => {
-                            console.error('Error loading GeoJSON data:', error);
                         });
                 }
 
-                createLabelStyle(text) {
-                    // Create label style
-                }
-
-                addInteraction() {
-                    // Add interaction functionality
-                }
-
-                refreshMapAndData(type) {
-                    // Refresh map and data based on type
-                }
-
-                handleDrawEnd(event) {
-                    // Handle draw end event
-                }
-
-                handleFeatureClick(event) {
-                    // Handle feature click event
-                }
-
-                handleGeolocation(position) {
-                    // Handle geolocation
-                }
-
-                handleFilterButtonClick() {
-                    // Handle filter button click
-                }
-
-                // Other methods...
                 configureMapLayersAndInteractions(pointJsonData, buildingJsonData) {
-                    // Read features from JSON data
                     console.log('Point JSON data:', pointJsonData);
                     console.log('Building JSON data:', buildingJsonData);
-                    const features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                    const buildingFeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                    const features = new ol.format.GeoJSON().readFeatures(pointJsonData);
+                    const buildingFeatures = new ol.format.GeoJSON().readFeatures(buildingJsonData);
 
-                    // Create vector layers and image layer
                     const vectorLayer = new ol.layer.Vector({
                         source: this.vectorSource
                     });
@@ -284,7 +184,6 @@
                         })
                     });
 
-                    // Configure map with layers
                     const map = new ol.Map({
                         target: 'map',
                         layers: [
@@ -317,7 +216,6 @@
                 }
             }
 
-            // Usage
             const mapApp = new MapApplication();
             mapApp.initialize();
         </script>
