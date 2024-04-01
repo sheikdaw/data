@@ -378,13 +378,11 @@ class AdminController extends Controller
     public function addFeature(Request $request)
     {
         if ($request->type == "Polygon") {
+            // Read the GeoJSON file and decode it
             $data = json_decode(file_get_contents(public_path('kovai/building.json')), true);
 
             // Assuming 'features' is an existing array in your JSON data
             $features = $data['features'];
-
-            // Primary GIS ID
-            $primaryGisId = $request->input('primary_gis_id');
 
             // Corrected coordinates structure for Polygon
             $coordinates = $request->input('coordinates');
@@ -398,9 +396,14 @@ class AdminController extends Controller
                     "coordinates" => $coordinates // Use the provided coordinates
                 ],
                 "properties" => [
-                    "FID" => count($features)+1, // Using the same ID as 'id' for simplicity
+                    "OBJECTID_1" => count($features)+1, // Using the same ID as 'id' for simplicity
+                    "OBJECTID" => 0,
                     "Id" => 0,
-                    "GIS_ID" => count($features) + 1
+                    "remarks" => "",
+                    "D_Area" => 0,
+                    "Shape_Leng" => 0, // Update as needed
+                    "Shape_Length" => 0, // Update as needed
+                    "Shape_Area" => 0 // Update as needed
                 ]
             ];
 
@@ -415,6 +418,7 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'Feature added successfully']);
         }
+
 
         //point
         if ($request->type == "Point") {
