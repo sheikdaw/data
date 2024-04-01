@@ -480,68 +480,75 @@
                     var type;
 
                     function refreshMapAndData(type) {
-                        if (type == "Point") {
+    if (type === "Point") {
+        vectorSource.clear();
 
-                            // Clear the vector source to remove existing features from the map
-                            vectorSource.clear();
+        fetch(pointpath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load GeoJSON file');
+                }
+                return response.json();
+            })
+            .then(pointJsonData => {
+                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
-                            // Fetch new GeoJSON data
-                            fetch(pointpath)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to load GeoJSON file');
-                                    }
-                                    return response.json();
-                                })
-                                .then(pointJsonData => {
-                                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                vectorSource.addFeatures(features);
 
-                                    // Add new features to the vector source
-                                    vectorSource.addFeatures(features);
+                // Debugging: Log features to check if they are correctly loaded
+                console.log('Point features:', features);
 
-                                    // Iterate over features to set style
-                                    features.forEach(function(feature) {
-                                        var properties = feature.getProperties();
-                                        if (gisIdSet.has(properties['GIS_ID'])) {
-                                            feature.setStyle(completeStyle);
-                                        } else {
-                                            feature.setStyle(clickedStyle);
-                                        }
-                                    });
-                                })
-                                .catch(error => {
-                                    console.error('Error refreshing map and data:', error);
-                                    // Handle error
-                                });
+                // Optionally, set map view extent based on the added features
+                // map.getView().fit(vectorSource.getExtent());
 
+                // Debugging: Log map view extent to verify if it covers the added features
+                // console.log('Map view extent:', map.getView().calculateExtent());
 
-                        } else if (type == "Polygon") {
-                            // Clear the vector source to remove existing features from the map
-                            vectorBuildingSource.clear();
+                // Apply style to features
+                features.forEach(function(feature) {
+                    // Set style based on feature properties or any other condition
+                    feature.setStyle(clickedStyle);
+                });
+            })
+            .catch(error => {
+                console.error('Error refreshing map and data:', error);
+            });
+    } else if (type === "Polygon") {
+        vectorBuildingSource.clear();
 
-                            // Fetch new GeoJSON data
-                            fetch(buildingpath)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to load GeoJSON file');
-                                    }
-                                    return response.json();
-                                })
-                                .then(buildingJsonData => {
-                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+        fetch(buildingpath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load GeoJSON file');
+                }
+                return response.json();
+            })
+            .then(buildingJsonData => {
+                var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
-                                    // Add new features to the vector source
-                                    vectorBuildingSource.addFeatures(features);
-                                    var id = vectorBuildingSource.get('OBJECTID'); // Extract Id from feature properties
-                                    return createLabelStyleFunction(id);
+                vectorBuildingSource.addFeatures(features);
 
-                                })
-                                .catch(error => {
-                                    console.error('Error refreshing map and data:', error);
-                                    // Handle error
-                                });
-                        }
-                    }
+                // Debugging: Log features to check if they are correctly loaded
+                console.log('Building features:', features);
+
+                // Optionally, set map view extent based on the added features
+                // map.getView().fit(vectorBuildingSource.getExtent());
+
+                // Debugging: Log map view extent to verify if it covers the added features
+                // console.log('Map view extent:', map.getView().calculateExtent());
+
+                // Apply style to features
+                features.forEach(function(feature) {
+                    // Set style based on feature properties or any other condition
+                    feature.setStyle(createLabelStyleFunction(feature.getId()));
+                });
+            })
+            .catch(error => {
+                console.error('Error refreshing map and data:', error);
+            });
+    }
+}
+
                     /**
                      * Handle change event.
                      */
