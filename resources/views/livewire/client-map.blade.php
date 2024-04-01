@@ -294,8 +294,8 @@
 
 
                     // Apply the style function to the vector building layer
-                    vectorBuildingLayer.setStyle(function(feature) {
-                        var id = feature.get('OBJECTID'); // Extract Id from feature properties
+                    vectorBuildingLayer.setStyle(function(buildingfeatures) {
+                        var id = buildingfeatures.get('OBJECTID'); // Extract Id from feature properties
                         return createLabelStyleFunction(id);
                     });
                     var markerLayer = new ol.layer.Vector({
@@ -480,74 +480,74 @@
                     var type;
 
                     function refreshMapAndData(type) {
-    if (type === "Point") {
-        vectorSource.clear();
+                        if (type === "Point") {
+                            vectorSource.clear();
 
-        fetch(pointpath)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load GeoJSON file');
-                }
-                return response.json();
-            })
-            .then(pointJsonData => {
-                var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                            fetch(pointpath)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to load GeoJSON file');
+                                    }
+                                    return response.json();
+                                })
+                                .then(pointJsonData => {
+                                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
 
-                vectorSource.addFeatures(features);
+                                    vectorSource.addFeatures(features);
 
-                // Debugging: Log features to check if they are correctly loaded
-                console.log('Point features:', features);
+                                    // Debugging: Log features to check if they are correctly loaded
+                                    console.log('Point features:', features);
 
-                // Optionally, set map view extent based on the added features
-                // map.getView().fit(vectorSource.getExtent());
+                                    // Optionally, set map view extent based on the added features
+                                    // map.getView().fit(vectorSource.getExtent());
 
-                // Debugging: Log map view extent to verify if it covers the added features
-                // console.log('Map view extent:', map.getView().calculateExtent());
+                                    // Debugging: Log map view extent to verify if it covers the added features
+                                    // console.log('Map view extent:', map.getView().calculateExtent());
 
-                // Apply style to features
-                features.forEach(function(feature) {
-                    // Set style based on feature properties or any other condition
-                    feature.setStyle(clickedStyle);
-                });
-            })
-            .catch(error => {
-                console.error('Error refreshing map and data:', error);
-            });
-    } else if (type === "Polygon") {
-        vectorBuildingSource.clear();
+                                    // Apply style to features
+                                    features.forEach(function(feature) {
+                                        // Set style based on feature properties or any other condition
+                                        feature.setStyle(clickedStyle);
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error('Error refreshing map and data:', error);
+                                });
+                        } else if (type === "Polygon") {
+                            vectorBuildingSource.clear();
 
-        fetch(buildingpath)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load GeoJSON file');
-                }
-                return response.json();
-            })
-            .then(buildingJsonData => {
-                var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                            fetch(buildingpath)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to load GeoJSON file');
+                                    }
+                                    return response.json();
+                                })
+                                .then(buildingJsonData => {
+                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
-                vectorBuildingSource.addFeatures(features);
+                                    vectorBuildingSource.addFeatures(features);
 
-                // Debugging: Log features to check if they are correctly loaded
-                console.log('Building features:', features);
+                                    // Debugging: Log features to check if they are correctly loaded
+                                    console.log('Building features:', features);
 
-                // Optionally, set map view extent based on the added features
-                // map.getView().fit(vectorBuildingSource.getExtent());
+                                    // Optionally, set map view extent based on the added features
+                                    // map.getView().fit(vectorBuildingSource.getExtent());
 
-                // Debugging: Log map view extent to verify if it covers the added features
-                // console.log('Map view extent:', map.getView().calculateExtent());
+                                    // Debugging: Log map view extent to verify if it covers the added features
+                                    // console.log('Map view extent:', map.getView().calculateExtent());
 
-                // Apply style to features
-                features.forEach(function(feature) {
-                    // Set style based on feature properties or any other condition
-                    feature.setStyle(createLabelStyleFunction(feature.getId()));
-                });
-            })
-            .catch(error => {
-                console.error('Error refreshing map and data:', error);
-            });
-    }
-}
+                                    // Apply style to features
+                                    features.forEach(function(feature) {
+                                        // Set style based on feature properties or any other condition
+                                        feature.setStyle(createLabelStyleFunction(feature.getId()));
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error('Error refreshing map and data:', error);
+                                });
+                        }
+                    }
 
                     /**
                      * Handle change event.
