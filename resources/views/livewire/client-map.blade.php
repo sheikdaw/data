@@ -551,7 +551,7 @@
 
 
                         }
-                    }
+
                     /**
                      * Handle change event.
                      */
