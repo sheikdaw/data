@@ -289,7 +289,7 @@
                     };
 
                     // Apply the style function to the vector building layer
-                    vectorBuildingLayer.setStyle(function (buildingfeatures) {
+                    vectorBuildingLayer.setStyle(function (feature) {
                         var id = feature.get('OBJECTID'); // Extract Id from feature properties
                         return createLabelStyleFunction(id);
                     });
