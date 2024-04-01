@@ -145,58 +145,59 @@
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
         <script type="text/javascript">
-            document.addEventListener('livewire:load', function() {
-                var clickedStyle = new ol.style.Style({
+            var clickedStyle = new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255, 0, 0, 1)', // Red color for outline
+                    width: 2 // Outline width
+                }),
+                image: new ol.style.Circle({
+                    radius: 6,
                     fill: new ol.style.Fill({
-                        color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(255, 0, 0, 1)', // Red color for outline
-                        width: 2 // Outline width
-                    }),
-                    image: new ol.style.Circle({
-                        radius: 6,
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
-                        })
+                        color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
                     })
-                });
+                })
+            });
 
-                var completeStyle = new ol.style.Style({
+            var completeStyle = new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(0, 48, 143, 1)', // Green color for outline
+                    width: 2 // Outline width
+                }),
+                image: new ol.style.Circle({
+                    radius: 6,
                     fill: new ol.style.Fill({
-                        color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(0, 48, 143, 1)', // Green color for outline
-                        width: 2 // Outline width
-                    }),
-                    image: new ol.style.Circle({
-                        radius: 6,
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
-                        })
+                        color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
                     })
-                });
+                })
+            });
 
-                var filterStyle = new ol.style.Style({
+            var filterStyle = new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 215, 0, 0.6)' // Dark yellow color with some opacity
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255, 215, 0, 1)', // Dark yellow color for outline
+                    width: 2 // Outline width
+                }),
+                image: new ol.style.Circle({
+                    radius: 6,
                     fill: new ol.style.Fill({
-                        color: 'rgba(255, 215, 0, 0.6)' // Dark yellow color with some opacity
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(255, 215, 0, 1)', // Dark yellow color for outline
-                        width: 2 // Outline width
-                    }),
-                    image: new ol.style.Circle({
-                        radius: 6,
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 215, 0, 1)' // Dark yellow color for point symbol
-                        })
+                        color: 'rgba(255, 215, 0, 1)' // Dark yellow color for point symbol
                     })
-                });
-                var pointpath = "{{ $point }}";
-                var buildingpath = "{{ $buildingpath }}";
-                var pngFilePath = "{{ $pngFilePath }}";
-                var pointJsonPromise = fetch(pointpath)
+                })
+            });
+
+            var pointpath = "{{ $point }}";
+            var buildingpath = "{{ asset('public/kovai/building.json') }}";
+            var pngFilePath = "D:\cloned github\gis\png1.png";
+
+            var pointJsonPromise = fetch(pointpath)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to load GeoJSON file');
@@ -620,8 +621,6 @@
                 .catch(error => {
                     console.error('Error loading files:', error);
                 });
-
-            });
         </script>
     @endpush
 </div>

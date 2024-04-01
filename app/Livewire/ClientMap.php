@@ -14,8 +14,6 @@ class ClientMap extends Component
     public $latitude;
     public $gis_id;
     public $surveyed_img;
-    public $buildingpath;
-    public $pngFilePath;
 
     // Combine both listeners into one array
     protected $listeners = [
@@ -27,8 +25,6 @@ class ClientMap extends Component
     {
         // Fetch surveyed data and assign it to the property
         $this->point = asset('public/kovai/test.json');
-        $this->buildingpath = asset('public/kovai/building.json');
-        $this->pngFilePath = asset('public/kovai/new/png2.png');
         $this->surveyed = Surveyed::all();
         $this->surveyed_img = image::all();
     }
