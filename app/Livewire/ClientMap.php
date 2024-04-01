@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Surveyed;
-use App\Models\Image;
+use App\Models\image;
 use Livewire\Component;
 
 class ClientMap extends Component
@@ -14,6 +14,8 @@ class ClientMap extends Component
     public $latitude;
     public $gis_id;
     public $surveyed_img;
+    public $buildingpath;
+    public $pngFilePath;
 
     // Combine both listeners into one array
     protected $listeners = [
@@ -28,7 +30,7 @@ class ClientMap extends Component
         $this->buildingpath = asset('public/kovai/building.json');
         $this->pngFilePath = asset('public/kovai/new/png2.png');
         $this->surveyed = Surveyed::all();
-        $this->surveyed_img = Image::all();
+        $this->surveyed_img = image::all();
     }
 
     public function render()
