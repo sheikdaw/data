@@ -281,7 +281,7 @@
                     const vectorBuildingLayer = new ol.layer.Vector({
                         source: vectorBuildingSource
                     });
-                    const overlays;
+                   //const overlays;
                     // Define the extent of the image
                     const extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
 
