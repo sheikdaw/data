@@ -456,6 +456,7 @@ class AdminController extends Controller
         }
     }
 
+
     public function deleteLastFeature()
     {
         // Read the JSON file
