@@ -299,7 +299,6 @@
                             return createLabelStyleFunction(id);
 
                         });
-                        polygenRefresh();
                         var markerLayer = new ol.layer.Vector({
                             source: new ol.source.Vector(),
                             style: new ol.style.Style({
@@ -441,7 +440,7 @@
                                                 console.log(response.message);
                                                 // Handle success response
                                                 // Refresh the map and update JSON data after point addition
-                                                polygenRefresh();
+                                                refreshMapAndData("Polygon");
                                             },
                                             error: function(xhr, status, error) {
                                                 console.error(error);
@@ -467,7 +466,7 @@
                                                 console.log(response.message);
                                                 // Handle success response
                                                 // Refresh the map and update JSON data after point addition
-                                                pointRefresh();
+                                                pointRefresh("Point");
                                             },
                                             error: function(xhr, status, error) {
                                                 console.error(error);
@@ -481,8 +480,10 @@
                         }
                         var type;
 
-                        function pointRefresh() {
+                        function pointRefresh(type) {
+                            if (type === "Point") {
                                 vectorSource.clear();
+
                                 fetch(pointpath)
                                     .then(response => {
                                         if (!response.ok) {
@@ -513,10 +514,7 @@
                                     .catch(error => {
                                         console.error('Error refreshing map and data:', error);
                                     });
-
-                        }
-                        polygenRefresh(){
-
+                            } if (type === "Polygon") {
                                 vectorBuildingSource.clear();
 
                                 fetch(buildingpath)
@@ -549,7 +547,7 @@
                                     .catch(error => {
                                         console.error('Error refreshing map and data:', error);
                                     });
-
+                            }
                         }
 
                         /**
