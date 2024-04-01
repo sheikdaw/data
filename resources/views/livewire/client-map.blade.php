@@ -231,23 +231,6 @@
                     var vectorBuildingLayer = new ol.layer.Vector({
                         source: vectorBuildingSource,
                         style: new ol.style.Style({
-                            text: new ol.style.Text({
-                                text: text.toString(), // Convert Id to string
-                                font: '25px Calibri,sans-serif',
-                                fill: new ol.style.Fill({
-                                    color: '#ffff00' // Yellow fill color
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#ffff00', // Yellow stroke color
-                                    width: 2
-                                }),
-                                offsetX: 0,
-                                offsetY: -20,
-                                textAlign: 'center',
-                                textBaseline: 'bottom',
-                                placement: 'point',
-                                maxAngle: Math.PI / 4
-                            }),
                             stroke: new ol.style.Stroke({
                                 color: 'red', // Red stroke color
                                 width: 2
@@ -284,41 +267,6 @@
                             zoom: 20
                         })
                     });
-                    // Function to create style with text label and red border
-                    // var createLabelStyleFunction = function(text) {
-                    //     return new ol.style.Style({
-                    //         text: new ol.style.Text({
-                    //             text: text.toString(), // Convert Id to string
-                    //             font: '25px Calibri,sans-serif',
-                    //             fill: new ol.style.Fill({
-                    //                 color: '#ffff00' // Removed extra "#" here
-                    //             }),
-                    //             stroke: new ol.style.Stroke({
-                    //                 color: '#ffff00',
-                    //                 width: 2
-                    //             }),
-                    //             offsetX: 0,
-                    //             offsetY: -20,
-                    //             textAlign: 'center',
-                    //             textBaseline: 'bottom',
-                    //             placement: 'point',
-                    //             maxAngle: Math.PI / 4
-                    //         }),
-                    //         stroke: new ol.style.Stroke({
-                    //             color: 'red',
-                    //             width: 2
-                    //         }),
-                    //         fill: new ol.style.Fill({
-                    //             color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
-                    //         })
-                    //     });
-                    // };
-
-                    // // Apply the style function to the vector building layer
-                    // vectorBuildingLayer.setStyle(function(feature) {
-                    //     var id = feature.get('OBJECTID'); // Extract Id from feature properties
-                    //     return createLabelStyleFunction(id);
-                    // });
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                         style: new ol.style.Style({
@@ -395,19 +343,6 @@
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
                                     $('#featureModal').modal('show');
-                                    // var newStyle = new ol.style.Style({
-                                    //     image: new ol.style.Circle({
-                                    //         radius: 6,
-                                    //         fill: new ol.style.Fill({
-                                    //             color: 'blue' // Change color as desired
-                                    //         }),
-                                    //         stroke: new ol.style.Stroke({
-                                    //             color: 'white'
-
-                                    //         })
-                                    //     })
-                                    // });
-                                    // feature.setStyle(newStyle);
                                 } else if (geometryType == 'Polygon') {
                                     var content = '';
                                     for (var key in properties) {
@@ -419,7 +354,6 @@
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
                                     $('#featureModal').modal('show');
-
                                 }
                             } else {
                                 $('#featureModal').modal('hide');
@@ -452,8 +386,7 @@
                                             '_token': '{{ csrf_token() }}',
                                             'type': 'Polygon',
                                             'coordinates': coordinates,
-                                            'gis_id': feature
-                                                .getId() // Assuming you're setting an ID for the feature
+                                            'gis_id': feature.getId() // Assuming you're setting an ID for the feature
                                         }),
                                         contentType: 'application/json', // Set content type to JSON
                                         success: function(response) {
@@ -478,8 +411,7 @@
                                             'type': 'Point',
                                             'longitude': coordinates[0],
                                             'latitude': coordinates[1],
-                                            'gis_id': feature
-                                                .getId() // Assuming you're setting an ID for the feature
+                                            'gis_id': feature.getId() // Assuming you're setting an ID for the feature
                                         }),
                                         contentType: 'application/json', // Set content type to JSON
                                         success: function(response) {
@@ -494,7 +426,6 @@
                                         }
                                     });
                                 }
-
                             });
                         }
                     }
@@ -502,10 +433,8 @@
 
                     function refreshMapAndData(type) {
                         if (type == "Point") {
-
                             // Clear the vector source to remove existing features from the map
                             vectorSource.clear();
-
                             // Fetch new GeoJSON data
                             fetch(pointpath)
                                 .then(response => {
@@ -516,10 +445,8 @@
                                 })
                                 .then(pointJsonData => {
                                     var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-
                                     // Add new features to the vector source
                                     vectorSource.addFeatures(features);
-
                                     // Iterate over features to set style
                                     features.forEach(function(feature) {
                                         var properties = feature.getProperties();
@@ -534,13 +461,9 @@
                                     console.error('Error refreshing map and data:', error);
                                     // Handle error
                                 });
-
-
                         } else if (type == "Polygon") {
-
                             // Clear the vector source to remove existing features from the map
                             vectorBuildingSource.clear();
-
                             // Fetch new GeoJSON data
                             fetch(buildingpath)
                                 .then(response => {
@@ -551,59 +474,13 @@
                                 })
                                 .then(buildingJsonData => {
                                     var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-
                                     // Add new features to the vector source
                                     vectorBuildingSource.addFeatures(features);
-                                    var vectorBuildingLayer = new ol.layer.Vector({
-                                        source: vectorBuildingSource,
-                                        style: new ol.style.Style({
-                                            text: new ol.style.Text({
-                                                text: text.toString(), // Convert Id to string
-                                                font: '25px Calibri,sans-serif',
-                                                fill: new ol.style.Fill({
-                                                    color: '#ffff00' // Yellow fill color
-                                                }),
-                                                stroke: new ol.style.Stroke({
-                                                    color: '#ffff00', // Yellow stroke color
-                                                    width: 2
-                                                }),
-                                                offsetX: 0,
-                                                offsetY: -20,
-                                                textAlign: 'center',
-                                                textBaseline: 'bottom',
-                                                placement: 'point',
-                                                maxAngle: Math.PI / 4
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'red', // Red stroke color
-                                                width: 2
-                                            }),
-                                            fill: new ol.style.Fill({
-                                                color: 'rgba(255, 0, 0, 0)' // Red fill color with transparency (fully transparent)
-                                            })
-                                        })
-                                    });
-
-
-                                    // // Iterate over features to set style
-                                    // buildingFeatures.forEach(function(feature) {
-                                    //     var properties = feature.getProperties();
-                                    //     if (gisIdSet.has(properties['GIS_ID'])) {
-                                    //         feature.setStyle(completeStyle);
-                                    //     } else {
-                                    //         feature.setStyle(clickedStyle);
-                                    //     }
-                                    // });
-                                    // vectorBuildingLayer.setStyle(function(feature) {
-                                    //     var id = feature.get('OBJECTID'); // Extract Id from feature properties
-                                    //     return createLabelStyleFunction(id);
-                                    // });
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
                                     // Handle error
                                 });
-
                         }
                     }
                     /**
@@ -618,8 +495,7 @@
                         $.ajax({
                             url: '/delete-feature', // URL to send the AJAX request
                             success: function(response) {
-                                console.log(response
-                                    .message);
+                                console.log(response.message);
                                 refreshMapAndData();
                             },
                             error: function(xhr, status, error) {
@@ -627,18 +503,12 @@
                             }
                         });
                     });
-
-
                     addInteraction();
-
-
                     $("#filterBtn").click(function(e) {
                         e.preventDefault();
                         var gisidvalue = $("#gisidval").val();
-
                         // Clear existing features
                         vectorSource.clear();
-
                         var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
                         features.forEach(function(feature) {
                             var properties = feature.getProperties();
@@ -668,19 +538,15 @@
                                     })
                                 });
                             }
-
                             feature.setStyle(newStyle);
                             vectorSource.addFeature(feature); // Add the feature back to the source
                         });
                     });
-
-
-
-
                 })
                 .catch(error => {
                     console.error('Error loading files:', error);
                 });
         </script>
+
     @endpush
 </div>
