@@ -511,7 +511,7 @@
 
 
                             }
-                            elseif(type == "Polygon") {
+                            else if(type == "Polygon") {
                                 // Clear the vector source to remove existing features from the map
                                 vectorBuildingSource.clear();
 
