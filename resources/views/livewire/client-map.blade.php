@@ -793,7 +793,7 @@
                             if (use != 'Residential') {
                                 establishmentadd++;
                                 var newRow = `
-                        <div class="bordered">
+                        <div class="added bordered">
 
                                 <button class="btn btn-sm btn-dark removeEstablishment">Remove Floor</button>
                                         <div class="form-group">
@@ -852,7 +852,7 @@
                         // Event handler for the Remove button (inside the dynamic row)
                         $(document).on('click', '.removeEstablishment', function(e) {
                             e.preventDefault();
-                            $(this).closest(".row").remove();
+                            $(this).closest(".added").remove();
                         });
                     });
 
