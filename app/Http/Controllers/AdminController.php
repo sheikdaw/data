@@ -462,9 +462,9 @@ class AdminController extends Controller
     }
 
 
-    public function deleteLastFeature(Request $request)
+    public function deleteLastFeature($value)
     {
-        if ($request->value == 'Point') {
+        if ($value == 'Point') {
             // Read the JSON file
                 $jsonFilePath = public_path('kovai/test.json');
                 $jsonData = file_get_contents($jsonFilePath);
@@ -487,7 +487,7 @@ class AdminController extends Controller
                 } else {
                     return response()->json(['message' => 'No features found in JSON data'], 404);
                 }
-        } else if($request->value == 'Polygon') {
+        } else if($value == 'Polygon') {
             $jsonFilePath = public_path('kovai/building.json');
                 $jsonData = file_get_contents($jsonFilePath);
 
