@@ -545,7 +545,7 @@
                                 method: 'GET', // Request method
                                 success: function(response) {
                                     console.log(response.message);
-                                    delRefresh(value);
+                                    refreshMapAndData(value);
                                     // Display success message
 
                                 },
@@ -560,16 +560,16 @@
                             showToast('error', 'Invalid feature type.');
                         }
                     });
-                    function delRefresh(type) {
-    alert(type); // Just for testing
-    if (type == "Point") {
-        // Refresh the vector source associated with the point layer
-        vectorSource.refresh();
-    } else if (type == "Polygon") {
-        // Refresh the vector source associated with the polygon layer
-        vectorBuildingSource.refresh();
-    }
-}
+//                     function refreshMapAndData(type) {
+//     alert(type); // Just for testing
+//     if (type == "Point") {
+//         // Refresh the vector source associated with the point layer
+//         vectorSource.refresh();
+//     } else if (type == "Polygon") {
+//         // Refresh the vector source associated with the polygon layer
+//         vectorBuildingSource.refresh();
+//     }
+// }
 
 
                     addInteraction();
