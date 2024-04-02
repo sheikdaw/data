@@ -781,6 +781,7 @@
                     var establishmentadd = -1;
                 $("#addEstablishment").click(function(e) {
                     e.preventDefault();
+                    alert('hi');
                     var use = $('#bill_usage').val();
                     if(use != 'Residential'){
                     establishmentadd++;
