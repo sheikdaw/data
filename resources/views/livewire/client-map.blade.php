@@ -311,6 +311,7 @@
                                 <label for="phone">phone_numnber</label>
                                 <input type="text" name="phone" class="form-control" id="phone">
                             </div>
+                            <button class="btn" id="#addEstablishment">ADD</button>
                             <div id="append"></div>
                         </div>
                         <div class="modal-footer">
@@ -780,6 +781,8 @@
                     var establishmentadd = -1;
                 $("#addEstablishment").click(function(e) {
                     e.preventDefault();
+                    var use = $('#bill_usage').val();
+                    if(use != 'Residential'){
                     establishmentadd++;
                     var newRow = `
                     <div class="row">
@@ -837,6 +840,7 @@
                     </div>`;
 
                     $(".append").append(newRow);
+                }
                 });
                 $(".append").on('click', '.removeEstablishment', function(e) {
                     e.preventDefault();
