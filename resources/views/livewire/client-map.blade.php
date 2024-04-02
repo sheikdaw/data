@@ -138,89 +138,6 @@
                                 <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="number_bill">Number_of_Bill</label>
-                                <input type="text" name="number_bill" class="form-control" id="number_bill">
-                            </div>
-                            <div class="form-group">
-                                <label for="number_floor">Number_of_Floor</label>
-                                <input type="text" name="number_floor" class="form-control" id="number_floor">
-                            </div>
-                            <div class="form-group">
-                                <label for="watet_tax">Watet_tax</label>
-                                <input type="text" name="watet_tax" class="form-control" id="watet_tax">
-                            </div>
-                            <div class="form-group">
-                                <label for="eb">Eb_number</label>
-                                <input type="text" name="eb" class="form-control" id="eb">
-                            </div>
-                            <div class="form-group">
-                                <label for="building_name">Building_name</label>
-                                <input type="text" name="building_name" class="form-control" id="building_name">
-                            </div>
-                            <div class="form-group">
-                                <select name="building_usage" id="building_usage" class="form-control">
-                                    <option value="Residential">Residential</option>
-                                    <option value="Commercial">Commercial</option>
-                                    <option value="Mixed">Mixed</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="road_name">Road_name</label>
-                                <input type="text" name="road_name" class="form-control" id="road_name">
-                            </div>
-                            <div class="form-group">
-                                <label for="ugd">UGD</label>
-                                <input type="text" name="ugd" class="form-control" id="ugd">
-                            </div>
-                            <div class="form-group">
-                                <select name="rainwater_harvesting" id="rainwater_harvesting">
-                                    <option value="YES">YES</option>
-                                    <option value="NO">NO</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select name="parking" id="parking" class="form-control">
-                                    <option value="Basement">Basement</option>
-                                    <option value="Ground-Parking">Ground-Parking</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select name="ramp" id="ramp" class="form-control">
-                                    <option value="YES">YES</option>
-                                    <option value="NO">NO</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select name="rainwater_harvesting" id="rainwater_harvesting" class="form-control">
-                                    <option value="YES">YES</option>
-                                    <option value="NO">NO</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select name="rainwater_harvesting" id="rainwater_harvesting">
-                                    <option value="YES">YES</option>
-                                    <option value="NO">NO</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select name="rainwater_harvesting" id="rainwater_harvesting">
-                                    <option value="YES">YES</option>
-                                    <option value="NO">NO</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                            </div>
-                            <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                            </div>
-                            <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                            </div>
-                            <div class="form-group">
                                 <label for="ward">Ward</label>
                                 <input type="text" name="ward" class="form-control" id="ward">
                             </div>
@@ -239,9 +156,6 @@
             </div>
         </div>
     </div>
-
-
-
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
         <script type="text/javascript">
