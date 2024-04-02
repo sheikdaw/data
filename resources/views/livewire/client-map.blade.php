@@ -731,6 +731,9 @@
                                 showToast('error', 'Invalid feature type.');
                             }
                         });
+                        $("#addEstablishment").click(function(e) {
+                        e.preventDefault();
+                        alert('hi');});
 
                         addInteraction();
                         $("#filterBtn").click(function(e) {
