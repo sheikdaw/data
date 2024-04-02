@@ -138,99 +138,12 @@
                                 <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="number_bill">Number_of_Bill</label>
-                                <input type="text" name="number_bill" class="form-control" id="number_bill">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
                             </div>
                             <div class="form-group">
-                                <label for="number_floor">Number_of_Floor</label>
-                                <input type="text" name="number_floor" class="form-control" id="number_floor">
-                            </div>
-                            <div class="form-group">
-                                <label for="watet_tax">Watet_tax</label>
-                                <input type="text" name="watet_tax" class="form-control" id="watet_tax">
-                            </div>
-                            <div class="form-group">
-                                <label for="eb">Eb_number</label>
-                                <input type="text" name="eb" class="form-control" id="eb">
-                            </div>
-                            <div class="form-group">
-                                <label for="building_name">Building_name</label>
-                                <input type="text" name="building_name" class="form-control" id="building_name">
-                            </div>
-                            <div class="form-group">
-                                <label for="Building_usage">Building_usage</label>
-                                <select name="building_usage" id="building_usage" class="form-control">
-                                    <option value="Residential">Residential</option>
-                                    <option value="Commercial">Commercial</option>
-                                    <option value="Mixed">Mixed</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="road_name">Road_name</label>
-                                <input type="text" name="road_name" class="form-control" id="road_name">
-                            </div>
-                            <div class="form-group">
-                                <label for="ugd">UGD</label>
-                                <input type="text" name="ugd" class="form-control" id="ugd">
-                            </div>
-                            <div class="form-group">
-                                <label for="rainwater_harvesting">Rainwater_harvesting</label>
-                                <select name="rainwater_harvesting" id="rainwater_harvesting">
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="parking">Parking</label>
-                                <select name="parking" id="parking" class="form-control">
-                                    <option value="NO">NO</option>
-                                    <option value="Basement">Basement</option>
-                                    <option value="Ground-Parking">Ground-Parking</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="ramp">Ramp</label>
-                                <select name="ramp" id="ramp" class="form-control">
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="hoarding">Hoarding</label>
-                                <select name="hoarding" id="hoarding" class="form-control">
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="cell_tower">Cell_tower</label>
-                                <select name="cell_tower" id="cell_tower" class="form-control">
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="solar_panel">Solar_panel</label>
-                                <select name="solar_panel" id="solar_panel" class="form-control">
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="water_connection">Water_connection</label>
-                                <select name="water_connection" id="water_connection" class="form-control">
-                                    <option value="NO">NO</option>
-                                    <option value="Bore">Bore</option>
-                                    <option value="OPEN-WELL">OPEN-WELL</option>
-                                    <option value="METRO">METRO</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">phone_numnber</label>
-                                <select name="phone" id="phone" class="form-control">
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
+                                <label for="value">Picture</label>
+                                <input type="file" name="image" id="image" class="form-control">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -623,41 +536,29 @@
                         addInteraction();
                     };
                     document.getElementById('undo').addEventListener('click', function() {
-                        // When the element with the ID 'undo' is clicked, execute the following function
-                        const value = typeSelect.value;
-                        if (value == 'Point' || value == 'Polygon') {
-                            $.ajax({
-                                url: '/delete-feature/' +
-                                value, // URL to send the AJAX request with parameter
-                                method: 'GET', // Request method
-                                success: function(response) {
-                                    console.log(response.message);
-                                    refreshMapAndData(value);
-                                    // Display success message
+            // When the element with the ID 'undo' is clicked, execute the following function
+            const value = typeSelect.value;
+            if (value == 'Point' || value == 'Polygon') {
+                $.ajax({
+                    url: '/delete-feature/' + value, // URL to send the AJAX request with parameter
+                    method: 'GET', // Request method
+                    success: function(response) {
+                        console.log(response.message);
+                        refreshMapAndData(value);
+                        // Display success message
 
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error(error);
-                                    // Display error message
-                                }
-                            });
-                        } else {
-                            console.error("Invalid feature type.");
-                            // Display error message
-                            showToast('error', 'Invalid feature type.');
-                        }
-                    });
-//                     function refreshMapAndData(type) {
-//     alert(type); // Just for testing
-//     if (type == "Point") {
-//         // Refresh the vector source associated with the point layer
-//         vectorSource.refresh();
-//     } else if (type == "Polygon") {
-//         // Refresh the vector source associated with the polygon layer
-//         vectorBuildingSource.refresh();
-//     }
-// }
-
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        // Display error message
+                    }
+                });
+            } else {
+                console.error("Invalid feature type.");
+                // Display error message
+                showToast('error', 'Invalid feature type.');
+            }
+        });
 
                     addInteraction();
                     $("#filterBtn").click(function(e) {
