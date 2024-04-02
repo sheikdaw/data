@@ -793,8 +793,8 @@
                             if (use != 'Residential') {
                                 establishmentadd++;
                                 var newRow = `
-                        <div class="row">
-                            <div class="col-6 col-sm-6">
+                        <div class="row bordered">
+
                                 <button class="btn btn-dark removeEstablishment">Remove Floor</button>
                                         <div class="mb-3">
                                             <label for="shop_floor" class="text-light">Shop Floor</label>
@@ -823,8 +823,7 @@
                                             <input type="text" name="shop_mobile[${establishmentadd}]" id="shop_mobile" class="form-control" placeholder="Shop Mobile">
                                             <div class="text-danger" id="shop_mobile.${establishmentadd}"></div>
                                         </div>
-                                    </div>
-                                    <div class="col-6 col-sm-6">
+
                                         <div class="mb-3">
                                             <label for="license" class="text-light">License</label>
                                             <select name="license[${establishmentadd}]" id="license" class="form-control">
