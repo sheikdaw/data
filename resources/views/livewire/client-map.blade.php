@@ -794,7 +794,7 @@
                                 establishmentadd++;
                                 var newRow = `
                                     <div class="row">
-                                        <!-- Your dynamic row content goes here -->
+                                        <h1>hello</h1>
                                     </div>`;
                                 $("#append").append(newRow);
                             }
