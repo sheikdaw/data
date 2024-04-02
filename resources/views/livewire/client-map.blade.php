@@ -535,32 +535,31 @@
                         addInteraction();
                     };
                     document.getElementById('undo').addEventListener('click', function() {
-                        // When the element with the ID 'undo' is clicked, execute the following function
-                        const value = typeSelect.value;
-                        if (value == 'Point' || value == 'Polygon') {
-                            $.ajax({
-                                url: '/delete-feature?value=' +
-                                value, // URL to send the AJAX request with parameter
-                                method: 'GET', // Request method
-                                // Sending value as key-value pair
-                                success: function(response) {
-                                    console.log(response.message);
-                                    refreshMapAndData(value);
-                                    // Display success message
-                                    showToast('success', response.message);
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error(error);
-                                    // Display error message
-                                    showToast('error', 'An error occurred while deleting the feature.');
-                                }
-                            });
-                        } else {
-                            console.error("Invalid feature type.");
-                            // Display error message
-                            showToast('error', 'Invalid feature type.');
-                        }
-                    });
+    // When the element with the ID 'undo' is clicked, execute the following function
+    const value = typeSelect.value;
+    if (value == 'Point' || value == 'Polygon') {
+        $.ajax({
+            url: '/delete-feature?value=' + value, // URL to send the AJAX request with parameter
+            method: 'GET', // Request method
+            success: function(response) {
+                console.log(response.message);
+                refreshMapAndData(value);
+                // Display success message
+                showToast('success', response.message);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                // Display error message
+                showToast('error', 'An error occurred while deleting the feature.');
+            }
+        });
+    } else {
+        console.error("Invalid feature type.");
+        // Display error message
+        showToast('error', 'Invalid feature type.');
+    }
+});
+
 
                     // Function to display toast notification
                     function showToast(type, message) {
