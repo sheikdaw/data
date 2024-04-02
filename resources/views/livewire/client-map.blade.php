@@ -520,7 +520,6 @@
                                     var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
                                     // Add new features to the vector source
                                     vectorBuildingSource.addFeatures(features);
-                                    vectorBuildingSource.refresh();
 
                                 })
                                 .catch(error => {
