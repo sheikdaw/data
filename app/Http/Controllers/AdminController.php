@@ -462,7 +462,7 @@ class AdminController extends Controller
     }
 
 
-    public function deleteLastFeature()
+    public function deleteLastFeature(Request $request)
     {
         if ($request->value == 'Point') {
             // Read the JSON file
