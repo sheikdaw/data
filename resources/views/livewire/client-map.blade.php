@@ -474,60 +474,60 @@
                     }
                     var type;
 
-                    // function refreshMapAndData(type) {
-                    //     alert(type);
-                    //     if (type == "Point") {
-                    //         // Clear the vector source to remove existing features from the map
-                    //         vectorSource.clear();
-                    //         // Fetch new GeoJSON data
-                    //         fetch(pointpath)
-                    //             .then(response => {
-                    //                 if (!response.ok) {
-                    //                     throw new Error('Failed to load GeoJSON file');
-                    //                 }
-                    //                 return response.json();
-                    //             })
-                    //             .then(pointJsonData => {
-                    //                 var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                    //                 // Add new features to the vector source
-                    //                 vectorSource.addFeatures(features);
-                    //                 // Iterate over features to set style
-                    //                 features.forEach(function(feature) {
-                    //                     var properties = feature.getProperties();
-                    //                     if (gisIdSet.has(properties['GIS_ID'])) {
-                    //                         feature.setStyle(completeStyle);
-                    //                     } else {
-                    //                         feature.setStyle(clickedStyle);
-                    //                     }
-                    //                 });
-                    //             })
-                    //             .catch(error => {
-                    //                 console.error('Error refreshing map and data:', error);
-                    //                 // Handle error
-                    //             });
-                    //     } else if (type == "Polygon") {
-                    //         // Clear the vector source to remove existing features from the map
-                    //         vectorBuildingSource.clear();
-                    //         // Fetch new GeoJSON data
-                    //         fetch(buildingpath)
-                    //             .then(response => {
-                    //                 if (!response.ok) {
-                    //                     throw new Error('Failed to load GeoJSON file');
-                    //                 }
-                    //                 return response.json();
-                    //             })
-                    //             .then(buildingJsonData => {
-                    //                 var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-                    //                 // Add new features to the vector source
-                    //                 vectorBuildingSource.addFeatures(features);
+                    function refreshMapAndData(type) {
+                        alert(type);
+                        if (type == "Point") {
+                            // Clear the vector source to remove existing features from the map
+                            vectorSource.clear();
+                            // Fetch new GeoJSON data
+                            fetch(pointpath)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to load GeoJSON file');
+                                    }
+                                    return response.json();
+                                })
+                                .then(pointJsonData => {
+                                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                                    // Add new features to the vector source
+                                    vectorSource.addFeatures(features);
+                                    // Iterate over features to set style
+                                    features.forEach(function(feature) {
+                                        var properties = feature.getProperties();
+                                        if (gisIdSet.has(properties['GIS_ID'])) {
+                                            feature.setStyle(completeStyle);
+                                        } else {
+                                            feature.setStyle(clickedStyle);
+                                        }
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error('Error refreshing map and data:', error);
+                                    // Handle error
+                                });
+                        } else if (type == "Polygon") {
+                            // Clear the vector source to remove existing features from the map
+                            vectorBuildingSource.clear();
+                            // Fetch new GeoJSON data
+                            fetch(buildingpath)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to load GeoJSON file');
+                                    }
+                                    return response.json();
+                                })
+                                .then(buildingJsonData => {
+                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                                    // Add new features to the vector source
+                                    vectorBuildingSource.addFeatures(features);
 
-                    //             })
-                    //             .catch(error => {
-                    //                 console.error('Error refreshing map and data:', error);
-                    //                 // Handle error
-                    //             });
-                    //     }
-                    // }
+                                })
+                                .catch(error => {
+                                    console.error('Error refreshing map and data:', error);
+                                    // Handle error
+                                });
+                        }
+                    }
                     /**
                      * Handle change event.
                      */
@@ -545,7 +545,7 @@
                                 method: 'GET', // Request method
                                 success: function(response) {
                                     console.log(response.message);
-                                    refreshMapAndData(value);
+                                    delRefresh(value);
                                     // Display success message
 
                                 },
@@ -560,7 +560,7 @@
                             showToast('error', 'Invalid feature type.');
                         }
                     });
-                    function refreshMapAndData(type) {
+                    function delRefresh(type) {
     alert(type); // Just for testing
     if (type == "Point") {
         // Refresh the vector source associated with the point layer
