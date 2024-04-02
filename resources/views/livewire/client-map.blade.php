@@ -270,7 +270,7 @@
                     <hr>
                     <button class="btn" id="#addEstablishment">ADD</button>
                     <h4>Feature Form</h4>
-                    <form  method="POST" enctype="multipart/form-data" id="pointForm">
+                    <form method="POST" enctype="multipart/form-data" id="pointForm">
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
@@ -285,7 +285,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="old_assessment">Old Assessment</label>
-                                <input type="text" name="old_assessment" class="form-control" id="old_assessment">
+                                <input type="text" name="old_assessment" class="form-control"
+                                    id="old_assessment">
                             </div>
                             <div class="form-group">
                                 <label for="floor"> Floor</label>
@@ -327,7 +328,7 @@
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
         <script type="text/javascript">
             var clickedStyle = new ol.style.Style({
                 fill: new ol.style.Fill({
@@ -707,29 +708,30 @@
                         addInteraction();
                     };
                     document.getElementById('undo').addEventListener('click', function() {
-            // When the element with the ID 'undo' is clicked, execute the following function
-            const value = typeSelect.value;
-            if (value == 'Point' || value == 'Polygon') {
-                $.ajax({
-                    url: '/delete-feature/' + value, // URL to send the AJAX request with parameter
-                    method: 'GET', // Request method
-                    success: function(response) {
-                        console.log(response.message);
-                        refreshMapAndData(value);
-                        // Display success message
+                        // When the element with the ID 'undo' is clicked, execute the following function
+                        const value = typeSelect.value;
+                        if (value == 'Point' || value == 'Polygon') {
+                            $.ajax({
+                                url: '/delete-feature/' +
+                                value, // URL to send the AJAX request with parameter
+                                method: 'GET', // Request method
+                                success: function(response) {
+                                    console.log(response.message);
+                                    refreshMapAndData(value);
+                                    // Display success message
 
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        // Display error message
-                    }
-                });
-            } else {
-                console.error("Invalid feature type.");
-                // Display error message
-                showToast('error', 'Invalid feature type.');
-            }
-        });
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                    // Display error message
+                                }
+                            });
+                        } else {
+                            console.error("Invalid feature type.");
+                            // Display error message
+                            showToast('error', 'Invalid feature type.');
+                        }
+                    });
 
                     addInteraction();
                     $("#filterBtn").click(function(e) {
@@ -779,15 +781,15 @@
 
 
 
-                $(document).ready(function(){
-                    var establishmentadd = -1;
+            $(document).ready(function() {
+                var establishmentadd = -1;
                 $("#addEstablishment").click(function(e) {
                     e.preventDefault();
                     alert('hi');
                     var use = $('#bill_usage').val();
-                    if(use != 'Residential'){
-                    establishmentadd++;
-                    var newRow = `
+                    if (use != 'Residential') {
+                        establishmentadd++;
+                        var newRow = `
                     <div class="row">
                         <div class="col-6 col-sm-6">
                             <button class="btn btn-dark removeEstablishment">Remove Floor</button>
@@ -842,8 +844,8 @@
                                 </div>
                     </div>`;
 
-                    $(".append").append(newRow);
-                }
+                        $(".append").append(newRow);
+                    }
                 });
                 $(".append").on('click', '.removeEstablishment', function(e) {
                     e.preventDefault();
@@ -851,7 +853,7 @@
                     // Remove the entire row when the remove button is clicked
                     $(this).closest(".row").remove();
                 });
-                });
+            });
         </script>
     @endpush
 </div>
