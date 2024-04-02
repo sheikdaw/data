@@ -329,533 +329,543 @@
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
 
 
-            <script type="text/javascript">
-                var clickedStyle = new ol.style.Style({
+        <script type="text/javascript">
+            var clickedStyle = new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255, 0, 0, 1)', // Red color for outline
+                    width: 2 // Outline width
+                }),
+                image: new ol.style.Circle({
+                    radius: 6,
                     fill: new ol.style.Fill({
-                        color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(255, 0, 0, 1)', // Red color for outline
-                        width: 2 // Outline width
-                    }),
-                    image: new ol.style.Circle({
-                        radius: 6,
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
-                        })
+                        color: 'rgba(255, 0, 0, 1)' // Red color for point symbol
                     })
-                });
+                })
+            });
 
-                var completeStyle = new ol.style.Style({
+            var completeStyle = new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(0, 48, 143, 1)', // Green color for outline
+                    width: 2 // Outline width
+                }),
+                image: new ol.style.Circle({
+                    radius: 6,
                     fill: new ol.style.Fill({
-                        color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(0, 48, 143, 1)', // Green color for outline
-                        width: 2 // Outline width
-                    }),
-                    image: new ol.style.Circle({
-                        radius: 6,
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
-                        })
+                        color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
                     })
-                });
+                })
+            });
 
-                var filterStyle = new ol.style.Style({
+            var filterStyle = new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 215, 0, 0.6)' // Dark yellow color with some opacity
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255, 215, 0, 1)', // Dark yellow color for outline
+                    width: 2 // Outline width
+                }),
+                image: new ol.style.Circle({
+                    radius: 6,
                     fill: new ol.style.Fill({
-                        color: 'rgba(255, 215, 0, 0.6)' // Dark yellow color with some opacity
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(255, 215, 0, 1)', // Dark yellow color for outline
-                        width: 2 // Outline width
-                    }),
-                    image: new ol.style.Circle({
-                        radius: 6,
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 215, 0, 1)' // Dark yellow color for point symbol
-                        })
+                        color: 'rgba(255, 215, 0, 1)' // Dark yellow color for point symbol
                     })
+                })
+            });
+
+            var pointpath = "{{ $point }}";
+            var buildingpath = "{{ asset('public/kovai/building.json') }}";
+            var pngFilePath = "D:\\cloned github\\gis\\png1.png"; // Note the double backslashes to escape correctly
+
+            var pointJsonPromise = fetch(pointpath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load GeoJSON file');
+                    }
+                    return response.json();
                 });
+            var buildingJsonPromise = fetch(buildingpath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load GeoJSON file');
+                    }
+                    return response.json();
+                });
+            Promise.all([pointJsonPromise, buildingJsonPromise])
+                .then(responses => {
+                    var pointJsonData = responses[0];
+                    var buildingJsonData = responses[1];
+                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                    var buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
-                var pointpath = "{{ $point }}";
-                var buildingpath = "{{ asset('public/kovai/building.json') }}";
-                var pngFilePath = "D:\\cloned github\\gis\\png1.png"; // Note the double backslashes to escape correctly
-
-                var pointJsonPromise = fetch(pointpath)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to load GeoJSON file');
-                        }
-                        return response.json();
+                    var vectorSource = new ol.source.Vector({
+                        features: features
                     });
-                var buildingJsonPromise = fetch(buildingpath)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to load GeoJSON file');
-                        }
-                        return response.json();
+                    var vectorLayer = new ol.layer.Vector({
+                        source: vectorSource
                     });
-                Promise.all([pointJsonPromise, buildingJsonPromise])
-                    .then(responses => {
-                        var pointJsonData = responses[0];
-                        var buildingJsonData = responses[1];
-                        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                        var buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
-                        var vectorSource = new ol.source.Vector({
-                            features: features
-                        });
-                        var vectorLayer = new ol.layer.Vector({
-                            source: vectorSource
-                        });
-
-                        var vectorBuildingSource = new ol.source.Vector({
-                            features: buildingfeatures
-                        });
-                        var vectorBuildingLayer = new ol.layer.Vector({
-                            source: vectorBuildingSource
-                        });
+                    var vectorBuildingSource = new ol.source.Vector({
+                        features: buildingfeatures
+                    });
+                    var vectorBuildingLayer = new ol.layer.Vector({
+                        source: vectorBuildingSource
+                    });
 
 
-                        var overlays;
-                        // Define the extent of the image
-                        var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
+                    var overlays;
+                    // Define the extent of the image
+                    var extent = [8566150.76848, 1232901.87763, 8568107.06848, 1235527.17763];
 
-                        // Create the static image layer
-                        var imageLayer = new ol.layer.Image({
-                            source: new ol.source.ImageStatic({
-                                url: "{{ asset('public/kovai/new/png2.png') }}", // Path to your static image
-                                imageExtent: extent
-                            })
-                        });
+                    // Create the static image layer
+                    var imageLayer = new ol.layer.Image({
+                        source: new ol.source.ImageStatic({
+                            url: "{{ asset('public/kovai/new/png2.png') }}", // Path to your static image
+                            imageExtent: extent
+                        })
+                    });
 
-                        var map = new ol.Map({
-                            target: 'map',
-                            layers: [
-                                new ol.layer.Tile({
-                                    source: new ol.source.OSM()
-                                }), imageLayer, vectorBuildingLayer,
-                                vectorLayer
-                            ],
-                            view: new ol.View({
-                                center: ol.proj.fromLonLat([76.955393, 11.020899]),
-                                projection: 'EPSG:3857',
-                                zoom: 20
-                            })
-                        });
-                        // Function to create style with text label and red border
-                        var createLabelStyleFunction = function(text) {
-                            return new ol.style.Style({
-                                text: new ol.style.Text({
-                                    text: text.toString(), // Convert Id to string
-                                    font: '25px Calibri,sans-serif',
-                                    fill: new ol.style.Fill({
-                                        color: '##ffff00'
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: '#ffff00',
-                                        width: 2
-                                    }),
-                                    offsetX: 0,
-                                    offsetY: -20,
-                                    textAlign: 'center',
-                                    textBaseline: 'bottom',
-                                    placement: 'point',
-                                    maxAngle: Math.PI / 4
+                    var map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }), imageLayer, vectorBuildingLayer,
+                            vectorLayer
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([76.955393, 11.020899]),
+                            projection: 'EPSG:3857',
+                            zoom: 20
+                        })
+                    });
+                    // Function to create style with text label and red border
+                    var createLabelStyleFunction = function(text) {
+                        return new ol.style.Style({
+                            text: new ol.style.Text({
+                                text: text.toString(), // Convert Id to string
+                                font: '25px Calibri,sans-serif',
+                                fill: new ol.style.Fill({
+                                    color: '##ffff00'
                                 }),
                                 stroke: new ol.style.Stroke({
-                                    color: 'red',
+                                    color: '#ffff00',
                                     width: 2
                                 }),
-                                fill: new ol.style.Fill({
-                                    color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
-                                })
-                            });
-                        };
-
-                        // Apply the style function to the vector building layer
-                        vectorBuildingLayer.setStyle(function(feature) {
-                            var id = feature.get('OBJECTID'); // Extract Id from feature properties
-                            return createLabelStyleFunction(id);
-                        });
-                        var markerLayer = new ol.layer.Vector({
-                            source: new ol.source.Vector(),
-                            style: new ol.style.Style({
-                                image: new ol.style.Icon({
-                                    anchor: [0.5, 1],
-                                    src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
-                                })
+                                offsetX: 0,
+                                offsetY: -20,
+                                textAlign: 'center',
+                                textBaseline: 'bottom',
+                                placement: 'point',
+                                maxAngle: Math.PI / 4
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: 2
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
                             })
                         });
-                        map.addLayer(markerLayer);
+                    };
 
-                        if ('geolocation' in navigator) {
-                            navigator.geolocation.watchPosition(function(position) {
-                                var lonLat = [position.coords.longitude, position.coords.latitude];
-                                var pos = ol.proj.fromLonLat(lonLat);
-                                markerLayer.getSource().clear();
-                                var marker = new ol.Feature({
-                                    geometry: new ol.geom.Point(pos)
-                                });
-                                markerLayer.getSource().addFeature(marker);
-                                map.getView().setCenter(pos);
-                            }, function(error) {
-                                console.error('Error getting geolocation:', error);
+                    // Apply the style function to the vector building layer
+                    vectorBuildingLayer.setStyle(function(feature) {
+                        var id = feature.get('OBJECTID'); // Extract Id from feature properties
+                        return createLabelStyleFunction(id);
+                    });
+                    var markerLayer = new ol.layer.Vector({
+                        source: new ol.source.Vector(),
+                        style: new ol.style.Style({
+                            image: new ol.style.Icon({
+                                anchor: [0.5, 1],
+                                src: 'https://openlayers.org/en/latest/examples/data/icon.png' // Marker icon image
+                            })
+                        })
+                    });
+                    map.addLayer(markerLayer);
+
+                    if ('geolocation' in navigator) {
+                        navigator.geolocation.watchPosition(function(position) {
+                            var lonLat = [position.coords.longitude, position.coords.latitude];
+                            var pos = ol.proj.fromLonLat(lonLat);
+                            markerLayer.getSource().clear();
+                            var marker = new ol.Feature({
+                                geometry: new ol.geom.Point(pos)
                             });
-                        } else {
-                            console.error('Geolocation is not supported by this browser.');
+                            markerLayer.getSource().addFeature(marker);
+                            map.getView().setCenter(pos);
+                        }, function(error) {
+                            console.error('Error getting geolocation:', error);
+                        });
+                    } else {
+                        console.error('Geolocation is not supported by this browser.');
+                    }
+
+                    var popup = new ol.Overlay({
+                        element: document.getElementById('popup'),
+                        autoPan: true,
+                        autoPanAnimation: {
+                            duration: 250
                         }
+                    });
+                    map.addOverlay(popup);
 
-                        var popup = new ol.Overlay({
-                            element: document.getElementById('popup'),
-                            autoPan: true,
-                            autoPanAnimation: {
-                                duration: 250
-                            }
-                        });
-                        map.addOverlay(popup);
+                    var surveyed_img = @json($surveyed_img);
 
-                        var surveyed_img = @json($surveyed_img);
+                    var gisIdSet = new Set();
 
-                        var gisIdSet = new Set();
-
-                        surveyed_img.forEach(function(survey) {
-                            gisIdSet.add(survey.gisid);
-                        });
-
-                        features.forEach(function(feature) {
-                            var properties = feature.getProperties();
-                            if (gisIdSet.has(properties['GIS_ID'])) {
-                                feature.setStyle(completeStyle);
-                            } else {
-                                feature.setStyle(clickedStyle);
-                            }
-                        });
-
-                        map.on('click', function(event) {
-                            if (document.getElementById('type').value == 'None') {
-                                var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-                                    return feature;
-                                });
-
-                                if (feature) {
-                                    var properties = feature.getProperties();
-                                    alert(properties);
-                                    var geometryType = feature.getGeometry().getType();
-                                    //alert("Geometry type: " + geometryType);
-                                    if (geometryType == 'MultiPoint') {
-                                        var content = '';
-                                        for (var key in properties) {
-                                            if (key !== 'geometry') {
-                                                content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                    '</li>';
-                                            }
-                                        }
-                                        document.getElementById('featurePropertiesList').innerHTML = content;
-                                        document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                        $('#pointModal').modal('show');
-                                    } else if (geometryType == 'Polygon') {
-                                        var content = '';
-                                        for (var key in properties) {
-                                            if (key !== 'geometry') {
-                                                content += '<li><strong>' + key + ':</strong> ' + properties[key] +
-                                                    '</li>';
-                                            }
-                                        }
-                                        document.getElementById('featurePropertiesList').innerHTML = content;
-                                        document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                        $('#buildingModal').modal('show');
-                                    }
-                                } else {
-                                    $('#pointModal').hide();
-                                    $('#buildingModal').modal('hide');
-                                }
-                            }
-                        });
-                        const typeSelect = document.getElementById('type');
-
-                        let draw; // global so we can remove it later
-
-                        function addInteraction() {
-                            const value = typeSelect.value;
-                            if (value !== 'None') {
-                                draw = new ol.interaction.Draw({
-                                    source: vectorSource,
-                                    type: typeSelect.value,
-                                });
-                                map.addInteraction(draw);
-                                draw.on('drawend', function(event) {
-                                    const feature = event.feature;
-                                    const geometry = feature.getGeometry();
-                                    const coordinates = geometry.getCoordinates();
-                                    // Send an Ajax request to Laravel route to add the feature to JSON
-                                    if (value == "Polygon") {
-                                        alert(coordinates);
-                                        $.ajax({
-                                            url: '/add-feature',
-                                            type: 'POST', // Use POST method
-                                            data: JSON.stringify({
-                                                '_token': '{{ csrf_token() }}',
-                                                'type': 'Polygon',
-                                                'coordinates': coordinates,
-                                                'gis_id': feature
-                                                    .getId() // Assuming you're setting an ID for the feature
-                                            }),
-                                            contentType: 'application/json', // Set content type to JSON
-                                            success: function(response) {
-                                                console.log(response.message);
-                                                // Handle success response
-                                                // Refresh the map and update JSON data after point addition
-                                                refreshMapAndData("Polygon");
-                                            },
-                                            error: function(xhr, status, error) {
-                                                console.error(error);
-                                                // Handle error response
-                                            }
-                                        });
-                                    }
-                                    if (value == 'Point') {
-                                        alert(coordinates);
-                                        $.ajax({
-                                            url: '/add-feature',
-                                            type: 'POST', // Use POST method
-                                            data: JSON.stringify({
-                                                '_token': '{{ csrf_token() }}',
-                                                'type': 'Point',
-                                                'longitude': coordinates[0],
-                                                'latitude': coordinates[1],
-                                                'gis_id': feature
-                                                    .getId() // Assuming you're setting an ID for the feature
-                                            }),
-                                            contentType: 'application/json', // Set content type to JSON
-                                            success: function(response) {
-                                                console.log(response.message);
-                                                // Handle success response
-                                                // Refresh the map and update JSON data after point addition
-                                                refreshMapAndData("Point");
-                                            },
-                                            error: function(xhr, status, error) {
-                                                console.error(error);
-                                                // Handle error response
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        }
-                        var type;
-
-                        function refreshMapAndData(type) {
-                            alert(type);
-                            if (type == "Point") {
-                                // Clear the vector source to remove existing features from the map
-                                vectorSource.clear();
-                                // Fetch new GeoJSON data
-                                fetch(pointpath)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Failed to load GeoJSON file');
-                                        }
-                                        return response.json();
-                                    })
-                                    .then(pointJsonData => {
-                                        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                                        // Add new features to the vector source
-                                        vectorSource.addFeatures(features);
-                                        // Iterate over features to set style
-                                        features.forEach(function(feature) {
-                                            var properties = feature.getProperties();
-                                            if (gisIdSet.has(properties['GIS_ID'])) {
-                                                feature.setStyle(completeStyle);
-                                            } else {
-                                                feature.setStyle(clickedStyle);
-                                            }
-                                        });
-                                    })
-                                    .catch(error => {
-                                        console.error('Error refreshing map and data:', error);
-                                        // Handle error
-                                    });
-                            } else if (type == "Polygon") {
-                                // Clear the vector source to remove existing features from the map
-                                vectorBuildingSource.clear();
-                                // Fetch new GeoJSON data
-                                fetch(buildingpath)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Failed to load GeoJSON file');
-                                        }
-                                        return response.json();
-                                    })
-                                    .then(buildingJsonData => {
-                                        var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-                                        // Add new features to the vector source
-                                        vectorBuildingSource.addFeatures(features);
-
-                                    })
-                                    .catch(error => {
-                                        console.error('Error refreshing map and data:', error);
-                                        // Handle error
-                                    });
-                            }
-                        }
-                        /**
-                         * Handle change event.
-                         */
-                        typeSelect.onchange = function() {
-                            map.removeInteraction(draw);
-                            addInteraction();
-                        };
-                        document.getElementById('undo').addEventListener('click', function() {
-                            // When the element with the ID 'undo' is clicked, execute the following function
-                            const value = typeSelect.value;
-                            if (value == 'Point' || value == 'Polygon') {
-                                $.ajax({
-                                    url: '/delete-feature/' +
-                                    value, // URL to send the AJAX request with parameter
-                                    method: 'GET', // Request method
-                                    success: function(response) {
-                                        console.log(response.message);
-                                        refreshMapAndData(value);
-                                        // Display success message
-
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error(error);
-                                        // Display error message
-                                    }
-                                });
-                            } else {
-                                console.error("Invalid feature type.");
-                                // Display error message
-                                showToast('error', 'Invalid feature type.');
-                            }
-                        });
-
-                        addInteraction();
-                        $("#filterBtn").click(function(e) {
-                            e.preventDefault();
-                            var gisidvalue = $("#gisidval").val();
-                            // Clear existing features
-                            vectorSource.clear();
-                            var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
-                            features.forEach(function(feature) {
-                                var properties = feature.getProperties();
-                                var newStyle;
-                                if (gisidvalue == properties['GIS_ID']) {
-                                    newStyle = new ol.style.Style({
-                                        image: new ol.style.Circle({
-                                            radius: 6,
-                                            fill: new ol.style.Fill({
-                                                color: 'green'
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'white'
-                                            })
-                                        })
-                                    });
-                                } else {
-                                    newStyle = new ol.style.Style({
-                                        image: new ol.style.Circle({
-                                            radius: 6,
-                                            fill: new ol.style.Fill({
-                                                color: 'red'
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'white'
-                                            })
-                                        })
-                                    });
-                                }
-                                feature.setStyle(newStyle);
-                                vectorSource.addFeature(feature); // Add the feature back to the source
-                            });
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error loading files:', error);
+                    surveyed_img.forEach(function(survey) {
+                        gisIdSet.add(survey.gisid);
                     });
 
+                    features.forEach(function(feature) {
+                        var properties = feature.getProperties();
+                        if (gisIdSet.has(properties['GIS_ID'])) {
+                            feature.setStyle(completeStyle);
+                        } else {
+                            feature.setStyle(clickedStyle);
+                        }
+                    });
+
+                    map.on('click', function(event) {
+                        if (document.getElementById('type').value == 'None') {
+                            var feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+                                return feature;
+                            });
+
+                            if (feature) {
+                                var properties = feature.getProperties();
+                                alert(properties);
+                                var geometryType = feature.getGeometry().getType();
+                                //alert("Geometry type: " + geometryType);
+                                if (geometryType == 'MultiPoint') {
+                                    var content = '';
+                                    for (var key in properties) {
+                                        if (key !== 'geometry') {
+                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                '</li>';
+                                        }
+                                    }
+                                    document.getElementById('featurePropertiesList').innerHTML = content;
+                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    $('#pointModal').modal('show');
+                                } else if (geometryType == 'Polygon') {
+                                    var content = '';
+                                    for (var key in properties) {
+                                        if (key !== 'geometry') {
+                                            content += '<li><strong>' + key + ':</strong> ' + properties[key] +
+                                                '</li>';
+                                        }
+                                    }
+                                    document.getElementById('featurePropertiesList').innerHTML = content;
+                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    $('#buildingModal').modal('show');
+                                }
+                            } else {
+                                $('#pointModal').hide();
+                                $('#buildingModal').modal('hide');
+                            }
+                        }
+                    });
+                    const typeSelect = document.getElementById('type');
+
+                    let draw; // global so we can remove it later
+
+                    function addInteraction() {
+                        const value = typeSelect.value;
+                        if (value !== 'None') {
+                            draw = new ol.interaction.Draw({
+                                source: vectorSource,
+                                type: typeSelect.value,
+                            });
+                            map.addInteraction(draw);
+                            draw.on('drawend', function(event) {
+                                const feature = event.feature;
+                                const geometry = feature.getGeometry();
+                                const coordinates = geometry.getCoordinates();
+                                // Send an Ajax request to Laravel route to add the feature to JSON
+                                if (value == "Polygon") {
+                                    alert(coordinates);
+                                    $.ajax({
+                                        url: '/add-feature',
+                                        type: 'POST', // Use POST method
+                                        data: JSON.stringify({
+                                            '_token': '{{ csrf_token() }}',
+                                            'type': 'Polygon',
+                                            'coordinates': coordinates,
+                                            'gis_id': feature
+                                                .getId() // Assuming you're setting an ID for the feature
+                                        }),
+                                        contentType: 'application/json', // Set content type to JSON
+                                        success: function(response) {
+                                            console.log(response.message);
+                                            // Handle success response
+                                            // Refresh the map and update JSON data after point addition
+                                            refreshMapAndData("Polygon");
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error(error);
+                                            // Handle error response
+                                        }
+                                    });
+                                }
+                                if (value == 'Point') {
+                                    alert(coordinates);
+                                    $.ajax({
+                                        url: '/add-feature',
+                                        type: 'POST', // Use POST method
+                                        data: JSON.stringify({
+                                            '_token': '{{ csrf_token() }}',
+                                            'type': 'Point',
+                                            'longitude': coordinates[0],
+                                            'latitude': coordinates[1],
+                                            'gis_id': feature
+                                                .getId() // Assuming you're setting an ID for the feature
+                                        }),
+                                        contentType: 'application/json', // Set content type to JSON
+                                        success: function(response) {
+                                            console.log(response.message);
+                                            // Handle success response
+                                            // Refresh the map and update JSON data after point addition
+                                            refreshMapAndData("Point");
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error(error);
+                                            // Handle error response
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    var type;
+
+                    function refreshMapAndData(type) {
+                        alert(type);
+                        if (type == "Point") {
+                            // Clear the vector source to remove existing features from the map
+                            vectorSource.clear();
+                            // Fetch new GeoJSON data
+                            fetch(pointpath)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to load GeoJSON file');
+                                    }
+                                    return response.json();
+                                })
+                                .then(pointJsonData => {
+                                    var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                                    // Add new features to the vector source
+                                    vectorSource.addFeatures(features);
+                                    // Iterate over features to set style
+                                    features.forEach(function(feature) {
+                                        var properties = feature.getProperties();
+                                        if (gisIdSet.has(properties['GIS_ID'])) {
+                                            feature.setStyle(completeStyle);
+                                        } else {
+                                            feature.setStyle(clickedStyle);
+                                        }
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error('Error refreshing map and data:', error);
+                                    // Handle error
+                                });
+                        } else if (type == "Polygon") {
+                            // Clear the vector source to remove existing features from the map
+                            vectorBuildingSource.clear();
+                            // Fetch new GeoJSON data
+                            fetch(buildingpath)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to load GeoJSON file');
+                                    }
+                                    return response.json();
+                                })
+                                .then(buildingJsonData => {
+                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
+                                    // Add new features to the vector source
+                                    vectorBuildingSource.addFeatures(features);
+
+                                })
+                                .catch(error => {
+                                    console.error('Error refreshing map and data:', error);
+                                    // Handle error
+                                });
+                        }
+                    }
+                    /**
+                     * Handle change event.
+                     */
+                    typeSelect.onchange = function() {
+                        map.removeInteraction(draw);
+                        addInteraction();
+                    };
+                    document.getElementById('undo').addEventListener('click', function() {
+                        // When the element with the ID 'undo' is clicked, execute the following function
+                        const value = typeSelect.value;
+                        if (value == 'Point' || value == 'Polygon') {
+                            $.ajax({
+                                url: '/delete-feature/' +
+                                    value, // URL to send the AJAX request with parameter
+                                method: 'GET', // Request method
+                                success: function(response) {
+                                    console.log(response.message);
+                                    refreshMapAndData(value);
+                                    // Display success message
+
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                    // Display error message
+                                }
+                            });
+                        } else {
+                            console.error("Invalid feature type.");
+                            // Display error message
+                            showToast('error', 'Invalid feature type.');
+                        }
+                    });
+
+                    addInteraction();
+                    $("#filterBtn").click(function(e) {
+                        e.preventDefault();
+                        var gisidvalue = $("#gisidval").val();
+                        // Clear existing features
+                        vectorSource.clear();
+                        var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                        features.forEach(function(feature) {
+                            var properties = feature.getProperties();
+                            var newStyle;
+                            if (gisidvalue == properties['GIS_ID']) {
+                                newStyle = new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                        radius: 6,
+                                        fill: new ol.style.Fill({
+                                            color: 'green'
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: 'white'
+                                        })
+                                    })
+                                });
+                            } else {
+                                newStyle = new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                        radius: 6,
+                                        fill: new ol.style.Fill({
+                                            color: 'red'
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: 'white'
+                                        })
+                                    })
+                                });
+                            }
+                            feature.setStyle(newStyle);
+                            vectorSource.addFeature(feature); // Add the feature back to the source
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading files:', error);
+                });
 
 
 
 
-                    $(document).ready(function() {
-                        var establishmentadd = -1;
 
-                        // Event handler for the ADD button
-                        $(document).on('click', '#addEstablishment', function(e) {
-                            e.preventDefault();
-                            alert('hi');
-                            var use = $('#bill_usage').val();
-                            alert(use);
-                            if (use != 'Residential') {
-                                establishmentadd++;
-                                var newRow = `
+            $(document).ready(function() {
+                var establishmentadd = -1;
+
+                // Event handler for the ADD button
+                $(document).on('click', '#addEstablishment', function(e) {
+                    e.preventDefault();
+                    alert('hi');
+                    var use = $('#bill_usage').val();
+                    alert(use);
+                    if (use != 'Residential') {
+                        establishmentadd++;
+                        var newRow = `
                         <div class="added bordered">
 
                                 <button class="btn btn-sm btn-dark removeEstablishment">Remove Floor</button>
                                         <div class="form-group">
-                                            <label for="shop_floor" class="text-light">Shop Floor</label>
+                                            <label for="shop_floor" >Shop Floor</label>
                                             <input type="text" name="shop_floor[${establishmentadd}]" id="shop_floor" class="form-control" placeholder="Shop Floor">
                                             <div class="text-danger" id="shop_floor.${establishmentadd}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="shop_name[${establishmentadd}]" class="text-light">Shop Name</label>
+                                            <label for="shop_name[${establishmentadd}]" >Shop Name</label>
                                             <input type="text" name="shop_name" id="shop_name" class="form-control" placeholder="Shop Name">
                                             <div class="text-danger" id="shop_name.${establishmentadd}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="shop_owner_name" class="text-light">Shop Owner Name</label>
+                                            <label for="shop_owner_name" >Shop Owner Name</label>
                                             <input type="text" name="shop_owner_name[${establishmentadd}]" id="shop_owner_name" class="form-control" placeholder="Shop Owner Name">
                                             <div class="text-danger" id="shop_owner_name.${establishmentadd}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="shop_category" class="text-light">Shop Category</label>
+                                            <label for="shop_category" >Shop Category</label>
                                             <select name="shop_category[${establishmentadd}]" id="shop_category" class="form-control">
                                                 <option value="1">1</option>
                                             </select>
                                             <div class="text-danger" id="shop_category.${establishmentadd}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="shop_mobile" class="text-light">Shop Mobile</label>
+                                            <label for="shop_mobile" >Shop Mobile</label>
                                             <input type="text" name="shop_mobile[${establishmentadd}]" id="shop_mobile" class="form-control" placeholder="Shop Mobile">
                                             <div class="text-danger" id="shop_mobile.${establishmentadd}"></div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="license" class="text-light">License</label>
+                                            <label for="license" >License</label>
                                             <select name="license[${establishmentadd}]" id="license" class="form-control">
                                                 <option value="1">1</option>
                                             </select>
                                             <div class="text-danger" id="license.${establishmentadd}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="professional_tax" class="text-light">Professional Tax</label>
+                                            <label for="professional_tax" >Professional Tax</label>
                                             <select name="professional_tax[${establishmentadd}]" id="professional_tax" class="form-control">
                                                 <option value="1">1</option>
                                             </select>
                                             <div class="text-danger" id="professional_tax.${establishmentadd}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="establishment_remarks" class="text-light">Establishment Remarks</label>
+                                            <label for="gst" >GST Number</label>
+                                            <input type="text" name="gst" id="gst[${establishmentadd}]" class="form-control" placeholder="GST">
+                                            <div class="text-danger" id="gst.${establishmentadd}"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="number_of_emplyee" >Number of Employee</label>
+                                            <input type="text" name="number_of_emplyee" id="number_of_emplyee[${establishmentadd}]" class="form-control" placeholder="Number of Employee">
+                                            <div class="text-danger" id="number_of_emplyee.${establishmentadd}"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="establishment_remarks" >Establishment Remarks</label>
                                             <input type="text" name="establishment_remarks" id="establishment_remarks[${establishmentadd}]" class="form-control" placeholder="Establishment Remarks">
                                             <div class="text-danger" id="establishment_remarks.${establishmentadd}"></div>
                                         </div>
+
                                     </div>
                         </div>`;
-                                $("#append").append(newRow);
-                            }
-                        });
+                        $("#append").append(newRow);
+                    }
+                });
 
-                        // Event handler for the Remove button (inside the dynamic row)
-                        $(document).on('click', '.removeEstablishment', function(e) {
-                            e.preventDefault();
-                            $(this).closest(".added").remove();
-                        });
-                    });
-
-            </script>
+                // Event handler for the Remove button (inside the dynamic row)
+                $(document).on('click', '.removeEstablishment', function(e) {
+                    e.preventDefault();
+                    $(this).closest(".added").remove();
+                });
+            });
+        </script>
     @endpush
 </div>
