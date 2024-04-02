@@ -114,11 +114,11 @@
         </div>
     </div>
 
-    <div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true">
+    <div class="modal fade" id="buildingModal" tabindex="-1" aria-labelledby="buildingModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="featureModalLabel">Feature Properties</h5>
+                    <h5 class="modal-title" id="buildingModalLabel">Feature Properties</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -138,12 +138,174 @@
                                 <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
+                                <label for="number_bill">Number_of_Bill</label>
+                                <input type="text" name="number_bill" class="form-control" id="number_bill">
                             </div>
                             <div class="form-group">
-                                <label for="value">Picture</label>
-                                <input type="file" name="image" id="image" class="form-control">
+                                <label for="number_floor">Number_of_Floor</label>
+                                <input type="text" name="number_floor" class="form-control" id="number_floor">
+                            </div>
+                            <div class="form-group">
+                                <label for="watet_tax">Watet_tax</label>
+                                <input type="text" name="watet_tax" class="form-control" id="watet_tax">
+                            </div>
+                            <div class="form-group">
+                                <label for="eb">Eb_number</label>
+                                <input type="text" name="eb" class="form-control" id="eb">
+                            </div>
+                            <div class="form-group">
+                                <label for="building_name">Building_name</label>
+                                <input type="text" name="building_name" class="form-control" id="building_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="Building_usage">Building_usage</label>
+                                <select name="building_usage" id="building_usage" class="form-control">
+                                    <option value="Residential">Residential</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Mixed">Mixed</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="construction_type">Construction_type</label>
+                                <select name="construction_type" id="construction_type" class="form-control">
+                                    <option value=""></option>
+                                    <option value="PERMANENT">PERMANENT</option>
+                                    <option value="SEMI-PERMANENT">SEMI-PERMANENT</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="road_name">Road_name</label>
+                                <input type="text" name="road_name" class="form-control" id="road_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="ugd">UGD</label>
+                                <input type="text" name="ugd" class="form-control" id="ugd">
+                            </div>
+                            <div class="form-group">
+                                <label for="rainwater_harvesting">Rainwater_harvesting</label>
+                                <select name="rainwater_harvesting" id="rainwater_harvesting">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="parking">Parking</label>
+                                <select name="parking" id="parking" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="Basement">Basement</option>
+                                    <option value="Ground-Parking">Ground-Parking</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ramp">Ramp</label>
+                                <select name="ramp" id="ramp" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="hoarding">Hoarding</label>
+                                <select name="hoarding" id="hoarding" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cell_tower">Cell_tower</label>
+                                <select name="cell_tower" id="cell_tower" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="solar_panel">Solar_panel</label>
+                                <select name="solar_panel" id="solar_panel" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="water_connection">Water_connection</label>
+                                <select name="water_connection" id="water_connection" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="Bore">Bore</option>
+                                    <option value="OPEN-WELL">OPEN-WELL</option>
+                                    <option value="METRO">METRO</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">phone_numnber</label>
+                                <select name="phone" id="phone" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" id="pointSubmit" class="btn btn-primary">Save image</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="pointModal" tabindex="-1" aria-labelledby="pointModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pointModalLabel">Feature Properties</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Feature Properties</h4>
+                    <ul id="featurePropertiesList">
+                        <!-- Feature properties will be displayed here -->
+                    </ul>
+                    <hr>
+                    <h4>Feature Form</h4>
+                    <form action="{{ route('client.gis-images-upload') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <div id="alertBox" class="alert alert-danger" style="display: none;">
+                            </div>
+                            <div class="form-group">
+                                <label for="gis">Gis</label>
+                                <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="assessment">Assessment_no</label>
+                                <input type="text" name="assessment" class="form-control" id="assessment">
+                            </div>
+                            <div class="form-group">
+                                <label for="old_assessment">Old Assessment</label>
+                                <input type="text" name="old_assessment" class="form-control" id="old_assessment">
+                            </div>
+                            <div class="form-group">
+                                <label for="floor"> Floor</label>
+                                <input type="text" name="floor" class="form-control" id="floor">
+                            </div>
+                            <div class="form-group">
+                                <label for="bill_usage">Bill_usage</label>
+                                <select name="bill_usage" id="bill_usage" class="form-control">
+                                    <option value="Residential">Residential</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Mixed">Mixed</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="aadhar_no">Aadhar_no</label>
+                                <input type="text" name="aadhar_no" class="form-control" id="aadhar_no">
+                            </div>
+                            <div class="form-group">
+                                <label for="ration_no">Ration_no</label>
+                                <input type="text" name="ration_no" class="form-control" id="ration_no">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">phone_numnber</label>
+                                <input type="text" name="phone" class="form-control" id="phone">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -373,7 +535,7 @@
                                 alert(properties);
                                 var geometryType = feature.getGeometry().getType();
                                 //alert("Geometry type: " + geometryType);
-                                if (geometryType == 'Point') {
+                                if (geometryType == 'MultiPoint') {
                                     var content = '';
                                     for (var key in properties) {
                                         if (key !== 'geometry') {
@@ -383,7 +545,7 @@
                                     }
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
+                                    $('#pointModal').modal('show');
                                 } else if (geometryType == 'Polygon') {
                                     var content = '';
                                     for (var key in properties) {
@@ -394,10 +556,11 @@
                                     }
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#featureModal').modal('show');
+                                    $('#buildingModal').modal('show');
                                 }
                             } else {
-                                $('#featureModal').modal('hide');
+                                $('#pointModal').modal('hide');
+                                $('#buildingModal').modal('hide');
                             }
                         }
                     });
