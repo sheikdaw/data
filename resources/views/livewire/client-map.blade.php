@@ -56,18 +56,7 @@
             }
         </style>
     @endpush
-    @if(session('status'))
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
-        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    {{ session('status') }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-@endif
+
 
     <form class="form-inline">
         <label for="type">Geometry type: &nbsp;</label>
@@ -426,7 +415,7 @@
                                             'type': 'Polygon',
                                             'coordinates': coordinates,
                                             'gis_id': feature
-                                            .getId() // Assuming you're setting an ID for the feature
+                                                .getId() // Assuming you're setting an ID for the feature
                                         }),
                                         contentType: 'application/json', // Set content type to JSON
                                         success: function(response) {
@@ -452,7 +441,7 @@
                                             'longitude': coordinates[0],
                                             'latitude': coordinates[1],
                                             'gis_id': feature
-                                            .getId() // Assuming you're setting an ID for the feature
+                                                .getId() // Assuming you're setting an ID for the feature
                                         }),
                                         contentType: 'application/json', // Set content type to JSON
                                         success: function(response) {
@@ -535,34 +524,55 @@
                     document.getElementById('undo').addEventListener('click', function() {
                         // When the element with the ID 'undo' is clicked, execute the following function
                         const value = typeSelect.value;
-                        if (value == 'Point') {
+                        if (value == 'Point' || value == 'Polygon') {
                             $.ajax({
                                 url: '/delete-feature', // URL to send the AJAX request
-                                type:post,
-                                data: value,
+                                type: 'POST', // Corrected to uppercase
+                                data: {
+                                    type: value
+                                }, // Sending value as key-value pair
                                 success: function(response) {
                                     console.log(response.message);
                                     refreshMapAndData();
+                                    // Display success message
+                                    showToast('success', response.message);
                                 },
                                 error: function(xhr, status, error) {
                                     console.error(error);
+                                    // Display error message
+                                    showToast('error', 'An error occurred while deleting the feature.');
                                 }
                             });
-                        } else if (value == "Polygon") {
-                            $.ajax({
-                                url: '/delete-feature', // URL to send the AJAX request
-                                type:post,
-                                data: value,
-                                success: function(response) {
-                                    console.log(response.message);
-                                    refreshMapAndData();
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error(error);
-                                }
-                            });
+                        } else {
+                            console.error("Invalid feature type.");
+                            // Display error message
+                            showToast('error', 'Invalid feature type.');
                         }
                     });
+
+                    // Function to display toast notification
+                    function showToast(type, message) {
+                        var toastClass = type === 'success' ? 'bg-success' : 'bg-danger';
+                        var toast = `
+                        <div class="toast align-items-center text-white ${toastClass}" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    ${message}
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>`;
+
+                        $('#toast-container').append(toast);
+                        var toastElement = $('.toast');
+                        var toastInstance = new bootstrap.Toast(toastElement[0]);
+                        toastInstance.show();
+                        toastElement.on('hidden.bs.toast', function() {
+                            $(this).remove();
+                        });
+                    }
+
+
                     addInteraction();
                     $("#filterBtn").click(function(e) {
                         e.preventDefault();
