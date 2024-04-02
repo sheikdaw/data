@@ -326,6 +326,8 @@
     </div>
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript">
             var clickedStyle = new ol.style.Style({
                 fill: new ol.style.Fill({
