@@ -793,9 +793,9 @@
                             if (use != 'Residential') {
                                 establishmentadd++;
                                 var newRow = `
-                        <div class="row bordered">
+                        <div class="bordered">
 
-                                <button class="btn btn-dark removeEstablishment">Remove Floor</button>
+                                <button class="btn btn-sm btn-dark removeEstablishment">Remove Floor</button>
                                         <div class="form-group">
                                             <label for="shop_floor" class="text-light">Shop Floor</label>
                                             <input type="text" name="shop_floor[${establishmentadd}]" id="shop_floor" class="form-control" placeholder="Shop Floor">
