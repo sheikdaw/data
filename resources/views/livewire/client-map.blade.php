@@ -142,6 +142,58 @@
                                 <input type="text" name="ward" class="form-control" id="ward">
                             </div>
                             <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" name="ward" class="form-control" id="ward">
+                            </div>
+                            <div class="form-group">
                                 <label for="value">Picture</label>
                                 <input type="file" name="image" id="image" class="form-control">
                             </div>
@@ -156,6 +208,9 @@
             </div>
         </div>
     </div>
+
+
+
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
         <script type="text/javascript">
