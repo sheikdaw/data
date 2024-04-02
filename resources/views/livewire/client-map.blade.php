@@ -782,6 +782,7 @@
 
 
                 document.addEventListener('DOMContentLoaded', function() {
+                    $("#addEstablishment").click(function(e) {alert('hi');});
     var establishmentadd = -1;
     document.getElementById('addEstablishment').addEventListener('click', function(e) {
         e.preventDefault();
