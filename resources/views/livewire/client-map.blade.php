@@ -240,6 +240,10 @@
                                     <option value="YES">YES</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="value">Picture</label>
+                                <input type="file" name="image" id="image" class="form-control">
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -265,7 +269,7 @@
                     </ul>
                     <hr>
                     <h4>Feature Form</h4>
-                    <form action="{{ route('client.gis-images-upload') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('client.gis-images-upload') }}" method="POST" enctype="multipart/form-data" id="pointForm">
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
@@ -307,6 +311,7 @@
                                 <label for="phone">phone_numnber</label>
                                 <input type="text" name="phone" class="form-control" id="phone">
                             </div>
+                            <div id="append"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -765,6 +770,80 @@
                 })
                 .catch(error => {
                     console.error('Error loading files:', error);
+                });
+
+
+
+
+
+                $(document).ready(function(){
+                    var establishmentadd = -1;
+                $("#addEstablishment").click(function(e) {
+                    e.preventDefault();
+                    establishmentadd++;
+                    var newRow = `
+                    <div class="row">
+                        <div class="col-6 col-sm-6">
+                            <button class="btn btn-dark removeEstablishment">Remove Floor</button>
+                                    <div class="mb-3">
+                                        <label for="shop_floor" class="text-light">Shop Floor</label>
+                                        <input type="text" name="shop_floor[${establishmentadd}]" id="shop_floor" class="form-control" placeholder="Shop Floor">
+                                        <div class="text-danger" id="shop_floor.${establishmentadd}"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="shop_name[${establishmentadd}]" class="text-light">Shop Name</label>
+                                        <input type="text" name="shop_name" id="shop_name" class="form-control" placeholder="Shop Name">
+                                        <div class="text-danger" id="shop_name.${establishmentadd}"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="shop_owner_name" class="text-light">Shop Owner Name</label>
+                                        <input type="text" name="shop_owner_name[${establishmentadd}]" id="shop_owner_name" class="form-control" placeholder="Shop Owner Name">
+                                        <div class="text-danger" id="shop_owner_name.${establishmentadd}"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="shop_category" class="text-light">Shop Category</label>
+                                        <select name="shop_category[${establishmentadd}]" id="shop_category" class="form-control">
+                                            <option value="1">1</option>
+                                        </select>
+                                        <div class="text-danger" id="shop_category.${establishmentadd}"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="shop_mobile" class="text-light">Shop Mobile</label>
+                                        <input type="text" name="shop_mobile[${establishmentadd}]" id="shop_mobile" class="form-control" placeholder="Shop Mobile">
+                                        <div class="text-danger" id="shop_mobile.${establishmentadd}"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="license" class="text-light">License</label>
+                                        <select name="license[${establishmentadd}]" id="license" class="form-control">
+                                            <option value="1">1</option>
+                                        </select>
+                                        <div class="text-danger" id="license.${establishmentadd}"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="professional_tax" class="text-light">Professional Tax</label>
+                                        <select name="professional_tax[${establishmentadd}]" id="professional_tax" class="form-control">
+                                            <option value="1">1</option>
+                                        </select>
+                                        <div class="text-danger" id="professional_tax.${establishmentadd}"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="establishment_remarks" class="text-light">Establishment Remarks</label>
+                                        <input type="text" name="establishment_remarks" id="establishment_remarks[${establishmentadd}]" class="form-control" placeholder="Establishment Remarks">
+                                        <div class="text-danger" id="establishment_remarks.${establishmentadd}"></div>
+                                    </div>
+                                </div>
+                    </div>`;
+
+                    $(".append").append(newRow);
+                });
+                $(".append").on('click', '.removeEstablishment', function(e) {
+                    e.preventDefault();
+
+                    // Remove the entire row when the remove button is clicked
+                    $(this).closest(".row").remove();
+                });
                 });
         </script>
     @endpush
