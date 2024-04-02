@@ -553,7 +553,7 @@
                                     }
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#pointModal').show();
+                                    $('#pointModal').modal('show');
                                 } else if (geometryType == 'Polygon') {
                                     var content = '';
                                     for (var key in properties) {
@@ -564,11 +564,11 @@
                                     }
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
-                                    $('#buildingModal').show();
+                                    $('#buildingModal').modal('show');
                                 }
                             } else {
                                 $('#pointModal').hide();
-                                $('#buildingModal').hide();
+                                $('#buildingModal').modal('hide');
                             }
                         }
                     });
