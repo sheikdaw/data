@@ -89,7 +89,7 @@ class ClientController extends Controller
         }
          else {
             session()->flash('fail', 'Incorrect credentials');
-            return redirect()->route('back.page.client.login');
+            return redirect()->route('back.page.client.auth.login');
         }
     }
     //log out
