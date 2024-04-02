@@ -475,6 +475,7 @@
                     var type;
 
                     function refreshMapAndData(type) {
+                        alert(type);
                         if (type == "Point") {
                             // Clear the vector source to remove existing features from the map
                             vectorSource.clear();
@@ -545,12 +546,11 @@
                         console.log(response.message);
                         refreshMapAndData(value);
                         // Display success message
-                        showToast('success', response.message);
+
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
                         // Display error message
-                        showToast('error', 'An error occurred while deleting the feature.');
                     }
                 });
             } else {
@@ -559,29 +559,6 @@
                 showToast('error', 'Invalid feature type.');
             }
         });
-
-        // Function to display toast notification
-        function showToast(type, message) {
-            var toastClass = type === 'success' ? 'bg-success' : 'bg-danger';
-            var toast = `
-                <div class="toast align-items-center text-white ${toastClass}" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            ${message}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>`;
-
-            $('#toast-container').append(toast);
-            var toastElement = $('.toast');
-            var toastInstance = new bootstrap.Toast(toastElement[0]);
-            toastInstance.show();
-            toastElement.on('hidden.bs.toast', function () {
-                $(this).remove();
-            });
-        }
-
 
                     addInteraction();
                     $("#filterBtn").click(function(e) {
