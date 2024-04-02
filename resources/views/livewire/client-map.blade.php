@@ -535,53 +535,52 @@
                         addInteraction();
                     };
                     document.getElementById('undo').addEventListener('click', function() {
-    // When the element with the ID 'undo' is clicked, execute the following function
-    const value = typeSelect.value;
-    if (value == 'Point' || value == 'Polygon') {
-        $.ajax({
-            url: '/delete-feature?value=' + value, // URL to send the AJAX request with parameter
-            method: 'GET', // Request method
-            success: function(response) {
-                console.log(response.message);
-                refreshMapAndData(value);
-                // Display success message
-                showToast('success', response.message);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
+            // When the element with the ID 'undo' is clicked, execute the following function
+            const value = typeSelect.value;
+            if (value == 'Point' || value == 'Polygon') {
+                $.ajax({
+                    url: '/delete-feature/' + value, // URL to send the AJAX request with parameter
+                    method: 'GET', // Request method
+                    success: function(response) {
+                        console.log(response.message);
+                        refreshMapAndData(value);
+                        // Display success message
+                        showToast('success', response.message);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        // Display error message
+                        showToast('error', 'An error occurred while deleting the feature.');
+                    }
+                });
+            } else {
+                console.error("Invalid feature type.");
                 // Display error message
-                showToast('error', 'An error occurred while deleting the feature.');
+                showToast('error', 'Invalid feature type.');
             }
         });
-    } else {
-        console.error("Invalid feature type.");
-        // Display error message
-        showToast('error', 'Invalid feature type.');
-    }
-});
 
+        // Function to display toast notification
+        function showToast(type, message) {
+            var toastClass = type === 'success' ? 'bg-success' : 'bg-danger';
+            var toast = `
+                <div class="toast align-items-center text-white ${toastClass}" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`;
 
-                    // Function to display toast notification
-                    function showToast(type, message) {
-                        var toastClass = type === 'success' ? 'bg-success' : 'bg-danger';
-                        var toast = `
-                        <div class="toast align-items-center text-white ${toastClass}" role="alert" aria-live="assertive" aria-atomic="true">
-                            <div class="d-flex">
-                                <div class="toast-body">
-                                    ${message}
-                                </div>
-                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                            </div>
-                        </div>`;
-
-                        $('#toast-container').append(toast);
-                        var toastElement = $('.toast');
-                        var toastInstance = new bootstrap.Toast(toastElement[0]);
-                        toastInstance.show();
-                        toastElement.on('hidden.bs.toast', function() {
-                            $(this).remove();
-                        });
-                    }
+            $('#toast-container').append(toast);
+            var toastElement = $('.toast');
+            var toastInstance = new bootstrap.Toast(toastElement[0]);
+            toastInstance.show();
+            toastElement.on('hidden.bs.toast', function () {
+                $(this).remove();
+            });
+        }
 
 
                     addInteraction();
