@@ -847,6 +847,11 @@
                                             <div class="text-danger" id="number_of_emplyee.${establishmentadd}"></div>
                                         </div>
                                         <div class="form-group">
+                                            <label for="trade_income" >Trade Income</label>
+                                            <input type="text" name="trade_income" id="trade_income[${establishmentadd}]" class="form-control" placeholder="Trade Income">
+                                            <div class="text-danger" id="trade_income.${establishmentadd}"></div>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="establishment_remarks" >Establishment Remarks</label>
                                             <input type="text" name="establishment_remarks" id="establishment_remarks[${establishmentadd}]" class="form-control" placeholder="Establishment Remarks">
                                             <div class="text-danger" id="establishment_remarks.${establishmentadd}"></div>
