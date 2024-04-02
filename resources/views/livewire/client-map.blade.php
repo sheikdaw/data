@@ -268,6 +268,7 @@
                         <!-- Feature properties will be displayed here -->
                     </ul>
                     <hr>
+                    <button class="btn" id="#addEstablishment">ADD</button>
                     <h4>Feature Form</h4>
                     <form  method="POST" enctype="multipart/form-data" id="pointForm">
                         @csrf
@@ -311,7 +312,6 @@
                                 <label for="phone">phone_numnber</label>
                                 <input type="text" name="phone" class="form-control" id="phone">
                             </div>
-                            <button class="btn" id="#addEstablishment">ADD</button>
                             <div id="append"></div>
                         </div>
                         <div class="modal-footer">
