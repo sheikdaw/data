@@ -327,10 +327,8 @@
     </div>
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
-
-
         <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function() {
+            $(document).ready(function () {
                 var clickedStyle = new ol.style.Style({
                     fill: new ol.style.Fill({
                         color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
@@ -775,7 +773,8 @@
                         });
                     });
                 });
-                </script>
 
-    @endpush
+        </script>
+
+       @endpush
 </div>
