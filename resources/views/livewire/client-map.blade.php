@@ -158,9 +158,7 @@
                                 <input type="text" name="building_name" class="form-control" id="building_name">
                             </div>
                             <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                                <select name="building_usage" id="building_usage">
+                                <select name="building_usage" id="building_usage" class="form-control">
                                     <option value="Residential">Residential</option>
                                     <option value="Commercial">Commercial</option>
                                     <option value="Mixed">Mixed</option>
@@ -181,19 +179,19 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select name="parking" id="parking">
+                                <select name="parking" id="parking" class="form-control">
                                     <option value="Basement">Basement</option>
                                     <option value="Ground-Parking">Ground-Parking</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select name="ramp" id="ramp">
+                                <select name="ramp" id="ramp" class="form-control">
                                     <option value="YES">YES</option>
                                     <option value="NO">NO</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select name="rainwater_harvesting" id="rainwater_harvesting">
+                                <select name="rainwater_harvesting" id="rainwater_harvesting" class="form-control">
                                     <option value="YES">YES</option>
                                     <option value="NO">NO</option>
                                 </select>
