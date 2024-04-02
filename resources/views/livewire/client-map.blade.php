@@ -158,6 +158,7 @@
                                 <input type="text" name="building_name" class="form-control" id="building_name">
                             </div>
                             <div class="form-group">
+                                <label for="Building_usage">Building_usage</label>
                                 <select name="building_usage" id="building_usage" class="form-control">
                                     <option value="Residential">Residential</option>
                                     <option value="Commercial">Commercial</option>
@@ -173,60 +174,63 @@
                                 <input type="text" name="ugd" class="form-control" id="ugd">
                             </div>
                             <div class="form-group">
+                                <label for="rainwater_harvesting">Rainwater_harvesting</label>
                                 <select name="rainwater_harvesting" id="rainwater_harvesting">
-                                    <option value="YES">YES</option>
                                     <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="parking">Parking</label>
                                 <select name="parking" id="parking" class="form-control">
+                                    <option value="NO">NO</option>
                                     <option value="Basement">Basement</option>
                                     <option value="Ground-Parking">Ground-Parking</option>
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="ramp">Ramp</label>
                                 <select name="ramp" id="ramp" class="form-control">
-                                    <option value="YES">YES</option>
                                     <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select name="rainwater_harvesting" id="rainwater_harvesting" class="form-control">
-                                    <option value="YES">YES</option>
+                                <label for="hoarding">Hoarding</label>
+                                <select name="hoarding" id="hoarding" class="form-control">
                                     <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select name="rainwater_harvesting" id="rainwater_harvesting">
-                                    <option value="YES">YES</option>
+                                <label for="cell_tower">Cell_tower</label>
+                                <select name="cell_tower" id="cell_tower" class="form-control">
                                     <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select name="rainwater_harvesting" id="rainwater_harvesting">
-                                    <option value="YES">YES</option>
+                                <label for="solar_panel">Solar_panel</label>
+                                <select name="solar_panel" id="solar_panel" class="form-control">
                                     <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
+                                <label for="water_connection">Water_connection</label>
+                                <select name="water_connection" id="water_connection" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="Bore">Bore</option>
+                                    <option value="OPEN-WELL">OPEN-WELL</option>
+                                    <option value="METRO">METRO</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                            </div>
-                            <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                            </div>
-                            <div class="form-group">
-                                <label for="ward">Ward</label>
-                                <input type="text" name="ward" class="form-control" id="ward">
-                            </div>
-                            <div class="form-group">
-                                <label for="value">Picture</label>
-                                <input type="file" name="image" id="image" class="form-control">
+                                <label for="phone">phone_numnber</label>
+                                <select name="phone" id="phone" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">
