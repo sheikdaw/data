@@ -122,7 +122,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img src="{{asset('images/1.jpg')}}" alt="" width="100px">
+                    <img src="{{asset('public/images/1.jpg')}}" alt="" width="100px">
                     <h4>Feature Properties</h4>
                     <ul id="featurePropertiesList">
                         <!-- Feature properties will be displayed here -->
