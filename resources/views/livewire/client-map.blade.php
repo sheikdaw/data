@@ -787,9 +787,7 @@
                 // Event handler for the ADD button
                 $(document).on('click', '#addEstablishment', function(e) {
                     e.preventDefault();
-                    alert('hi');
                     var use = $('#bill_usage').val();
-                    alert(use);
                     if (use != 'Residential') {
                         establishmentadd++;
                         var newRow = `
