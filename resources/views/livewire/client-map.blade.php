@@ -269,7 +269,7 @@
                     </ul>
                     <hr>
                     <h4>Feature Form</h4>
-                    <form action="{{ route('client.gis-images-upload') }}" method="POST" enctype="multipart/form-data" id="pointForm">
+                    <form  method="POST" enctype="multipart/form-data" id="pointForm">
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
