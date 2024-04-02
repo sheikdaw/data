@@ -464,28 +464,53 @@ class AdminController extends Controller
 
     public function deleteLastFeature()
     {
-        // Read the JSON file
-        $jsonFilePath = public_path('kovai/test.json');
-        $jsonData = file_get_contents($jsonFilePath);
+        if ($request->value == 'Point') {
+            // Read the JSON file
+                $jsonFilePath = public_path('kovai/test.json');
+                $jsonData = file_get_contents($jsonFilePath);
 
-        // Decode JSON data to an associative array
-        $data = json_decode($jsonData, true);
+                // Decode JSON data to an associative array
+                $data = json_decode($jsonData, true);
 
-        // Check if the 'features' array exists in the JSON data
-        if (isset($data['features'])) {
-            // Remove the last feature from the 'features' array
-            array_pop($data['features']);
+                // Check if the 'features' array exists in the JSON data
+                if (isset($data['features'])) {
+                    // Remove the last feature from the 'features' array
+                    array_pop($data['features']);
 
-            // Encode the modified array back to JSON
-            $jsonData = json_encode($data, JSON_PRETTY_PRINT);
+                    // Encode the modified array back to JSON
+                    $jsonData = json_encode($data, JSON_PRETTY_PRINT);
 
-            // Write the updated JSON data back to the file
-            file_put_contents($jsonFilePath, $jsonData);
+                    // Write the updated JSON data back to the file
+                    file_put_contents($jsonFilePath, $jsonData);
 
-            return response()->json(['message' => 'Last feature deleted successfully']);
-        } else {
-            return response()->json(['message' => 'No features found in JSON data'], 404);
+                    return response()->json(['message' => 'Last feature deleted successfully']);
+                } else {
+                    return response()->json(['message' => 'No features found in JSON data'], 404);
+                }
+        } else if($request->value == 'Polygon') {
+            $jsonFilePath = public_path('kovai/building.json');
+                $jsonData = file_get_contents($jsonFilePath);
+
+                // Decode JSON data to an associative array
+                $data = json_decode($jsonData, true);
+
+                // Check if the 'features' array exists in the JSON data
+                if (isset($data['features'])) {
+                    // Remove the last feature from the 'features' array
+                    array_pop($data['features']);
+
+                    // Encode the modified array back to JSON
+                    $jsonData = json_encode($data, JSON_PRETTY_PRINT);
+
+                    // Write the updated JSON data back to the file
+                    file_put_contents($jsonFilePath, $jsonData);
+
+                    return response()->json(['message' => 'Last feature deleted successfully']);
+                } else {
+                    return response()->json(['message' => 'No features found in JSON data'], 404);
+                }
         }
+
     }
 
 }

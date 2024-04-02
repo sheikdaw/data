@@ -259,8 +259,8 @@
                             zoom: 20
                         })
                     });
-                     // Function to create style with text label and red border
-                    var createLabelStyleFunction= function (text) {
+                    // Function to create style with text label and red border
+                    var createLabelStyleFunction = function(text) {
                         return new ol.style.Style({
                             text: new ol.style.Text({
                                 text: text.toString(), // Convert Id to string
@@ -290,7 +290,7 @@
                     };
 
                     // Apply the style function to the vector building layer
-                    vectorBuildingLayer.setStyle(function (feature) {
+                    vectorBuildingLayer.setStyle(function(feature) {
                         var id = feature.get('OBJECTID'); // Extract Id from feature properties
                         return createLabelStyleFunction(id);
                     });
@@ -413,7 +413,8 @@
                                             '_token': '{{ csrf_token() }}',
                                             'type': 'Polygon',
                                             'coordinates': coordinates,
-                                            'gis_id': feature.getId() // Assuming you're setting an ID for the feature
+                                            'gis_id': feature
+                                            .getId() // Assuming you're setting an ID for the feature
                                         }),
                                         contentType: 'application/json', // Set content type to JSON
                                         success: function(response) {
@@ -438,7 +439,8 @@
                                             'type': 'Point',
                                             'longitude': coordinates[0],
                                             'latitude': coordinates[1],
-                                            'gis_id': feature.getId() // Assuming you're setting an ID for the feature
+                                            'gis_id': feature
+                                            .getId() // Assuming you're setting an ID for the feature
                                         }),
                                         contentType: 'application/json', // Set content type to JSON
                                         success: function(response) {
@@ -520,16 +522,32 @@
                     };
                     document.getElementById('undo').addEventListener('click', function() {
                         // When the element with the ID 'undo' is clicked, execute the following function
-                        $.ajax({
-                            url: '/delete-feature', // URL to send the AJAX request
-                            success: function(response) {
-                                console.log(response.message);
-                                refreshMapAndData();
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(error);
-                            }
-                        });
+                        const value = typeSelect.value;
+                        if (value == 'Point') {
+                            $.ajax({
+                                url: '/delete-feature', // URL to send the AJAX request
+                                data: value,
+                                success: function(response) {
+                                    console.log(response.message);
+                                    refreshMapAndData();
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                }
+                            });
+                        } else if (value == "Polygon") {
+                            $.ajax({
+                                url: '/delete-feature', // URL to send the AJAX request
+                                data: value,
+                                success: function(response) {
+                                    console.log(response.message);
+                                    refreshMapAndData();
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                }
+                            });
+                        }
                     });
                     addInteraction();
                     $("#filterBtn").click(function(e) {
@@ -575,6 +593,5 @@
                     console.error('Error loading files:', error);
                 });
         </script>
-
     @endpush
 </div>
