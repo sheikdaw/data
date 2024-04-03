@@ -901,7 +901,7 @@
                                     var errorField = $('#' + key);
                                     errorField.addClass(
                                     'is-invalid'); // Add invalid class to input field
-                                    errorField.siblings('.error-message').text(value[
+                                    $('#' + key).siblings('.error-message').text(value[
                                     0]); // Display the error message next to the field
                                 });
                             }
