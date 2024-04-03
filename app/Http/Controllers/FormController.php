@@ -419,12 +419,13 @@ class FormController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'assessment' => 'required',
-            'old_assessment' => 'required',
-            'floor' => 'required',
-            'bill_usage' => 'required',
-            'aadhar_no' => 'required',
-            'ration_no' => 'required',
-            'phone' => 'required',
+        'old_assessment' => 'required',
+        'Floor' => 'required', // Assuming 'Floor' is the correct field name
+        'bill_usage' => 'required',
+        'aadhar_no' => 'required',
+        'ration_no' => 'required',
+        'phone_numnber' => 'required', // Corrected field name
+        'gisid' => 'required|exists:building_data,gisid',
             // 'shop_floor' => 'required',
             // 'shop_name' => 'required',
             // 'shop_owner_name' => 'required',
@@ -436,7 +437,6 @@ class FormController extends Controller
             // 'number_of_emplyee' => 'required',
             // 'trade_income' => 'required',
             // 'establishment_remarks' => 'required',
-            'gisid' => 'required',
         ]);
 
         // Create a new PointData model instance with the validated data
