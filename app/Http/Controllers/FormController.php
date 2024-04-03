@@ -439,11 +439,21 @@ class FormController extends Controller
             // 'establishment_remarks' => 'required',
         ]);
 
+        $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
+
+        if (!$buildingData) {
+            // Handle the case when the building data doesn't exist
+            return response()->json(['error' => 'Building data not found'], 404);
+        }
+
+        // Add the building_data_id to the validated data
+        $validatedData['building_data_id'] = $buildingData->id;
+
         // Create a new PointData model instance with the validated data
         $pointData = PointData::create($validatedData);
 
         // Optionally, you can return a response indicating success
-        return response()->json(['success' => true,'message' => 'Point data created successfully', 'data' => $pointData], 201);
+        return response()->json(['success' => true, 'message' => 'Point data created successfully', 'data' => $pointData], 201);
     }
 
 }
