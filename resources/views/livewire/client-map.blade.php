@@ -139,11 +139,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
+                                <input type="text" class="form-control" id="gisIdInput" name="gisid" value="{{ $gisId }}" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="number_bill">Number_of_Bill</label>
-                                <input type="text" name="number_bill" class="form-control" id="number_bill">
+                                <input type="text" name="number_bill" class="form-control"value="{{ $item->number_bill }}" id="number_bill">
                                 <div id="number_bill_error"></div>
                             </div>
                             <div class="form-group">
