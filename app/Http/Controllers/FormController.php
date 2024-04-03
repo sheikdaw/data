@@ -420,11 +420,11 @@ class FormController extends Controller
         $validatedData = $request->validate([
             'assessment' => 'required',
             'old_assessment' => 'required',
-            'Floor' => 'required',
+            'floor' => 'required',
             'bill_usage' => 'required',
             'aadhar_no' => 'required',
             'ration_no' => 'required',
-            'phone_numnber' => 'required',
+            'phone' => 'required',
             // 'shop_floor' => 'required',
             // 'shop_name' => 'required',
             // 'shop_owner_name' => 'required',
@@ -435,7 +435,7 @@ class FormController extends Controller
             // 'gst' => 'required',
             // 'number_of_emplyee' => 'required',
             // 'trade_income' => 'required',
-            'establishment_remarks' => 'required',
+            // 'establishment_remarks' => 'required',
             'gisid' => 'required|exists:building_data,id',
         ]);
 
