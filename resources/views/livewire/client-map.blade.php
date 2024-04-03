@@ -277,6 +277,7 @@
         </div>
     </div>
     <div class="modal fade" id="pointModal" tabindex="-1" aria-labelledby="pointModalLabel" aria-hidden="true">
+        @csrf
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
