@@ -8,12 +8,12 @@ use Livewire\Component;
 
 class ClientMap extends Component
 {
-    public $surveyed;
+    public $point_data;
     public $point;
     public $longitude;
     public $latitude;
     public $gis_id;
-    public $surveyed_img;
+    public $building_data;
 
     // Combine both listeners into one array
     protected $listeners = [
@@ -25,14 +25,14 @@ class ClientMap extends Component
     {
         // Fetch surveyed data and assign it to the property
         $this->point = asset('public/kovai/test.json');
-        $this->surveyed = Surveyed::all();
-        $this->surveyed_img = image::all();
+        $this->point_data = point_data::all();
+        $this->building_data = image::all();
     }
 
     public function render()
     {
         return view('livewire.client-map', [
-            'surveyed' => $this->surveyed, 'surveyed_img' => $this->surveyed_img
+            'surveyed' => $this->surveyed, 'building_data' => $this->building_data
         ]);
     }
 }
