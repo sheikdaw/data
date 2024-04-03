@@ -122,14 +122,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img src="{{asset('public/images/2.jpg')}}" alt="" width="300px">
+                    <img src="{{ asset('public/images/2.jpg') }}" alt="" width="300px">
                     <h4>Feature Properties</h4>
                     <ul id="featurePropertiesList">
                         <!-- Feature properties will be displayed here -->
                     </ul>
                     <hr>
                     <h4>Feature Form</h4>
-                    <form action="{{ route('client.gis-images-upload') }}" method="POST" enctype="multipart/form-data">
+                    <form id="buildingForm" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
@@ -868,6 +868,35 @@
                 $(document).on('click', '.removeEstablishment', function(e) {
                     e.preventDefault();
                     $(this).closest(".added").remove();
+                });
+            });
+
+
+
+
+            //ajax for building data
+            $(document).ready(function() {
+                $('#buildingForm').submit(function(e) {
+                    e.preventDefault();
+                    var buildingData = $('#buildingForm').serialize();
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('client.buildingdata-upload') }}',
+                        data: buildingData,
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Data saved successfully!');
+                                // You can close the modal or do any other action upon success
+                            } else {
+                                alert('Failed to save data. Please try again.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert(
+                                'An error occurred while processing your request. Please try again.');
+                        }
+                    });
                 });
             });
         </script>
