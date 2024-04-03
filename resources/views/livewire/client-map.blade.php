@@ -599,7 +599,8 @@
                                     features.forEach(function(feature) {
                                         var properties = feature.getProperties();
                                         if (gisIdSet.has(properties['GIS_ID'])) {
-                                            document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                            document.getElementById('gisIdInput').value = properties[
+                                                'GIS_ID'];
                                         }
                                     });
 
@@ -716,47 +717,48 @@
                                     // Handle error
                                 });
                         } else if (geometryType == 'Polygon') {
-    var content = '';
-    for (var key in properties) {
-        if (key !== 'geometry') {
-            content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
-        }
-    }
-    document.getElementById('featurePropertiesList').innerHTML = content;
+                            var content = '';
+                            for (var key in properties) {
+                                if (key !== 'geometry') {
+                                    content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
+                                }
+                            }
+                            document.getElementById('featurePropertiesList').innerHTML = content;
 
-    var gisId = properties['GIS_ID']; // Get the GIS ID from the clicked feature
-    document.getElementById('gisIdInput').value = gisId; // Set the GIS ID value in the form
+                            var gisId = properties['GIS_ID']; // Get the GIS ID from the clicked feature
+                            document.getElementById('gisIdInput').value = gisId; // Set the GIS ID value in the form
 
-    var building_data = @json($building_data); // Get building data from server-side
+                            var building_data = @json($building_data); // Get building data from server-side
 
-    // Find the building data corresponding to the selected GIS ID
-    var selectedBuilding = building_data.find(function(building) {
-        return building.GIS_ID === gisId;
-    });
+                            // Find the building data corresponding to the selected GIS ID
+                            var selectedBuilding = building_data.find(function(building) {
+                                return building.GIS_ID === gisId;
+                            });
+                                alert(selectedBuilding);
+                            // Set values for all form fields based on the selected building data
+                            if (selectedBuilding) {
+                                document.getElementById('number_bill').value = selectedBuilding.number_bill;
+                                document.getElementById('number_floor').value = selectedBuilding.number_floor;
+                                document.getElementById('watet_tax').value = selectedBuilding.watet_tax;
+                                document.getElementById('eb').value = selectedBuilding.eb;
+                                document.getElementById('building_name').value = selectedBuilding.building_name;
+                                document.getElementById('building_usage').value = selectedBuilding.building_usage;
+                                document.getElementById('construction_type').value = selectedBuilding.construction_type;
+                                document.getElementById('road_name').value = selectedBuilding.road_name;
+                                document.getElementById('ugd').value = selectedBuilding.ugd;
+                                document.getElementById('rainwater_harvesting').value = selectedBuilding
+                                    .rainwater_harvesting;
+                                document.getElementById('parking').value = selectedBuilding.parking;
+                                document.getElementById('ramp').value = selectedBuilding.ramp;
+                                document.getElementById('hoarding').value = selectedBuilding.hoarding;
+                                document.getElementById('cell_tower').value = selectedBuilding.cell_tower;
+                                document.getElementById('solar_panel').value = selectedBuilding.solar_panel;
+                                document.getElementById('water_connection').value = selectedBuilding.water_connection;
+                                document.getElementById('phone').value = selectedBuilding.phone;
+                            }
 
-    // Set values for all form fields based on the selected building data
-    if (selectedBuilding) {
-        document.getElementById('number_bill').value = selectedBuilding.number_bill;
-        document.getElementById('number_floor').value = selectedBuilding.number_floor;
-        document.getElementById('watet_tax').value = selectedBuilding.watet_tax;
-        document.getElementById('eb').value = selectedBuilding.eb;
-        document.getElementById('building_name').value = selectedBuilding.building_name;
-        document.getElementById('building_usage').value = selectedBuilding.building_usage;
-        document.getElementById('construction_type').value = selectedBuilding.construction_type;
-        document.getElementById('road_name').value = selectedBuilding.road_name;
-        document.getElementById('ugd').value = selectedBuilding.ugd;
-        document.getElementById('rainwater_harvesting').value = selectedBuilding.rainwater_harvesting;
-        document.getElementById('parking').value = selectedBuilding.parking;
-        document.getElementById('ramp').value = selectedBuilding.ramp;
-        document.getElementById('hoarding').value = selectedBuilding.hoarding;
-        document.getElementById('cell_tower').value = selectedBuilding.cell_tower;
-        document.getElementById('solar_panel').value = selectedBuilding.solar_panel;
-        document.getElementById('water_connection').value = selectedBuilding.water_connection;
-        document.getElementById('phone').value = selectedBuilding.phone;
-    }
-
-    $('#buildingModal').modal('show');
-}
+                            $('#buildingModal').modal('show');
+                        }
 
                     }
                     /**
@@ -988,7 +990,7 @@
                             console.error(xhr.responseText);
                             alert(
                                 'An error occurred while processing your request. Please try again.'
-                                );
+                            );
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 $.each(xhr.responseJSON.errors, function(key, value) {
                                     $('#' + key).addClass(
