@@ -292,7 +292,7 @@
                     <button class="btn" id="addEstablishment">ADD</button>
                     <h4>Feature Form</h4>
                     <form method="POST" enctype="multipart/form-data" id="pointForm">
-                        @csrf
+
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
                             </div>
