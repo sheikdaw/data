@@ -425,7 +425,7 @@ class FormController extends Controller
         'aadhar_no' => 'required',
         'ration_no' => 'required',
         'phone' => 'required', // Corrected field name
-        'gisid' => 'required|exists:building_data,gisid',
+        'gisid' => 'required|exists:building_data,id',
             // 'shop_floor' => 'required',
             // 'shop_name' => 'required',
             // 'shop_owner_name' => 'required',
