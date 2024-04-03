@@ -596,7 +596,6 @@
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
                                     $('#buildingModal').modal('show');
-                                    var gisId = $('#gisIdInput').val();
                                 }
                             } else {
                                 $('#pointModal').hide();
