@@ -130,6 +130,9 @@
                     <hr>
                     <h4>Feature Form</h4>
                     <form id="buildingForm" enctype="multipart/form-data">
+                        @foreach ($building_data as $item)
+                        @if ($item->GIS_ID == $gisId)
+
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
@@ -270,7 +273,11 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" id="pointSubmit" class="btn btn-primary">Save image</button>
                         </div>
+
+                        @endif
+                        @endforeach
                     </form>
+
 
                 </div>
             </div>
@@ -589,6 +596,7 @@
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
                                     $('#buildingModal').modal('show');
+                                    var gisId = $('#gisIdInput').val();
                                 }
                             } else {
                                 $('#pointModal').hide();
