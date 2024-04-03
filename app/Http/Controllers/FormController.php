@@ -366,7 +366,8 @@ class FormController extends Controller
 
     //building data
 
-    public function buildingdataUpload(Request $request){
+    public function buildingdataUpload(Request $request)
+    {
         $validatedData = $request->validate([
             'gisid' => 'required',
             'number_bill' => 'required',
@@ -388,9 +389,7 @@ class FormController extends Controller
             'phone' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Example validation for image upload
         ]);
-        if ($validator->fails()) {
-                     return response()->json(['error' => false, 'errors' => $validator->errors()]);
-        }
+
         $buildingData = BuildingData::where('gisid', $validatedData['gisid'])->first();
 
         // If the record exists, update it
@@ -400,15 +399,18 @@ class FormController extends Controller
             // Otherwise, create a new record
             $buildingData = BuildingData::create($validatedData);
         }
+
         // Handle image upload
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = time() . '_' . $image->getClientOriginalName();
-        $image->move(public_path('images'), $imageName); // Move image to public/images directory
-        $buildingData->image = 'images/' . $imageName;
-        $buildingData->save();
-    }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName); // Move image to public/images directory
+            $buildingData->image = 'images/' . $imageName;
+            $buildingData->save();
+        }
+
         return response()->json(['success' => true]);
     }
+
 
 }
