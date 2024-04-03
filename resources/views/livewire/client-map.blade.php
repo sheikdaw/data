@@ -299,7 +299,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="pointgis" name="gisid" readonly>
+                                <input type="text" class="form-control" id="pointgis" name="point_gisid" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="assessment">Assessment_no</label>
