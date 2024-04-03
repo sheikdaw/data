@@ -166,6 +166,7 @@
                             <div class="form-group">
                                 <label for="Building_usage">Building_usage</label>
                                 <select name="building_usage" id="building_usage" class="form-control">
+                                    <option value=""></option>
                                     <option value="Residential">Residential</option>
                                     <option value="Commercial">Commercial</option>
                                     <option value="Mixed">Mixed</option>
@@ -202,6 +203,7 @@
                             <div class="form-group">
                                 <label for="parking">Parking</label>
                                 <select name="parking" id="parking" class="form-control">
+                                    <option value=""></option>
                                     <option value="NO">NO</option>
                                     <option value="Basement">Basement</option>
                                     <option value="Ground-Parking">Ground-Parking</option>
