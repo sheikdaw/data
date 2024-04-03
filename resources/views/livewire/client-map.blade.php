@@ -599,8 +599,8 @@
                                     var selectedBuilding = building_data.find(function(building) {
                                         return building.GIS_ID === gisId;
                                     });
-                                    //alert(building_data);
-                                    // Set values for all form fields based on the selected building data
+                                    alert(selectedBuilding);
+
                                     if (selectedBuilding) {
                                         document.getElementById('number_bill').value = selectedBuilding.number_bill;
                                         document.getElementById('number_floor').value = selectedBuilding
