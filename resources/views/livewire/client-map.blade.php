@@ -592,17 +592,14 @@
                                     document.getElementById('gisIdInput').value =
                                     gisId; // Set the GIS ID value in the form
 
-                                    var building_data =@json($building_data); // Get building data from server-side
+                                    var building_data =
+                                    @json($building_data); // Get building data from server-side
 
                                     // Find the building data corresponding to the selected GIS ID
                                     var selectedBuilding = building_data.find(function(building) {
-    // Convert both GIS IDs to uppercase and trim whitespace for case-insensitive matching
-    return building.gisid.trim().toUpperCase() === gisId.trim().toUpperCase();
-});
-
-console.log("Clicked GIS ID:", gisId);
-console.log("Selected Building:", selectedBuilding);
-
+                                        return building.gisid === gisId;
+                                    });
+                                    console.log(building_data);
 
                                     if (selectedBuilding) {
                                         document.getElementById('number_bill').value = selectedBuilding.number_bill;
