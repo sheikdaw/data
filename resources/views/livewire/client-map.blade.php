@@ -563,12 +563,13 @@
 
                             if (feature) {
                                 var properties = feature.getProperties();
-                                alert(properties);
+
                                 var geometryType = feature.getGeometry().getType();
                                 //alert("Geometry type: " + geometryType);
                                 if (geometryType == 'MultiPoint') {
                                     var content = '';
                                     for (var key in properties) {
+                                        alert(properties[key]);
                                         if (key !== 'geometry') {
                                             content += '<li><strong>' + key + ':</strong> ' + properties[key] +
                                                 '</li>';
