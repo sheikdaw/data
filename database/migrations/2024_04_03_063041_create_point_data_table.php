@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('point_data', function (Blueprint $table) {
             $table->id();
+            $table->string('point_gisid')->nullable();
             $table->string('assessment')->nullable();
             $table->string('old_assessment')->nullable();
             $table->string('floor')->nullable(); // Corrected column name to 'floor'
@@ -31,7 +32,8 @@ return new class extends Migration
             $table->string('number_of_employee')->nullable(); // Corrected column name to 'number_of_employee'
             $table->string('trade_income')->nullable();
             $table->string('establishment_remarks')->nullable();
-            $table->foreignId('gisid')->constrained('building_data')->onDelete('cascade');
+            $table->unsignedBigInteger('building_data_id'); // Foreign key column
+            $table->foreign('building_data_id')->references('id')->on('building_data')->onDelete('cascade');
             $table->timestamps();
         });
     }
