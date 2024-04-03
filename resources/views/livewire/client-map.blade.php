@@ -597,7 +597,7 @@
 
                                     // Find the building data corresponding to the selected GIS ID
                                     var selectedBuilding = building_data.find(function(building) {
-                                        return building.GIS_ID === gisId;
+                                        return building.gisid === gisId;
                                     });
                                     console.log(building_data);
 
