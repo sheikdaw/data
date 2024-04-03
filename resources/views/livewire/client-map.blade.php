@@ -184,7 +184,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="rainwater_harvesting">Rainwater_harvesting</label>
-                                <select name="rainwater_harvesting" id="rainwater_harvesting">
+                                <select name="rainwater_harvesting" id="rainwater_harvesting" class="form-control">
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -879,7 +879,7 @@
                 $('#buildingForm').submit(function(e) {
                     e.preventDefault();
                     $('.error-message').text('');
-        $('input').removeClass('is-invalid');
+                    $('input').removeClass('is-invalid');
                     var buildingData = $('#buildingForm').serialize();
                     $.ajax({
                         type: 'POST',
@@ -895,13 +895,16 @@
                             console.error(xhr.responseText);
                             alert(
                                 'An error occurred while processing your request. Please try again.'
-                                );
-                                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    $.each(xhr.responseJSON.errors, function(key, value) {
-                        $('#' + key).addClass('is-invalid'); // Add invalid class to input field
-                        $('#' + key + '_error').text(value[0]); // Display the error message next to the field
-                    });
-                }
+                            );
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                $.each(xhr.responseJSON.errors, function(key, value) {
+                                    var errorField = $('#' + key);
+                                    errorField.addClass(
+                                    'is-invalid'); // Add invalid class to input field
+                                    errorField.siblings('.error-message').text(value[
+                                    0]); // Display the error message next to the field
+                                });
+                            }
 
                         }
                     });
