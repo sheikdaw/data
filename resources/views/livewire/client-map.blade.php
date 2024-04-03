@@ -130,20 +130,17 @@
                     <hr>
                     <h4>Feature Form</h4>
                     <form id="buildingForm" enctype="multipart/form-data">
-                        @foreach ($building_data as $item)
-                        @if ($item->GIS_ID == $gisId)
-
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="gisIdInput" name="gisid" value="{{ $gisId }}" readonly>
+                                <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="number_bill">Number_of_Bill</label>
-                                <input type="text" name="number_bill" class="form-control"value="{{ $item->number_bill }}" id="number_bill">
+                                <input type="text" name="number_bill" class="form-control" id="number_bill">
                                 <div id="number_bill_error"></div>
                             </div>
                             <div class="form-group">
@@ -273,11 +270,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" id="pointSubmit" class="btn btn-primary">Save image</button>
                         </div>
-
-                        @endif
-                        @endforeach
                     </form>
-
 
                 </div>
             </div>
@@ -595,6 +588,21 @@
                                     }
                                     document.getElementById('featurePropertiesList').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    var building_data = @json($building_data);
+
+                                    var gisIdSet = new Set();
+
+                                    building_data.forEach(function(survey) {
+                                        gisIdSet.add(survey.gisid);
+                                    });
+
+                                    features.forEach(function(feature) {
+                                        var properties = feature.getProperties();
+                                        if (gisIdSet.has(properties['GIS_ID'])) {
+                                            document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                        }
+                                    });
+
                                     $('#buildingModal').modal('show');
                                 }
                             } else {
@@ -707,28 +715,49 @@
                                     console.error('Error refreshing map and data:', error);
                                     // Handle error
                                 });
-                        } else if (type == "Polygon") {
-                            // Clear the vector source to remove existing features from the map
-                            vectorBuildingSource.clear();
-                            // Fetch new GeoJSON data
-                            fetch(buildingpath)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to load GeoJSON file');
-                                    }
-                                    return response.json();
-                                })
-                                .then(buildingJsonData => {
-                                    var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-                                    // Add new features to the vector source
-                                    vectorBuildingSource.addFeatures(features);
+                        } else if (geometryType == 'Polygon') {
+    var content = '';
+    for (var key in properties) {
+        if (key !== 'geometry') {
+            content += '<li><strong>' + key + ':</strong> ' + properties[key] + '</li>';
+        }
+    }
+    document.getElementById('featurePropertiesList').innerHTML = content;
 
-                                })
-                                .catch(error => {
-                                    console.error('Error refreshing map and data:', error);
-                                    // Handle error
-                                });
-                        }
+    var gisId = properties['GIS_ID']; // Get the GIS ID from the clicked feature
+    document.getElementById('gisIdInput').value = gisId; // Set the GIS ID value in the form
+
+    var building_data = @json($building_data); // Get building data from server-side
+
+    // Find the building data corresponding to the selected GIS ID
+    var selectedBuilding = building_data.find(function(building) {
+        return building.GIS_ID === gisId;
+    });
+
+    // Set values for all form fields based on the selected building data
+    if (selectedBuilding) {
+        document.getElementById('number_bill').value = selectedBuilding.number_bill;
+        document.getElementById('number_floor').value = selectedBuilding.number_floor;
+        document.getElementById('watet_tax').value = selectedBuilding.watet_tax;
+        document.getElementById('eb').value = selectedBuilding.eb;
+        document.getElementById('building_name').value = selectedBuilding.building_name;
+        document.getElementById('building_usage').value = selectedBuilding.building_usage;
+        document.getElementById('construction_type').value = selectedBuilding.construction_type;
+        document.getElementById('road_name').value = selectedBuilding.road_name;
+        document.getElementById('ugd').value = selectedBuilding.ugd;
+        document.getElementById('rainwater_harvesting').value = selectedBuilding.rainwater_harvesting;
+        document.getElementById('parking').value = selectedBuilding.parking;
+        document.getElementById('ramp').value = selectedBuilding.ramp;
+        document.getElementById('hoarding').value = selectedBuilding.hoarding;
+        document.getElementById('cell_tower').value = selectedBuilding.cell_tower;
+        document.getElementById('solar_panel').value = selectedBuilding.solar_panel;
+        document.getElementById('water_connection').value = selectedBuilding.water_connection;
+        document.getElementById('phone').value = selectedBuilding.phone;
+    }
+
+    $('#buildingModal').modal('show');
+}
+
                     }
                     /**
                      * Handle change event.
@@ -958,13 +987,14 @@
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText);
                             alert(
-                                'An error occurred while processing your request. Please try again.');
+                                'An error occurred while processing your request. Please try again.'
+                                );
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 $.each(xhr.responseJSON.errors, function(key, value) {
                                     $('#' + key).addClass(
-                                    'is-invalid'); // Add invalid class to input field
+                                        'is-invalid'); // Add invalid class to input field
                                     $('#' + key + '_error').text(value[
-                                    0]); // Display the error message next to the field
+                                        0]); // Display the error message next to the field
                                 });
                             }
                         }
