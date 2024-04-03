@@ -286,7 +286,7 @@
                 </div>
                 <div class="modal-body">
                     <h4>Feature Properties</h4>
-                    <ul id="featurePropertiesList">
+                    <ul id="featurepoint">
                         <!-- Feature properties will be displayed here -->
                     </ul>
                     <hr>
@@ -569,13 +569,13 @@
                                 if (geometryType == 'MultiPoint') {
                                     var content = '';
                                     for (var key in properties) {
-                                        alert( key + ':</strong> ' + properties[key]);
+                                       // alert( key + ':</strong> ' + properties[key]);
                                         if (key !== 'geometry') {
                                             content += '<li><strong>' + key + ':</strong> ' + properties[key] +
                                                 '</li>';
                                         }
                                     }
-                                    document.getElementById('featurePropertiesList').innerHTML = content;
+                                    document.getElementById('featurepoint').innerHTML = content;
                                     document.getElementById('gisIdInput').value = properties['GIS_ID'];
                                     $('#pointModal').modal('show');
                                 } else if (geometryType == 'Polygon') {
