@@ -569,7 +569,7 @@
                                 if (geometryType == 'MultiPoint') {
                                     var content = '';
                                     for (var key in properties) {
-                                        alert(properties[key]);
+                                        alert( key + ':</strong> ' + properties[key]);
                                         if (key !== 'geometry') {
                                             content += '<li><strong>' + key + ':</strong> ' + properties[key] +
                                                 '</li>';
