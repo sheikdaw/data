@@ -590,45 +590,47 @@
 
                                     var gisId = properties['GIS_ID']; // Get the GIS ID from the clicked feature
                                     document.getElementById('gisIdInput').value =
-                                    gisId; // Set the GIS ID value in the form
+                                        gisId; // Set the GIS ID value in the form
 
-                                    var building_data = @json($building_data); // Get building data from server-side
-building_data.forEach(function(builddata) {
-    alert(builddata.gisid);
-});
-
-
-                                    // Find the building data corresponding to the selected GIS ID
-                                    var selectedBuilding = building_data.find(function(building) {
-                                        return building.gisid === gisId;
-                                    });
-                                    console.log(building_data);
-
-                                    if (selectedBuilding) {
-                                        document.getElementById('number_bill').value = selectedBuilding.number_bill;
+                                    var building_data =
+                                    @json($building_data); // Get building data from server-side
+                                    building_data.forEach(function(selectedBuilding) {
+                                        alert(selectedBuilding.gisid);
+                                        document.getElementById('number_bill').value = selectedBuilding
+                                            .number_bill;
                                         document.getElementById('number_floor').value = selectedBuilding
                                             .number_floor;
-                                        document.getElementById('watet_tax').value = selectedBuilding.watet_tax;
+                                        document.getElementById('watet_tax').value = selectedBuilding
+                                            .watet_tax;
                                         document.getElementById('eb').value = selectedBuilding.eb;
                                         document.getElementById('building_name').value = selectedBuilding
                                             .building_name;
                                         document.getElementById('building_usage').value = selectedBuilding
                                             .building_usage;
-                                        document.getElementById('construction_type').value = selectedBuilding
+                                        document.getElementById('construction_type').value =
+                                            selectedBuilding
                                             .construction_type;
-                                        document.getElementById('road_name').value = selectedBuilding.road_name;
+                                        document.getElementById('road_name').value = selectedBuilding
+                                            .road_name;
                                         document.getElementById('ugd').value = selectedBuilding.ugd;
-                                        document.getElementById('rainwater_harvesting').value = selectedBuilding
+                                        document.getElementById('rainwater_harvesting').value =
+                                            selectedBuilding
                                             .rainwater_harvesting;
                                         document.getElementById('parking').value = selectedBuilding.parking;
                                         document.getElementById('ramp').value = selectedBuilding.ramp;
-                                        document.getElementById('hoarding').value = selectedBuilding.hoarding;
-                                        document.getElementById('cell_tower').value = selectedBuilding.cell_tower;
-                                        document.getElementById('solar_panel').value = selectedBuilding.solar_panel;
+                                        document.getElementById('hoarding').value = selectedBuilding
+                                            .hoarding;
+                                        document.getElementById('cell_tower').value = selectedBuilding
+                                            .cell_tower;
+                                        document.getElementById('solar_panel').value = selectedBuilding
+                                            .solar_panel;
                                         document.getElementById('water_connection').value = selectedBuilding
                                             .water_connection;
                                         document.getElementById('phone').value = selectedBuilding.phone;
-                                    }
+                                    });
+
+
+
 
                                     $('#buildingModal').modal('show');
                                 }
