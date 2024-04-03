@@ -299,7 +299,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="gisIdInput" name="gisid" readonly>
+                                <input type="text" class="form-control" id="pointgis" name="gisid" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="assessment">Assessment_no</label>
@@ -576,7 +576,7 @@
                                         }
                                     }
                                     document.getElementById('featurepoint').innerHTML = content;
-                                    document.getElementById('gisIdInput').value = properties['GIS_ID'];
+                                    document.getElementById('pointgis').value = properties['GIS_ID'];
                                     $('#pointModal').modal('show');
                                 } else if (geometryType == 'Polygon') {
                                     var content = '';
