@@ -436,7 +436,7 @@ class FormController extends Controller
             // 'number_of_emplyee' => 'required',
             // 'trade_income' => 'required',
             // 'establishment_remarks' => 'required',
-            'gisid' => 'required|exists:building_data,id',
+            'gisid' => 'required|exists:building_data,gisid',
         ]);
 
         // Create a new PointData model instance with the validated data

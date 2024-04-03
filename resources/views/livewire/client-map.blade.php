@@ -615,8 +615,7 @@
                                             .road_name;
                                         document.getElementById('ugd').value = selectedBuilding.ugd;
                                         document.getElementById('rainwater_harvesting').value =
-                                            selectedBuilding
-                                            .rainwater_harvesting;
+                                            selectedBuilding.rainwater_harvesting;
                                         document.getElementById('parking').value = selectedBuilding.parking;
                                         document.getElementById('ramp').value = selectedBuilding.ramp;
                                         document.getElementById('hoarding').value = selectedBuilding
