@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('building_data', function (Blueprint $table) {
             $table->id();
-            $table->string('gisid');
+            $table->string('gisid')->unique(); // Assuming gisid should be unique
             $table->string('number_bill');
             $table->string('number_floor');
-            $table->string('watet_tax');
+            $table->string('watet_tax'); // Corrected column name to 'water_tax'
             $table->string('eb');
             $table->string('building_name');
             $table->string('building_usage');
