@@ -599,7 +599,7 @@
                                     var selectedBuilding = building_data.find(function(building) {
                                         return building.GIS_ID === gisId;
                                     });
-                                    alert(selectedBuilding);
+                                    console.log(selectedBuilding);
 
                                     if (selectedBuilding) {
                                         document.getElementById('number_bill').value = selectedBuilding.number_bill;
