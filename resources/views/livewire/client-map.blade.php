@@ -141,22 +141,27 @@
                             <div class="form-group">
                                 <label for="number_bill">Number_of_Bill</label>
                                 <input type="text" name="number_bill" class="form-control" id="number_bill">
+                                <div id="number_bill_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="number_floor">Number_of_Floor</label>
                                 <input type="text" name="number_floor" class="form-control" id="number_floor">
+                                <div id="number_floor_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="watet_tax">Watet_tax</label>
                                 <input type="text" name="watet_tax" class="form-control" id="watet_tax">
+                                <div id="watet_tax_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="eb">Eb_number</label>
                                 <input type="text" name="eb" class="form-control" id="eb">
+                                <div id="eb_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="building_name">Building_name</label>
                                 <input type="text" name="building_name" class="form-control" id="building_name">
+                                <div id="building_name_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="Building_usage">Building_usage</label>
@@ -165,6 +170,7 @@
                                     <option value="Commercial">Commercial</option>
                                     <option value="Mixed">Mixed</option>
                                 </select>
+                                <div id="building_usage_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="construction_type">Construction_type</label>
@@ -173,14 +179,17 @@
                                     <option value="PERMANENT">PERMANENT</option>
                                     <option value="SEMI-PERMANENT">SEMI-PERMANENT</option>
                                 </select>
+                                <div id="construction_type_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="road_name">Road_name</label>
                                 <input type="text" name="road_name" class="form-control" id="road_name">
+                                <div id="road_name_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="ugd">UGD</label>
                                 <input type="text" name="ugd" class="form-control" id="ugd">
+                                <div id="ugd_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="rainwater_harvesting">Rainwater_harvesting</label>
@@ -188,6 +197,7 @@
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
+                                <div id="rainwater_harvesting_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="parking">Parking</label>
@@ -196,6 +206,7 @@
                                     <option value="Basement">Basement</option>
                                     <option value="Ground-Parking">Ground-Parking</option>
                                 </select>
+                                <div id="parking_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="ramp">Ramp</label>
@@ -203,6 +214,7 @@
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
+                                <div id="ramp_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="hoarding">Hoarding</label>
@@ -210,6 +222,7 @@
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
+                                <div id="hoarding_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="cell_tower">Cell_tower</label>
@@ -217,6 +230,7 @@
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
+                                <div id="cell_tower_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="solar_panel">Solar_panel</label>
@@ -224,6 +238,7 @@
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
+                                <div id="solar_panel_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="water_connection">Water_connection</label>
@@ -233,6 +248,7 @@
                                     <option value="OPEN-WELL">OPEN-WELL</option>
                                     <option value="METRO">METRO</option>
                                 </select>
+                                <div id="water_connection_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="phone">phone_numnber</label>
@@ -240,10 +256,12 @@
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
+                                <div id="phone_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="value">Picture</label>
                                 <input type="file" name="image" id="image" class="form-control">
+                                <div id="image_error"></div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -879,7 +897,7 @@
                 $('#buildingForm').submit(function(e) {
                     e.preventDefault();
                     $('.error-message').text('');
-                    $('input').removeClass('is-invalid');
+        $('input').removeClass('is-invalid');
                     var buildingData = $('#buildingForm').serialize();
                     $.ajax({
                         type: 'POST',
@@ -895,16 +913,13 @@
                             console.error(xhr.responseText);
                             alert(
                                 'An error occurred while processing your request. Please try again.'
-                            );
-                            if (xhr.responseJSON && xhr.responseJSON.errors) {
-                                $.each(xhr.responseJSON.errors, function(key, value) {
-                                    var errorField = $('#' + key);
-                                    errorField.addClass(
-                                    'is-invalid'); // Add invalid class to input field
-                                    $('#' + key).siblings('.error-message').text(value[
-                                    0]); // Display the error message next to the field
-                                });
-                            }
+                                );
+                                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                    $.each(xhr.responseJSON.errors, function(key, value) {
+                                        $('#' + key).addClass('is-invalid'); // Add invalid class to input field
+                                        $('#' + key + '_error').text(value[0]); // Display the error message next to the field
+                                    });
+                                }
 
                         }
                     });
