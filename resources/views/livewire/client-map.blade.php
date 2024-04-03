@@ -878,6 +878,8 @@
             $(document).ready(function() {
                 $('#buildingForm').submit(function(e) {
                     e.preventDefault();
+                    $('.error-message').text('');
+        $('input').removeClass('is-invalid');
                     var buildingData = $('#buildingForm').serialize();
                     $.ajax({
                         type: 'POST',
@@ -887,14 +889,20 @@
                             if (response.success) {
                                 alert('Data saved successfully!');
                                 // You can close the modal or do any other action upon success
-                            } else {
-                                alert('Failed to save data. Please try again.');
                             }
                         },
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText);
                             alert(
-                                'An error occurred while processing your request. Please try again.');
+                                'An error occurred while processing your request. Please try again.'
+                                );
+                                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    $.each(xhr.responseJSON.errors, function(key, value) {
+                        $('#' + key).addClass('is-invalid'); // Add invalid class to input field
+                        $('#' + key + '_error').text(value[0]); // Display the error message next to the field
+                    });
+                }
+
                         }
                     });
                 });
