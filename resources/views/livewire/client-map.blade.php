@@ -592,8 +592,11 @@
                                     document.getElementById('gisIdInput').value =
                                     gisId; // Set the GIS ID value in the form
 
-                                    var building_data =
-                                    @json($building_data); // Get building data from server-side
+                                    var building_data = @json($building_data); // Get building data from server-side
+building_data.forEach(function(builddata) {
+    alert(builddata.gisid);
+});
+
 
                                     // Find the building data corresponding to the selected GIS ID
                                     var selectedBuilding = building_data.find(function(building) {
