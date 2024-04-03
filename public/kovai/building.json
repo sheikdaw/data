@@ -48235,7 +48235,8 @@
             ]
           ]
         },
-        "properties" : {"GIS_ID" : "68W33",
+        "properties" : {
+        "GIS_ID" : "68W33",
           "OBJECTID_1" : 859,
           "OBJECTID" : 859,
           "Id" : 0,
