@@ -400,6 +400,14 @@ class FormController extends Controller
             // Otherwise, create a new record
             $buildingData = BuildingData::create($validatedData);
         }
+        // Handle image upload
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('images'), $imageName); // Move image to public/images directory
+        $buildingData->image = 'images/' . $imageName;
+        $buildingData->save();
+    }
         return response()->json(['success' => true]);
     }
 
