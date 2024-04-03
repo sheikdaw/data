@@ -413,5 +413,36 @@ class FormController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function pointdataUpload(Request $request)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'assessment' => 'required',
+            'old_assessment' => 'required',
+            'Floor' => 'required',
+            'bill_usage' => 'required',
+            'aadhar_no' => 'required',
+            'ration_no' => 'required',
+            'phone_numnber' => 'required',
+            'shop_floor' => 'required',
+            'shop_name' => 'required',
+            'shop_owner_name' => 'required',
+            'shop_category' => 'required',
+            'shop_mobile' => 'required',
+            'license' => 'required',
+            'professional_tax' => 'required',
+            'gst' => 'required',
+            'number_of_emplyee' => 'required',
+            'trade_income' => 'required',
+            'establishment_remarks' => 'required',
+            'gisid' => 'required|exists:building_data,id',
+        ]);
+
+        // Create a new PointData model instance with the validated data
+        $pointData = PointData::create($validatedData);
+
+        // Optionally, you can return a response indicating success
+        return response()->json(['success' => true,'message' => 'Point data created successfully', 'data' => $pointData], 201);
+    }
 
 }

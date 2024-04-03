@@ -30,4 +30,8 @@ class BuildingData extends Model
         'image'
         // Add other fillable fields here
     ];
+    public function pointData()
+    {
+        return $this->hasMany(PointData::class);
+    }
 }
