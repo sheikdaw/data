@@ -597,9 +597,13 @@
 
                                     // Find the building data corresponding to the selected GIS ID
                                     var selectedBuilding = building_data.find(function(building) {
-                                        return building.gisid === gisId;
-                                    });
-                                    console.log(selectedBuilding);
+    // Convert both GIS IDs to uppercase and trim whitespace for case-insensitive matching
+    return building.gisid.trim().toUpperCase() === gisId.trim().toUpperCase();
+});
+
+console.log("Clicked GIS ID:", gisId);
+console.log("Selected Building:", selectedBuilding);
+
 
                                     if (selectedBuilding) {
                                         document.getElementById('number_bill').value = selectedBuilding.number_bill;
