@@ -436,15 +436,7 @@ class FormController extends Controller
             // 'number_of_emplyee' => 'required',
             // 'trade_income' => 'required',
             // 'establishment_remarks' => 'required',
-            'gisid' => [
-                'required',
-                function ($attribute, $value, $fail) {
-                    // Check if the gisid exists in the building_data table
-                    if (!BuildingData::where('gisid', $value)->exists()) {
-                        $fail('The selected gisid does not exist in the building_data table.');
-                    }
-                },
-            ],
+            'gisid' => 'required',
         ]);
 
         // Create a new PointData model instance with the validated data
