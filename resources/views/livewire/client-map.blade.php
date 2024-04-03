@@ -901,7 +901,7 @@
                     e.preventDefault();
                     $('.error-message').text('');
                     $('input').removeClass('is-invalid');
-                    var buildingData = $('#buildingForm').serialize();
+                    var buildingData = $(this).serialize(); // Using $(this) to refer to the current form
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('client.buildingdata-upload') }}',
@@ -915,8 +915,7 @@
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText);
                             alert(
-                                'An error occurred while processing your request. Please try again.'
-                            );
+                                'An error occurred while processing your request. Please try again.');
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 $.each(xhr.responseJSON.errors, function(key, value) {
                                     $('#' + key).addClass(
@@ -925,18 +924,15 @@
                                     0]); // Display the error message next to the field
                                 });
                             }
-
                         }
                     });
                 });
 
-
-                //point data
                 $('#pointForm').submit(function(e) {
                     e.preventDefault();
                     $('.error-message').text('');
                     $('input').removeClass('is-invalid');
-                    var pointData = $('#buildinpointFormgForm').serialize();
+                    var pointData = $(this).serialize(); // Using $(this) to refer to the current form
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('client.pointdata-upload') }}',
@@ -950,8 +946,7 @@
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText);
                             alert(
-                                'An error occurred while processing your request. Please try again.'
-                            );
+                                'An error occurred while processing your request. Please try again.');
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 $.each(xhr.responseJSON.errors, function(key, value) {
                                     $('#' + key).addClass(
@@ -960,7 +955,6 @@
                                     0]); // Display the error message next to the field
                                 });
                             }
-
                         }
                     });
                 });
