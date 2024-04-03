@@ -935,11 +935,11 @@
                     e.preventDefault();
                     $('.error-message').text('');
                     $('input').removeClass('is-invalid');
-                    var buildingData = $('#buildingForm').serialize();
+                    var pointData = $('#buildinpointFormgForm').serialize();
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('client.pointdata-upload') }}',
-                        data: buildingData,
+                        data: pointData,
                         success: function(response) {
                             if (response.success) {
                                 alert('Data saved successfully!');
