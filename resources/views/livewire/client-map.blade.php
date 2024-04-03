@@ -595,6 +595,7 @@
                                     var building_data =
                                     @json($building_data); // Get building data from server-side
                                     building_data.forEach(function(selectedBuilding) {
+                                        if(selectedBuilding.gisid == gisId){
                                         alert(selectedBuilding.gisid);
                                         document.getElementById('number_bill').value = selectedBuilding
                                             .number_bill;
@@ -627,6 +628,7 @@
                                         document.getElementById('water_connection').value = selectedBuilding
                                             .water_connection;
                                         document.getElementById('phone').value = selectedBuilding.phone;
+                                        }
                                     });
 
 
