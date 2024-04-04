@@ -122,7 +122,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img src="{{ asset('public/images/2.jpg') }}" alt="" width="300px">
+                    <img src="{{ asset('public/images/2.jpg') }}" id="building_img" alt="" width="300px">
                     <h4>Feature Properties</h4>
                     <ul id="featurePropertiesList">
                         <!-- Feature properties will be displayed here -->
@@ -635,6 +635,8 @@
                                         document.getElementById('water_connection').value = selectedBuilding
                                             .water_connection;
                                         document.getElementById('phone').value = selectedBuilding.phone;
+                                        document.getElementById('building_img').setAttribute('src', selectedBuilding.image);
+
                                         }
                                     });
 
