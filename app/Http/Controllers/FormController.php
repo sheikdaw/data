@@ -426,22 +426,42 @@ class FormController extends Controller
         'ration_no' => 'required',
         'phone' => 'required', // Corrected field name
         'point_gisid' => 'required|exists:building_data,gisid',
-            // 'shop_floor' => 'required',
-            // 'shop_name' => 'required',
-            // 'shop_owner_name' => 'required',
-            // 'shop_category' => 'required',
-            // 'shop_mobile' => 'required',
-            // 'license' => 'required',
-            // 'professional_tax' => 'required',
-            // 'gst' => 'required',
-            // 'number_of_emplyee' => 'required',
-            // 'trade_income' => 'required',
-            // 'establishment_remarks' => 'required',
+            'shop_floor.*' => 'required',
+            'shop_name.*' => 'required',
+            'shop_owner_name.*' => 'required',
+            'shop_category.*' => 'required',
+            'shop_mobile.*' => 'required',
+            'license.*' => 'required',
+            'professional_tax.*' => 'required',
+            'gst.*' => 'required',
+            'number_of_emplyee.*' => 'required',
+            'trade_income.*' => 'required',
+            'establishment_remarks.*' => 'required',
         ]);
 
         $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
 
     if ($buildingData) {
+
+
+
+        // $shopfloorCount = count($request->input('shop_floor'));
+        // if (  $shopfloorCount > 0) {
+        //     for ($i=0; $i < $shopfloorCount; $i++) {
+
+        //     }
+
+        // }
+
+
+
+
+
+
+
+
+
+
         // Add the building_data_id to the validated data
         $validatedData['building_data_id'] = $buildingData->id;
         // Create a new PointData model instance with the validated data
