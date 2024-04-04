@@ -15,7 +15,7 @@ class PointData extends Model
         'bill_usage',
         'aadhar_no',
         'ration_no',
-        'phone_numnber',
+        'phone_number',
         'shop_floor',
         'shop_name',
         'shop_owner_name',
@@ -27,7 +27,7 @@ class PointData extends Model
         'number_of_employee',
         'trade_income',
         'establishment_remarks',
-        'post_gisid', // Assuming gisid is also fillable
+        'point_gisid', // Assuming gisid is also fillable
         'building_data_id', // Add building_data_id
     ];
     public function buildingData()
