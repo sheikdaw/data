@@ -865,29 +865,29 @@
                                         <div class="form-group">
                                             <label for="shop_floor" >Shop Floor</label>
                                             <input type="text" name="shop_floor[${establishmentadd}]" id="shop_floor" class="form-control" placeholder="Shop Floor">
-                                            <div class="text-danger" id="shop_floor.${establishmentadd}"></div>
+                                            <div class="text-danger" id="shop_floor.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="shop_name[${establishmentadd}]" >Shop Name</label>
                                             <input type="text" name="shop_name" id="shop_name" class="form-control" placeholder="Shop Name">
-                                            <div class="text-danger" id="shop_name.${establishmentadd}"></div>
+                                            <div class="text-danger" id="shop_name.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="shop_owner_name" >Shop Owner Name</label>
                                             <input type="text" name="shop_owner_name[${establishmentadd}]" id="shop_owner_name" class="form-control" placeholder="Shop Owner Name">
-                                            <div class="text-danger" id="shop_owner_name.${establishmentadd}"></div>
+                                            <div class="text-danger" id="shop_owner_name.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="shop_category" >Shop Category</label>
                                             <select name="shop_category[${establishmentadd}]" id="shop_category" class="form-control">
                                                 <option value="1">1</option>
                                             </select>
-                                            <div class="text-danger" id="shop_category.${establishmentadd}"></div>
+                                            <div class="text-danger" id="shop_category.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="shop_mobile" >Shop Mobile</label>
                                             <input type="text" name="shop_mobile[${establishmentadd}]" id="shop_mobile" class="form-control" placeholder="Shop Mobile">
-                                            <div class="text-danger" id="shop_mobile.${establishmentadd}"></div>
+                                            <div class="text-danger" id="shop_mobile.${establishmentadd}_error"></div>
                                         </div>
 
                                         <div class="form-group">
@@ -895,34 +895,34 @@
                                             <select name="license[${establishmentadd}]" id="license" class="form-control">
                                                 <option value="1">1</option>
                                             </select>
-                                            <div class="text-danger" id="license.${establishmentadd}"></div>
+                                            <div class="text-danger" id="license.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="professional_tax" >Professional Tax</label>
                                             <select name="professional_tax[${establishmentadd}]" id="professional_tax" class="form-control">
                                                 <option value="1">1</option>
                                             </select>
-                                            <div class="text-danger" id="professional_tax.${establishmentadd}"></div>
+                                            <div class="text-danger" id="professional_tax.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="gst" >GST Number</label>
                                             <input type="text" name="gst" id="gst[${establishmentadd}]" class="form-control" placeholder="GST">
-                                            <div class="text-danger" id="gst.${establishmentadd}"></div>
+                                            <div class="text-danger" id="gst.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="number_of_emplyee" >Number of Employee</label>
                                             <input type="text" name="number_of_emplyee" id="number_of_emplyee[${establishmentadd}]" class="form-control" placeholder="Number of Employee">
-                                            <div class="text-danger" id="number_of_emplyee.${establishmentadd}"></div>
+                                            <div class="text-danger" id="number_of_emplyee.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="trade_income" >Trade Income</label>
                                             <input type="text" name="trade_income" id="trade_income[${establishmentadd}]" class="form-control" placeholder="Trade Income">
-                                            <div class="text-danger" id="trade_income.${establishmentadd}"></div>
+                                            <div class="text-danger" id="trade_income.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="establishment_remarks" >Establishment Remarks</label>
                                             <input type="text" name="establishment_remarks" id="establishment_remarks[${establishmentadd}]" class="form-control" placeholder="Establishment Remarks">
-                                            <div class="text-danger" id="establishment_remarks.${establishmentadd}"></div>
+                                            <div class="text-danger" id="establishment_remarks.${establishmentadd}_error"></div>
                                         </div>
 
                                     </div>
@@ -1002,7 +1002,7 @@
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 $.each(xhr.responseJSON.errors, function(key, value) {
                                     $('#' + key).addClass('is-invalid'); // Add invalid class to input field
-                                    $('#' + key).text(value[0]); // Display the error message next to the field
+                                    $('#' + key + '_error').text(value[0]); // Display the error message next to the field
                                 });
                             }
                         }
