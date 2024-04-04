@@ -439,18 +439,23 @@ class FormController extends Controller
             'establishment_remarks.*' => 'required',
         ]);
 
-        $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
+         // Retrieve the associated building data
+            $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
 
-    if ($buildingData) {
-        // Add the building_data_id to the validated data
-        $validatedData['building_data_id'] = $buildingData->id;
-        // Create a new PointData model instance with the validated data
-        $pointData = PointData::create($validatedData);
-        return response()->json(['success' => true, 'message' => 'Point data created successfully', 'data' => $validatedData['building_data_id']], 201);
-    }
+            // Check if building data is found
+            if ($buildingData) {
+                // Add the building_data_id to the validated data
+                $validatedData['building_data_id'] = $buildingData->id;
 
-    // Optionally, you can return a response indicating failure
-    return response()->json(['success' => false, 'message' => 'Building data not found'], 404);
+                // Create a new PointData model instance with the validated data
+                $pointData = PointData::create($validatedData);
+
+                // Return a success response
+                return response()->json(['success' => true, 'message' => 'Point data created successfully', 'data' => $validatedData['building_data_id']], 201);
+            }
+
+            // Return a failure response if building data is not found
+            return response()->json(['success' => false, 'message' => 'Building data not found'], 404);
     }
 
 }
