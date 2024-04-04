@@ -442,26 +442,6 @@ class FormController extends Controller
         $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
 
     if ($buildingData) {
-
-
-
-        // $shopfloorCount = count($request->input('shop_floor'));
-        // if (  $shopfloorCount > 0) {
-        //     for ($i=0; $i < $shopfloorCount; $i++) {
-
-        //     }
-
-        // }
-
-
-
-
-
-
-
-
-
-
         // Add the building_data_id to the validated data
         $validatedData['building_data_id'] = $buildingData->id;
         // Create a new PointData model instance with the validated data
