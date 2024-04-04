@@ -1003,6 +1003,9 @@
                                 // You can close the modal or do any other action upon success
                                 alert(response.data);
                             }
+                            else{
+                               alert(response.error);
+                            }
                         },
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText);
