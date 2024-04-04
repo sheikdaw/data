@@ -989,6 +989,7 @@
                     $('.error-message').text('');
                     $('input').removeClass('is-invalid');
                     var pointData = $(this).serialize(); // Using $(this) to refer to the current form
+                    alert(pointData);
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
