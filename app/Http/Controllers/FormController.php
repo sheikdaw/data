@@ -456,7 +456,7 @@ class FormController extends Controller
                     if($validatedData['bill_usage'] != "Residential"){
                 foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
                     // Create a new PointData instance with the current array values
-                    $pointData = new PointData([
+                    $pointData = ([
 
                         'shop_floor' => $validatedData['shop_floor'][$index],
                         'shop_name' => $validatedData['shop_name'][$index],
@@ -465,6 +465,10 @@ class FormController extends Controller
                         'shop_mobile' => $validatedData['shop_mobile'][$index],
                         'license' => $validatedData['license'][$index],
                         'professional_tax' => $validatedData['professional_tax'][$index],
+                        'gst' => $validatedData['gst'][$index],
+                        'number_of_employee' => $validatedData['number_of_employee'][$index],
+                        'trade_income' => $validatedData['trade_income'][$index],
+                        'establishment_remarks' => $validatedData['establishment_remarks'][$index],
                         'building_data_id' => $buildingData->id,
                         // Add other fields here
                     ]);
