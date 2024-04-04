@@ -1007,7 +1007,7 @@
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText);
                             alert(
-                                'An error occurred while processing your request. Please try again.'
+                                error
                             );
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 $.each(xhr.responseJSON.errors, function(key, value) {
