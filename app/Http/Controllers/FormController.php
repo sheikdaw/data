@@ -445,9 +445,13 @@ class FormController extends Controller
 
         // Check if building data is found
         if($validatedData['bill_usage']   != $buildingData->building_usage)
-                    {
-                        return response()->json(['success' => false, 'message' => 'Usage Variaton'], 404);
-                    }
+            {
+              return response()->json(['success' => false, 'message' => 'Usage Variaton'], 404);
+            }
+            if($validatedData['floor']   != $buildingData->number_floor)
+            {
+              return response()->json(['success' => false, 'message' => 'Floor is greater than building floor'], 404);
+            }
         if ($buildingData) {
             // Check if bill usage is not "Residential"
             if ($validatedData['bill_usage'] != "Residential") {
