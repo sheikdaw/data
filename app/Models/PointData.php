@@ -11,7 +11,7 @@ class PointData extends Model
     protected $fillable = [
         'assessment',
         'old_assessment',
-        'Floor',
+        'floor',
         'bill_usage',
         'aadhar_no',
         'ration_no',
@@ -24,7 +24,7 @@ class PointData extends Model
         'license',
         'professional_tax',
         'gst',
-        'number_of_emplyee',
+        'number_of_employee',
         'trade_income',
         'establishment_remarks',
         'post_gisid', // Assuming gisid is also fillable
