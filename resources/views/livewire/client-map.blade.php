@@ -991,6 +991,7 @@
                             if (response.success) {
                                 alert('Data saved successfully!');
                                 // You can close the modal or do any other action upon success
+                                alert(response.data);
                             }
                         },
                         error: function(xhr, status, error) {
