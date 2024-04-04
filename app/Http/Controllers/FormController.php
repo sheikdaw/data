@@ -419,13 +419,13 @@ class FormController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'assessment' => 'required',
-        'old_assessment' => 'required',
-        'floor' => 'required', // Assuming 'Floor' is the correct field name
-        'bill_usage' => 'required',
-        'aadhar_no' => 'required',
-        'ration_no' => 'required',
-        'phone_number' => 'required', // Corrected field name
-        'point_gisid' => 'required|exists:building_data,gisid',
+            'old_assessment' => 'required',
+            'floor' => 'required', // Assuming 'Floor' is the correct field name
+            'bill_usage' => 'required',
+            'aadhar_no' => 'required',
+            'ration_no' => 'required',
+            'phone_number' => 'required', // Corrected field name
+            'point_gisid' => 'required|exists:building_data,gisid',
             'shop_floor.*' => 'required',
             'shop_name.*' => 'required',
             'shop_owner_name.*' => 'required',
@@ -439,26 +439,24 @@ class FormController extends Controller
             'establishment_remarks.*' => 'required',
         ]);
 
-         // Retrieve the associated building data
-            $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
+        // Retrieve the associated building data
+        $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
 
-            // Check if building data is found
-            if ($buildingData) {
+        // Check if building data is found
+        if ($buildingData) {
+            // Check if bill usage is not "Residential"
+            if ($validatedData['bill_usage'] != "Residential") {
                 // Iterate over the arrays to create multiple PointData instances
-                $pointData = [
-                    'assessment' => $validatedData['assessment'],
-                    'old_assessment' => $validatedData['old_assessment'],
-                    'floor' => $validatedData['floor'],
-                    'bill_usage' => $validatedData['bill_usage'],
-                    'aadhar_no' => $validatedData['aadhar_no'],
-                    'ration_no' => $validatedData['ration_no'],
-                    'phone_number' => $validatedData['phone_number']
-                ];
-                    if($validatedData['bill_usage'] != "Residential"){
                 foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
                     // Create a new PointData instance with the current array values
                     $pointData = [
-
+                        'assessment' => $validatedData['assessment'],
+                        'old_assessment' => $validatedData['old_assessment'],
+                        'floor' => $validatedData['floor'],
+                        'bill_usage' => $validatedData['bill_usage'],
+                        'aadhar_no' => $validatedData['aadhar_no'],
+                        'ration_no' => $validatedData['ration_no'],
+                        'phone_number' => $validatedData['phone_number'],
                         'shop_floor' => $validatedData['shop_floor'][$index],
                         'shop_name' => $validatedData['shop_name'][$index],
                         'shop_owner_name' => $validatedData['shop_owner_name'][$index],
@@ -473,17 +471,37 @@ class FormController extends Controller
                         'building_data_id' => $buildingData->id,
                         // Add other fields here
                     ];
-                }
+
+                    // Save the PointData instance to the database
                     PointData::create($pointData);
                 }
+            }
+            else if ($validatedData['bill_usage'] == "Residential"){
 
-                // Return a success response
-                return response()->json(['success' => true, 'message' => 'Point data created successfully'], 201);
+                    $pointData = [
+                        'assessment' => $validatedData['assessment'],
+                        'old_assessment' => $validatedData['old_assessment'],
+                        'floor' => $validatedData['floor'],
+                        'bill_usage' => $validatedData['bill_usage'],
+                        'aadhar_no' => $validatedData['aadhar_no'],
+                        'ration_no' => $validatedData['ration_no'],
+                        'phone_number' => $validatedData['phone_number'],
+                        'building_data_id' => $buildingData->id,
+                        // Add other fields here
+                    ];
+
+                    // Save the PointData instance to the database
+                    PointData::create($pointData);
+
             }
 
+            // Return a success response
+            return response()->json(['success' => true, 'message' => 'Point data created successfully'], 201);
+        }
 
-            // Return a failure response if building data is not found
-            return response()->json(['success' => false, 'message' => 'Building data not found'], 404);
+        // Return a failure response if building data is not found
+        return response()->json(['success' => false, 'message' => 'Building data not found'], 404);
     }
+
 
 }
