@@ -434,7 +434,7 @@ class FormController extends Controller
             'license.*' => 'required',
             'professional_tax.*' => 'required',
             'gst.*' => 'required',
-            'number_of_emplyee.*' => 'required',
+            'number_of_employee.*' => 'required',
             'trade_income.*' => 'required',
             'establishment_remarks.*' => 'required',
         ]);
@@ -444,15 +444,39 @@ class FormController extends Controller
 
             // Check if building data is found
             if ($buildingData) {
-                // Add the building_data_id to the validated data
-                $validatedData['building_data_id'] = $buildingData->id;
+                // Iterate over the arrays to create multiple PointData instances
+                $pointData = new PointData([
+                    'assessment' => $validatedData['assessment'],
+                    'old_assessment' => $validatedData['old_assessment'],
+                    'floor' => $validatedData['floor'],
+                    'bill_usage' => $validatedData['bill_usage'],
+                    'aadhar_no' => $validatedData['aadhar_no'],
+                    'ration_no' => $validatedData['ration_no'],
+                    'phone_number' => $validatedData['phone_number'],]);
+                    if($validatedData['bill_usage'] != "Residential"){
+                foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
+                    // Create a new PointData instance with the current array values
+                    $pointData = new PointData([
 
-                // Create a new PointData model instance with the validated data
-                $pointData = PointData::create($validatedData);
+                        'shop_floor' => $validatedData['shop_floor'][$index],
+                        'shop_name' => $validatedData['shop_name'][$index],
+                        'shop_owner_name' => $validatedData['shop_owner_name'][$index],
+                        'shop_category' => $validatedData['shop_category'][$index],
+                        'shop_mobile' => $validatedData['shop_mobile'][$index],
+                        'license' => $validatedData['license'][$index],
+                        'professional_tax' => $validatedData['professional_tax'][$index],
+                        'building_data_id' => $buildingData->id,
+                        // Add other fields here
+                    ]);
+                }
+                    // Save the PointData instance to the database
+                    $pointData->save();
+                }
 
                 // Return a success response
-                return response()->json(['success' => true, 'message' => 'Point data created successfully', 'data' => $validatedData['building_data_id']], 201);
+                return response()->json(['success' => true, 'message' => 'Point data created successfully'], 201);
             }
+
 
             // Return a failure response if building data is not found
             return response()->json(['success' => false, 'message' => 'Building data not found'], 404);
