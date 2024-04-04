@@ -27,7 +27,8 @@ class PointData extends Model
         'number_of_emplyee',
         'trade_income',
         'establishment_remarks',
-        'gisid', // Assuming gisid is also fillable
+        'post_gisid', // Assuming gisid is also fillable
+        'building_data_id', // Add building_data_id
     ];
     public function buildingData()
     {
