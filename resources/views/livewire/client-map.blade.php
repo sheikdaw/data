@@ -876,8 +876,8 @@
                                             <div class="text-danger" id="shop_floor.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="shop_name[${establishmentadd}]" >Shop Name</label>
-                                            <input type="text" name="shop_name" id="shop_name" class="form-control" placeholder="Shop Name">
+                                            <label for="shop_name" >Shop Name</label>
+                                            <input type="text" name="shop_name[${establishmentadd}]" id="shop_name" class="form-control" placeholder="Shop Name">
                                             <div class="text-danger" id="shop_name.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
