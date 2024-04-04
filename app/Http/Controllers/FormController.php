@@ -444,7 +444,7 @@ class FormController extends Controller
         if ($buildingData) {
             // Handle the case when the building data doesn't exist
             $validatedData['building_data_id'] = $buildingData->id;
-            return response()->json(['success' => true, 'message' => 'Point data created successfully', 'data' => $pointData], 201);
+            return response()->json(['success' => true, 'message' => 'Point data created successfully', 'data' => $validatedData], 201);
         }
 
         // Add the building_data_id to the validated data
