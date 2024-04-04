@@ -985,40 +985,41 @@
                 });
 
                 $('#pointForm').submit(function(e) {
-                    e.preventDefault();
-                    $('.error-message').text('');
-                    $('input').removeClass('is-invalid');
-                    var pointData = $(this).serialize(); // Using $(this) to refer to the current form
-                    alert(pointData);
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        type: 'POST',
-                        url: '{{ route('client.pointdata-upload') }}',
-                        data: pointData,
-                        success: function(response) {
-                            if (response.success) {
-                                alert('Data saved successfully!');
-                                // You can close the modal or do any other action upon success
-                                alert(response.data);
-                            }
-                            else{
-                               alert(response.msg);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            if (xhr.responseJSON && xhr.responseJSON.errors) {
-                                alert(xhr.responseJSON.message);
-                                $.each(xhr.responseJSON.errors, function(key, value) {
-                                    $('#' + key).addClass('is-invalid'); // Add invalid class to input field
-                                    $('#' + key + '_error').text(value[0]); // Display the error message next to the field
-                                    console.log('#' + key + '_error');
-                                });
-                            }
-                        }
-                    });
+    e.preventDefault();
+    $('.error-message').text('');
+    $('input').removeClass('is-invalid');
+    var pointData = $(this).serialize(); // Using $(this) to refer to the current form
+    alert(pointData);
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'POST',
+        url: '{{ route('client.pointdata-upload') }}',
+        data: pointData,
+        success: function(response) {
+            if (response.success) {
+                alert('Data saved successfully!');
+                // You can close the modal or do any other action upon success
+                alert(response.data);
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                alert(xhr.responseJSON.message);
+                $.each(xhr.responseJSON.errors, function(key, value) {
+                    $('#' + key).addClass('is-invalid'); // Add invalid class to input field
+                    $('#' + key + '_error').text(value[0]); // Display the error message next to the field
+                    console.log('#' + key + '_error');
                 });
+            }
+        }
+    });
+});
+
+
 
             });
         </script>
