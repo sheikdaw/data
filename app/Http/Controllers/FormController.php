@@ -396,24 +396,24 @@ class FormController extends Controller
 
         // If the record exists, update it
         if ($buildingData) {
-            if ($request->hasFile('image')) {
+
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move(public_path('images'), $imageName); // Move image to public/images directory
                 $buildingData->image = 'images/' . $imageName;
                 $validatedData['image'] = $buildingData->image;
-            }
+
             $buildingData->update($validatedData);
         } else {
             // Otherwise, create a new record
             $buildingData = new BuildingData($validatedData);
-            if ($request->hasFile('image')) {
+
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move(public_path('images'), $imageName); // Move image to public/images directory
                 $buildingData->image = 'images/' . $imageName;
                 $validatedData['image'] = $buildingData->image;
-            }
+
             $buildingData->save();
         }
 
