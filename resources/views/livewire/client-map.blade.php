@@ -341,7 +341,7 @@
                             <div class="form-group">
                                 <label for="phone">phone_numnber</label>
                                 <input type="text" name="phone" class="form-control" id="phone">
-                                <div id="phone_error"></div>
+                                <div id="phone"></div>
                             </div>
                             <div id="append"></div>
                         </div>
@@ -935,6 +935,7 @@
 
                                     </div>
                         </div>`;
+                        alert("establishment_remarks.${establishmentadd}_error");
                         $("#append").append(newRow);
                     }
                 });
