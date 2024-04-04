@@ -444,6 +444,7 @@ class FormController extends Controller
         if ($buildingData) {
             // Handle the case when the building data doesn't exist
             $validatedData['building_data_id'] = $buildingData->id;
+            $pointData = PointData::create($validatedData);
             return response()->json(['success' => true, 'message' => 'Point data created successfully', 'data' => $validatedData['building_data_id']], 201);
         }
 
@@ -451,10 +452,10 @@ class FormController extends Controller
         $validatedData['building_data_id'] = $buildingData->id;
 
         // Create a new PointData model instance with the validated data
-        $pointData = PointData::create($validatedData);
+
 
         // Optionally, you can return a response indicating success
-        return response()->json(['success' => true, 'message' => 'Point data created successfully', 'data' => $pointData], 201);
+        return response()->json(['success' => false, 'message' => 'no building', ]);
     }
 
 }
