@@ -919,8 +919,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="number_of_emplyee" >Number of Employee</label>
-                                            <input type="text" name="number_of_emplyee[${establishmentadd}]" id="number_of_emplyee" class="form-control" placeholder="Number of Employee">
-                                            <div class="text-danger" id="number_of_emplyee.${establishmentadd}_error"></div>
+                                            <input type="text" name="number_of_employee[${establishmentadd}]" id="number_of_employee" class="form-control" placeholder="Number of Employee">
+                                            <div class="text-danger" id="number_of_employee.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="trade_income" >Trade Income</label>
