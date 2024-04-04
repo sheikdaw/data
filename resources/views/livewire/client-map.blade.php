@@ -340,8 +340,8 @@
 
                             <div class="form-group">
                                 <label for="phone">phone_numnber</label>
-                                <input type="text" name="phone" class="form-control" id="phone">
-                                <div id="phone_error"></div>
+                                <input type="text" name="phone_number" class="form-control" id="phone">
+                                <div id="phone_number_error"></div>
                             </div>
                             <div id="append"></div>
                         </div>
