@@ -1011,7 +1011,7 @@
                                 $.each(xhr.responseJSON.errors, function(key, value) {
                                     $('#' + key).addClass('is-invalid'); // Add invalid class to input field
                                     $('#' + key + '_error').text(value[0]); // Display the error message next to the field
-                                    alert('#' + key + '_error');
+                                    console.log('#' + key + '_error');
                                 });
                             }
                         }
