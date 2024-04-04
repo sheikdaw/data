@@ -1008,10 +1008,6 @@
                             }
                         },
                         error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
-                            alert(
-                                error
-                            );
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 $.each(xhr.responseJSON.errors, function(key, value) {
                                     $('#' + key).addClass('is-invalid'); // Add invalid class to input field
