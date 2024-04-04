@@ -450,7 +450,7 @@ class FormController extends Controller
                 foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
                     // Check if shop floor exceeds the total number of floors in the building
                     if ($shopFloor > $buildingData->floor) {
-                        return response()->json(['error' => true, 'message' => 'Shop floor number for shop ' . ($index) . ' cannot be greater than the total number of floors in the building'], 404);
+                        return response()->json(['success' => false, 'message' => 'Shop floor number for shop ' . ($index) . ' cannot be greater than the total number of floors in the building'], 404);
                     }
                 }
                 // Iterate over the arrays to create multiple PointData instances

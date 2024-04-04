@@ -1004,7 +1004,7 @@
                                 alert(response.data);
                             }
                             else{
-                               alert(response.error);
+                               alert(response.msg);
                             }
                         },
                         error: function(xhr, status, error) {
