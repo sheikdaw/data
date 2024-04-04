@@ -444,6 +444,10 @@ class FormController extends Controller
 
 
         // Check if building data is found
+        if($validatedData['bill_usage']   != $buildingData->building_usage)
+                    {
+                        return response()->json(['success' => false, 'message' => 'Shop floor number for shop ' . ($index) . ' cannot be greater than the total number of floors in the building'], 404);
+                    }
         if ($buildingData) {
             // Check if bill usage is not "Residential"
             if ($validatedData['bill_usage'] != "Residential") {
@@ -452,6 +456,7 @@ class FormController extends Controller
                     if ($shopFloor > $buildingData->floor) {
                         return response()->json(['success' => false, 'message' => 'Shop floor number for shop ' . ($index) . ' cannot be greater than the total number of floors in the building'], 404);
                     }
+
                 }
                 // Iterate over the arrays to create multiple PointData instances
                 foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
