@@ -1001,10 +1001,8 @@
                             );
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 $.each(xhr.responseJSON.errors, function(key, value) {
-                                    $('#' + key).addClass(
-                                        'is-invalid'); // Add invalid class to input field
-                                    $('#' + key + '_error').text(value[
-                                        0]); // Display the error message next to the field
+                                    $('#' + key).addClass('is-invalid'); // Add invalid class to input field
+                                    $('#' + key).text(value[0]); // Display the error message next to the field
                                 });
                             }
                         }
