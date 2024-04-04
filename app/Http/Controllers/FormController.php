@@ -445,18 +445,19 @@ class FormController extends Controller
             // Check if building data is found
             if ($buildingData) {
                 // Iterate over the arrays to create multiple PointData instances
-                $pointData = new PointData([
+                $pointData = [
                     'assessment' => $validatedData['assessment'],
                     'old_assessment' => $validatedData['old_assessment'],
                     'floor' => $validatedData['floor'],
                     'bill_usage' => $validatedData['bill_usage'],
                     'aadhar_no' => $validatedData['aadhar_no'],
                     'ration_no' => $validatedData['ration_no'],
-                    'phone_number' => $validatedData['phone_number'],]);
+                    'phone_number' => $validatedData['phone_number']
+                ];
                     if($validatedData['bill_usage'] != "Residential"){
                 foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
                     // Create a new PointData instance with the current array values
-                    $pointData = ([
+                    $pointData = [
 
                         'shop_floor' => $validatedData['shop_floor'][$index],
                         'shop_name' => $validatedData['shop_name'][$index],
@@ -471,10 +472,9 @@ class FormController extends Controller
                         'establishment_remarks' => $validatedData['establishment_remarks'][$index],
                         'building_data_id' => $buildingData->id,
                         // Add other fields here
-                    ]);
+                    ];
                 }
-                    // Save the PointData instance to the database
-                    $pointData->save();
+                    PointData::create($pointData);
                 }
 
                 // Return a success response
