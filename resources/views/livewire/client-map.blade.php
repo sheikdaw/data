@@ -914,22 +914,22 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="gst" >GST Number</label>
-                                            <input type="text" name="gst" id="gst[${establishmentadd}]" class="form-control" placeholder="GST">
+                                            <input type="text" name="gst[${establishmentadd}]" id="gst" class="form-control" placeholder="GST">
                                             <div class="text-danger" id="gst.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="number_of_emplyee" >Number of Employee</label>
-                                            <input type="text" name="number_of_emplyee" id="number_of_emplyee[${establishmentadd}]" class="form-control" placeholder="Number of Employee">
+                                            <input type="text" name="number_of_emplyee[${establishmentadd}]" id="number_of_emplyee" class="form-control" placeholder="Number of Employee">
                                             <div class="text-danger" id="number_of_emplyee.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="trade_income" >Trade Income</label>
-                                            <input type="text" name="trade_income" id="trade_income[${establishmentadd}]" class="form-control" placeholder="Trade Income">
+                                            <input type="text" name="trade_income[${establishmentadd}]" id="trade_income" class="form-control" placeholder="Trade Income">
                                             <div class="text-danger" id="trade_income.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="establishment_remarks" >Establishment Remarks</label>
-                                            <input type="text" name="establishment_remarks" id="establishment_remarks[${establishmentadd}]" class="form-control" placeholder="Establishment Remarks">
+                                            <input type="text" name="establishment_remarks[${establishmentadd}]" id="establishment_remarks" class="form-control" placeholder="Establishment Remarks">
                                             <div class="text-danger" id="establishment_remarks.${establishmentadd}_error"></div>
                                         </div>
 
