@@ -300,19 +300,23 @@
                             <div class="form-group">
                                 <label for="gis">Gis</label>
                                 <input type="text" class="form-control" id="pointgis" name="point_gisid" readonly>
+                                <div id="pointgis_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="assessment">Assessment_no</label>
                                 <input type="text" name="assessment" class="form-control" id="assessment">
+                                <div id="assessment_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="old_assessment">Old Assessment</label>
                                 <input type="text" name="old_assessment" class="form-control"
                                     id="old_assessment">
+                                    <div id="old_assessment_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="floor"> Floor</label>
                                 <input type="text" name="floor" class="form-control" id="floor">
+                                <div id="floor_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="bill_usage">Bill_usage</label>
@@ -321,19 +325,23 @@
                                     <option value="Commercial">Commercial</option>
                                     <option value="Mixed">Mixed</option>
                                 </select>
+                                <div id="bill_usage_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="aadhar_no">Aadhar_no</label>
                                 <input type="text" name="aadhar_no" class="form-control" id="aadhar_no">
+                                <div id="aadhar_no_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="ration_no">Ration_no</label>
                                 <input type="text" name="ration_no" class="form-control" id="ration_no">
+                                <div id="ration_no_error"></div>
                             </div>
 
                             <div class="form-group">
                                 <label for="phone">phone_numnber</label>
                                 <input type="text" name="phone" class="form-control" id="phone">
+                                <div id="phone_error"></div>
                             </div>
                             <div id="append"></div>
                         </div>
