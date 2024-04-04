@@ -369,58 +369,57 @@ class FormController extends Controller
     //building data
 
     public function buildingdataUpload(Request $request)
-{
-    $validatedData = $request->validate([
-        'gisid' => 'required',
-        'number_bill' => 'required',
-        'number_floor' => 'required',
-        'watet_tax' => 'required',
-        'eb' => 'required',
-        'building_name' => 'required',
-        'building_usage' => 'required',
-        'construction_type' => 'required',
-        'road_name' => 'required',
-        'ugd' => 'required',
-        'rainwater_harvesting' => 'required',
-        'parking' => 'required',
-        'ramp' => 'required',
-        'hoarding' => 'required',
-        'cell_tower' => 'required',
-        'solar_panel' => 'required',
-        'water_connection' => 'required',
-        'phone' => 'required',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Example validation for image upload
-    ]);
+    {
+        $validatedData = $request->validate([
+            'gisid' => 'required',
+            'number_bill' => 'required',
+            'number_floor' => 'required',
+            'watet_tax' => 'required',
+            'eb' => 'required',
+            'building_name' => 'required',
+            'building_usage' => 'required',
+            'construction_type' => 'required',
+            'road_name' => 'required',
+            'ugd' => 'required',
+            'rainwater_harvesting' => 'required',
+            'parking' => 'required',
+            'ramp' => 'required',
+            'hoarding' => 'required',
+            'cell_tower' => 'required',
+            'solar_panel' => 'required',
+            'water_connection' => 'required',
+            'phone' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Example validation for image upload
+        ]);
 
-    $buildingData = BuildingData::where('gisid', $validatedData['gisid'])->first();
+        $buildingData = BuildingData::where('gisid', $validatedData['gisid'])->first();
 
-    // If the record exists, update it
-    if ($buildingData) {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('images'), $imageName); // Move image to public/images directory
-            $buildingData->image = 'images/' . $imageName;
-           $validatedData['image']= $buildingData->image;
+        // If the record exists, update it
+        if ($buildingData) {
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('images'), $imageName); // Move image to public/images directory
+                $buildingData->image = 'images/' . $imageName;
+                $validatedData['image'] = $buildingData->image;
+            }
+            $buildingData->update($validatedData);
+        } else {
+            // Otherwise, create a new record
+            $buildingData = new BuildingData($validatedData);
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('images'), $imageName); // Move image to public/images directory
+                $buildingData->image = 'images/' . $imageName;
+                $validatedData['image'] = $buildingData->image;
+            }
+            $buildingData->save();
         }
-        $buildingData->update($validatedData);
-    } else {
-        // Otherwise, create a new record
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('images'), $imageName); // Move image to public/images directory
-            $buildingData->image = 'images/' . $imageName;
-            $validatedData['image']= $buildingData->image;
-        }
-        $buildingData = BuildingData::create($validatedData);
+
+        return response()->json(['success' => true]);
     }
 
-    // Handle image upload
-
-
-    return response()->json(['success' => true]);
-}
 
 
     public function pointdataUpload(Request $request)
