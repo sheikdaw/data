@@ -392,6 +392,19 @@
                     })
                 })
             });
+            var completeBuildingStyle = new ol.style.Style({
+
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(0, 48, 143, 1)', // Green color for outline
+                    width: 2 // Outline width
+                }),
+                image: new ol.style.Circle({
+                    radius: 6,
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 48, 143, 1)' // Green color for point symbol
+                    })
+                })
+            });
 
             var filterStyle = new ol.style.Style({
                 fill: new ol.style.Fill({
@@ -559,9 +572,9 @@
                     buildingfeatures.forEach(function(feature) {
                         var properties = feature.getProperties();
                         if (gisIdSet.has(properties['GIS_ID'])) {
-                            feature.setStyle(completeStyle);
+                            feature.setStyle(completeBuildingStyle);
                         } else {
-                            feature.setStyle(clickedStyle);
+                            feature.setStyle(clickedBuildingStyle);
                         }
                     });
 
