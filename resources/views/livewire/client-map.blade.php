@@ -362,7 +362,9 @@
 
         <script type="text/javascript">
             var clickedStyle = new ol.style.Style({
-
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
+                }),
                 stroke: new ol.style.Stroke({
                     color: 'rgba(255, 0, 0, 1)', // Red color for outline
                     width: 2 // Outline width
@@ -376,7 +378,9 @@
             });
 
             var completeStyle = new ol.style.Style({
-
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
+                }),
                 stroke: new ol.style.Stroke({
                     color: 'rgba(0, 48, 143, 1)', // Green color for outline
                     width: 2 // Outline width
@@ -500,12 +504,41 @@
                             })
                         });
                     };
+                    var completeLabelStyleFunction = function(text) {
+                        return new ol.style.Style({
+                            text: new ol.style.Text({
+                                text: text.toString(), // Convert Id to string
+                                font: '20px Calibri,sans-serif',
+                                fill: new ol.style.Fill({
+                                    color: '##ffff00'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#ffff00',
+                                    width: 1
+                                }),
+                                offsetX: 0,
+                                offsetY: -20,
+                                textAlign: 'center',
+                                textBaseline: 'bottom',
+                                placement: 'point',
+                                maxAngle: Math.PI / 4
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: 1
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                            })
+                        });
+                    };
 
-                    // Apply the style function to the vector building layer
-                    vectorBuildingLayer.setStyle(function(feature) {
-                        var id = feature.get('GIS_ID'); // Extract Id from feature properties
-                        return createLabelStyleFunction(id);
-                    });
+
+                    // // Apply the style function to the vector building layer
+                    // vectorBuildingLayer.setStyle(function(feature) {
+                    //     var id = feature.get('GIS_ID'); // Extract Id from feature properties
+                    //     return createLabelStyleFunction(id);
+                    // });
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                         style: new ol.style.Style({
@@ -555,9 +588,9 @@
                     buildingfeatures.forEach(function(feature) {
                         var properties = feature.getProperties();
                         if (gisIdSet.has(properties['GIS_ID'])) {
-                            feature.setStyle(completeStyle);
+                            return completeLabelStyleFunction(id);
                         } else {
-                            feature.setStyle(clickedStyle);
+                            return createLabelStyleFunction(id);
                         }
                     });
 
