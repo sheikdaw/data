@@ -387,24 +387,48 @@ class AdminController extends Controller
             // Corrected coordinates structure for Polygon
             $coordinates = $request->input('coordinates');
 
+            // Get the last feature ID and increment it by 1 for GIS_ID
+            $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['OBJECTID'] : 0;
+            $gisId = $lastFeatureId + 1;
+
+            // Add all the fields from the provided JSON data
+            $properties = [
+                "OBJECTID" => $lastFeatureId + 1,
+                "Corporatio" => "Coimbatore",
+                "Region_Nam" => "Central",
+                "Zone" => "Zone-B",
+                "Ward_Numbe" => "68",
+                "Road_ID" => "W68RN3",
+                "Road_Name" => "ANNA STREET",
+                "GIS_ID" => "68WN3343", // Replace with the calculated GIS_ID
+                "Building_T" => "Independent",
+                "Building_U" => "Residential",
+                "Door_Old_N" => "242 & 243",
+                "Door_New_N" => "148",
+                "MIS_Max_Fl" => "0",
+                "Survey_Max" => "2",
+                "MIS_Total_" => "0.00000000000e+000",
+                "Drone_Area" => "7.84094889000e+002",
+                "Variation_" => "0.00000000000e+000",
+                "Shape_Leng" => "1.79893216299e-004",
+                "Shape_Area" => "2.00812108491e-009",
+                "MIS_Usage" => "New",
+                "Variation1" => "New",
+                "Variatio_1" => "NEW ASSESSMENT",
+                "SGT_Remark" => "Integrated",
+                "AREA_IN_SQ" => "2.61364963329e+002",
+                "Plot_No" => ""
+            ];
+
             // Prepare the new feature
             $newFeature = [
                 "type" => "Feature",
-                "id" => count($features)+1, // Assigning an ID based on the current number of features
+                "id" => count($features) + 1, // Assigning an ID based on the current number of features
                 "geometry" => [
                     "type" => "Polygon",
                     "coordinates" => $coordinates // Use the provided coordinates
                 ],
-                "properties" => [
-                    "OBJECTID_1" => count($features)+1, // Using the same ID as 'id' for simplicity
-                    "OBJECTID" =>  count($features)+1,
-                    "Id" => 0,
-                    "remarks" => "",
-                    "D_Area" => 0,
-                    "Shape_Leng" => 0, // Update as needed
-                    "Shape_Length" => 0, // Update as needed
-                    "Shape_Area" => 0 // Update as needed
-                ]
+                "properties" => $properties
             ];
 
             // Add the new feature to the existing features array
@@ -418,6 +442,7 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'Feature added successfully']);
         }
+
 
 
         //point
