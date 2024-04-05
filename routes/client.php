@@ -34,10 +34,10 @@ Route::prefix('client')->name('client.')->group(function () {
         Route::post('/gis-images-upload', [ClientController::class, 'storeimg'])->name('gis-images-upload');
         Route::get('/new-assessment', [ClientController::class, 'newAssessment'])->name('new-assessment');
         Route::post('/building-update', [FormController::class, 'buildingdataUpload'])->name('buildingdata-upload');
-        Route::post('/point-update', [FormController::class, 'pointdataUpload'])->name('pointdata-upload');
+        Route::post('/point-added', [FormController::class, 'pointdataUpload'])->name('pointdata-upload');
         Route::view('/update-gis', 'back.page.client.update-assessment')->name('Survey-Gis');
         Route::post('/point-edit', [FormController::class, 'editPostGis'])->name('point-gis-edit');
-         Route::post('/point-update', [FormController::class, 'updatePostGis'])->name('update-point');
+         Route::post('/point-update', [FormController::class, 'updatePointGis'])->name('update-point');
 
 
     });
