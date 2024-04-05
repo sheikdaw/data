@@ -388,7 +388,7 @@ class AdminController extends Controller
             $coordinates = $request->input('coordinates');
 
             // Get the last feature ID and increment it by 1 for GIS_ID
-            $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['OBJECTID'] : 0;
+            $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['GIS_ID'] : 0;
             $gisId = $lastFeatureId + 1;
 
             // Add all the fields from the provided JSON data
@@ -400,7 +400,7 @@ class AdminController extends Controller
                 "Ward_Numbe" => "68",
                 "Road_ID" => $lastFeatureId + 1,
                 "Road_Name" => "ANNA STREET",
-                "GIS_ID" => $lastFeatureId + 1,
+                "GIS_ID" => $gisId,
                 "Building_T" => "Independent",
                 "Building_U" => "Residential",
                 "Door_Old_N" => "242 & 243",
@@ -454,7 +454,8 @@ class AdminController extends Controller
 
             // Primary GIS ID
             $primaryGisId = $request->input('primary_gis_id');
-
+            $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['GIS_ID'] : 0;
+            $gisId = $lastFeatureId + 1;
             // Prepare the new feature
             $newFeature = [
                 "type" => "Feature",
@@ -469,7 +470,7 @@ class AdminController extends Controller
                 "properties" => [
                     "FID" => count($features), // Using the same ID as 'id' for simplicity
                     "Id" => 0,
-                    "GIS_ID" => count($features) + 1
+                    "GIS_ID" => gisId
                 ]
             ];
 
