@@ -541,7 +541,8 @@
                         buildingGisIdSet.add(building.gisid);
                     });
 
-                    vectorBuildingLayer.setStyle(function(feature) {
+                    function buildingStyle(){
+                        vectorBuildingLayer.setStyle(function(feature) {
                         var id = feature.get('GIS_ID'); // Extract Id from feature properties
                         if (buildingGisIdSet.has(id)) {
                             console.log('GIS_ID', id, 'is present in building data');
@@ -551,6 +552,9 @@
                             return createLabelStyleFunction(id);
                         }
                     });
+                    }
+
+                   buildingStyle();
 
 
                     var markerLayer = new ol.layer.Vector({
@@ -817,6 +821,7 @@
                                     // Add new features to the vector source
                                     vectorBuildingSource.addFeatures(features);
 
+
                                 })
                                 .catch(error => {
                                     console.error('Error refreshing map and data:', error);
@@ -1017,6 +1022,7 @@
                             success: function(response) {
                                 if (response.success) {
                                     alert('Data saved successfully!');
+                                    buildingStyle();
                                     // You can close the modal or do any other action upon success
                                 }
                             },
