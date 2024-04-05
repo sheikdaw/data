@@ -473,6 +473,21 @@ class FormController extends Controller
         if ($buildingData) {
             // Check if bill usage is not "Residential"
             if ($validatedData['bill_usage'] != "Residential") {
+                $validatedData = $request->validate([
+
+                    'shop_floor.*' => 'required',
+                    'shop_name.*' => 'required',
+                    'shop_name.*' => 'required',
+                    'shop_owner_name.*' => 'required',
+                    'shop_category.*' => 'required',
+                    'shop_mobile.*' => 'required',
+                    'license.*' => 'required',
+                    'professional_tax.*' => 'required',
+                    'gst.*' => 'required',
+                    'number_of_employee.*' => 'required',
+                    'trade_income.*' => 'required',
+                    'establishment_remarks.*' => 'required',
+                ]);
                 foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
                     // Check if shop floor exceeds the total number of floors in the building
                     if ($shopFloor > $buildingData->number_floor) {
