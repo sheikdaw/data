@@ -507,7 +507,7 @@
 
                     // Apply the style function to the vector building layer
                     vectorBuildingLayer.setStyle(function(feature) {
-                        var id = feature.get('OBJECTID'); // Extract Id from feature properties
+                        var id = feature.get('GIS_ID'); // Extract Id from feature properties
                         return createLabelStyleFunction(id);
                     });
                     var markerLayer = new ol.layer.Vector({
@@ -575,7 +575,7 @@
 
                                 var geometryType = feature.getGeometry().getType();
                                 //alert("Geometry type: " + geometryType);
-                                if (geometryType == 'MultiPoint') {
+                                if (geometryType == 'Point') {
                                     var content = '';
                                     for (var key in properties) {
                                         // alert( key + ':</strong> ' + properties[key]);
