@@ -190,7 +190,7 @@
                             <div class="form-group">
                                 <label for="new_address_select">New Address</label>
                                 <select name="new_address" id="new_address_select">
-                                    @foreach ($totalRoadCount as $road)
+                                    @foreach ($road_name as $road)
                                         <option value="{{ $road }}">{{ $road }}</option>
                                     @endforeach
                                 </select>

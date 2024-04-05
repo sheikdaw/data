@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Surveyed;
+use App\Models\mis;
 use App\Models\image;
 use App\Models\PointData;
 use App\Models\BuildingData;
@@ -16,6 +17,7 @@ class ClientMap extends Component
     public $latitude;
     public $gis_id;
     public $building_data;
+    public $road_name;
 
     // Combine both listeners into one array
     protected $listeners = [
@@ -29,12 +31,15 @@ class ClientMap extends Component
         $this->point = asset('public/kovai/test.json');
         $this->point_data = PointData::all();
         $this->building_data = BuildingData::all();
+        $this->$road_name = mis::distinct('road_name')
+        ->selectRaw('road_name, count(*) as total_road_count')->groupBy('road_name')
+        ->get();
     }
 
     public function render()
     {
         return view('livewire.client-map', [
-            'surveyed' => $this->point_data, 'building_data' => $this->building_data
+            'surveyed' => $this->point_data, 'building_data' => $this->building_data,'road_name'=> $this->$road_name
         ]);
     }
 }
