@@ -207,7 +207,7 @@
                                 <label for="new_address_select">New Address</label>
                                 <select name="new_address" id="new_address_select" class="form-control">
                                     @foreach ($road_name as $road)
-                                        <option value="{{ $road->road_name}}">{{ $road->road_name }}</option>
+                                        <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
                                     @endforeach
                                 </select>
                                 <div id="new_address_div"></div>
@@ -349,7 +349,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="pointgis" name="point_gisid"  readonly>
+                                <input type="text" class="form-control" id="pointgis" name="point_gisid"
+                                    readonly>
                                 <div id="pointgis_error"></div>
                             </div>
                             <div class="form-group">
@@ -536,9 +537,10 @@
                             })
                         });
                         var createLabelStyleFunction = function(text) {
+                            text = text || ''; // Set a default value if text is undefined or null
                             return new ol.style.Style({
                                 text: new ol.style.Text({
-                                    text: text.toString(),
+                                    text: text.toString(), // Convert to string
                                     font: '20px Calibri,sans-serif',
                                     fill: new ol.style.Fill({
                                         color: '#ffff00' // Yellow color
@@ -565,9 +567,10 @@
                         };
 
                         var completeLabelStyleFunction = function(text) {
+                            text = text || ''; // Set a default value if text is undefined or null
                             return new ol.style.Style({
                                 text: new ol.style.Text({
-                                    text: text.toString(),
+                                    text: text.toString(), // Convert to string
                                     font: '20px Calibri,sans-serif',
                                     fill: new ol.style.Fill({
                                         color: 'blue'
@@ -594,7 +597,7 @@
                         };
 
                         var building_data =
-                        @json($building_data); // Assuming this part is correctly handled server-side
+                            @json($building_data); // Assuming this part is correctly handled server-side
 
                         var buildingGisIdSet = new Set();
 
@@ -702,10 +705,10 @@
                                             }
                                         }
                                         document.getElementById('featurePropertiesList').innerHTML =
-                                        content;
+                                            content;
 
                                         var gisId = properties[
-                                        'GIS_ID']; // Get the GIS ID from the clicked feature
+                                            'GIS_ID']; // Get the GIS ID from the clicked feature
                                         document.getElementById('gisIdInput').value =
                                             gisId; // Set the GIS ID value in the form
 
@@ -761,7 +764,9 @@
                                                     .water_connection;
                                                 document.getElementById('phone').value =
                                                     selectedBuilding.phone;
-                                                    document.getElementById('building_img').setAttribute('src', `/public${selectedBuilding.image}`);
+                                                document.getElementById('building_img')
+                                                    .setAttribute('src',
+                                                        `/public${selectedBuilding.image}`);
 
 
                                             }
@@ -897,6 +902,7 @@
                                         var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
                                         // Add new features to the vector sourc e
                                         vectorBuildingSource.addFeatures(features);
+                                        buildingStyle();
 
 
                                     })
@@ -976,7 +982,7 @@
                                 }
                                 feature.setStyle(newStyle);
                                 vectorSource.addFeature(
-                                feature); // Add the feature back to the source
+                                    feature); // Add the feature back to the source
                             });
                         });
                     })
