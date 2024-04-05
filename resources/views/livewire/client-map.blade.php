@@ -554,6 +554,7 @@
                             }
                         });
                     }
+                    buildingStyle();
 
 
                     var markerLayer = new ol.layer.Vector({
@@ -1014,7 +1015,7 @@
                         success: function(response) {
                             if (response.success) {
                                 alert('Data saved successfully!');
-                                buildingStyle();
+
                                 // You can close the modal or do any other action upon success
                             }
                         },
