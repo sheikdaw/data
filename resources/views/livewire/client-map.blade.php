@@ -612,8 +612,7 @@
                                     console.log('GIS_ID', id, 'is present in building data');
                                     return completeLabelStyleFunction(id);
                                 } else {
-                                    console.log('GIS_ID', id, 'is not present in building data');
-                                    return createLabelStyleFunction(id);
+                                     return createLabelStyleFunction(id);
                                 }
                             });
                         }
