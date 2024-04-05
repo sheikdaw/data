@@ -555,6 +555,25 @@
                         gisIdSet.add(survey.gisid);
                     });
 
+
+                    buildingfeatures.forEach(function(feature) {
+                        var properties = feature.getProperties();
+                        if (gisIdSet.has(properties['GIS_ID'])) {
+                            feature.setStyle(completeStyle);
+                        } else {
+                            feature.setStyle(clickedStyle);
+                        }
+                    });
+
+                    var surveyed = @json($surveyed);
+
+                    var gisIdSet = new Set();
+
+                    surveyed.forEach(function(survey) {
+                        gisIdSet.add(survey.gisid);
+                    });
+
+
                     features.forEach(function(feature) {
                         var properties = feature.getProperties();
                         if (gisIdSet.has(properties['GIS_ID'])) {
@@ -563,6 +582,7 @@
                             feature.setStyle(clickedStyle);
                         }
                     });
+
 
                     map.on('click', function(event) {
                         if (document.getElementById('type').value == 'None') {
