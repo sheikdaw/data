@@ -36,7 +36,7 @@ Route::prefix('client')->name('client.')->group(function () {
         Route::post('/building-update', [FormController::class, 'buildingdataUpload'])->name('buildingdata-upload');
         Route::post('/point-update', [FormController::class, 'pointdataUpload'])->name('pointdata-upload');
         Route::view('/update-gis', 'back.page.client.update-assessment')->name('Survey-Gis');
-        Route::post('/point-edit', [FormController::class, 'editPostGis'])->name('pointdata-upload');
+        Route::post('/point-edit', [FormController::class, 'editPostGis'])->name('point-gis-edit');
         Route::post('/point-update', [FormController::class, 'updatePostGis'])->name('update-pont');
     });
 });
