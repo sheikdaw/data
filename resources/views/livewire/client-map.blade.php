@@ -524,7 +524,7 @@
                                 maxAngle: Math.PI / 4
                             }),
                             stroke: new ol.style.Stroke({
-                                color: 'red',
+                                color: 'blue',
                                 width: 1
                             }),
                             fill: new ol.style.Fill({
