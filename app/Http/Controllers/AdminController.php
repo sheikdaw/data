@@ -440,7 +440,7 @@ class AdminController extends Controller
             "properties" => [
                 "FID" => count($pointFeatures), // Using the same ID as 'id' for simplicity
                 "Id" => 0,
-                "GIS_ID" => gisId
+                "GIS_ID" => $gisId
                 // Add other properties here
             ]
         ];
