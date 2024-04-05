@@ -40,6 +40,7 @@
                     $('#data').html(response);
                 },
                 error: function(xhr, status, error) {
+                    alert(error);
                     console.error(xhr.responseText);
                     alert('An error occurred while processing your request. Please try again.');
                 }
