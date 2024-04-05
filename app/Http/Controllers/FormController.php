@@ -536,6 +536,14 @@ class FormController extends Controller
         $datas = PointData::where('point_gisid', $id)->get(); // Add parentheses after get
         return view('back.page.client.update-form', compact('datas'));
     }
+    public function updatePostGis(Request $request){
+        $id = $request->id;
+        $pointData = PointData::findOrFail($id);
+        $pointData->fill($request->all());
+        $pointData->save();
+        return response()->json(['success' => true, 'message' => 'Point data updated successfully'], 200);
+    }
+
 
 
 }
