@@ -641,7 +641,7 @@
                                                 .water_connection;
                                             document.getElementById('phone').value = selectedBuilding.phone;
                                             document.getElementById('building_img').setAttribute('src',
-                                                selectedBuilding.image);
+                                                {{asset(selectedBuilding.image)}});
 
                                         }
                                     });
