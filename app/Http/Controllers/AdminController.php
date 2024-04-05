@@ -400,7 +400,7 @@ class AdminController extends Controller
                 "Ward_Numbe" => "68",
                 "Road_ID" => $lastFeatureId + 1,
                 "Road_Name" => "ANNA STREET",
-                "GIS_ID" => "68WN3343", // Replace with the calculated GIS_ID
+                "GIS_ID" => $lastFeatureId + 1,
                 "Building_T" => "Independent",
                 "Building_U" => "Residential",
                 "Door_Old_N" => "242 & 243",
