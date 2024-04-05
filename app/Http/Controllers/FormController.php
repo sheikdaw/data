@@ -412,7 +412,7 @@ class FormController extends Controller
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move(public_path('images'), $imageName); // Move image to public/images directory
-                $validatedData['image'] = 'images/' . $imageName;
+                $buildingData['image'] = '/images/' . $imageName;
             }
 
             $buildingData->save();
