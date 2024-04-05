@@ -405,7 +405,7 @@ class AdminController extends Controller
             "Ward_Numbe" => "68",
             "Road_ID" => $lastFeatureId + 1,
             "Road_Name" => "ANNA STREET",
-            "GIS_ID" => $lastFeatureId + 1,
+            "GIS_ID" => $gisId,
             // Add other properties here
         ];
 
@@ -440,7 +440,7 @@ class AdminController extends Controller
             "properties" => [
                 "FID" => count($pointFeatures), // Using the same ID as 'id' for simplicity
                 "Id" => 0,
-                "GIS_ID" => count($pointFeatures) + 1
+                "GIS_ID" => gisId
                 // Add other properties here
             ]
         ];
