@@ -663,6 +663,7 @@
                         });
                         features.forEach(function(feature) {
                             var properties = feature.getProperties();
+                            console.log(properties['GIS_ID']);
                             if (gisIdSet.has(properties['GIS_ID'])) {
                                 feature.setStyle(completeStyle);
                             } else {
