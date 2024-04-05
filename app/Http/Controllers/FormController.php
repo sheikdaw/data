@@ -465,7 +465,6 @@ class FormController extends Controller
         // Retrieve the associated building data
         $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
 
-
         // Check if building data is found
         if($validatedData['bill_usage']   != $buildingData->building_usage)
             {
