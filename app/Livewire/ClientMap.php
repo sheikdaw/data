@@ -18,7 +18,6 @@ class ClientMap extends Component
     public $gis_id;
     public $building_data;
     public $road_name;
-    public $surveyed;
 
     // Combine both listeners into one array
     protected $listeners = [
