@@ -86,19 +86,19 @@
             var data = {};
 
             inputs.each(function() {
-                var key = $(this).attr('class');
+                var id = $(this).attr('id');
                 var value = $(this).val();
-                data[key] = value;
+                data[id] = value;
             });
 
             console.log(data); // You can serialize or send this data as needed
             $.ajax({
                 headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 type: "POST",
                 url: "{{ route('client.update-point') }}",
-                data:data,
+                data: data,
                 success: function(response) {
                     // Handle success response
                     console.log(response);
@@ -107,10 +107,10 @@
                 error: function(xhr, status, error) {
                     // Handle error response
                     console.error(xhr.responseText);
-                    alert(
-                        'An error occurred while processing your request. Please try again.');
+                    alert('An error occurred while processing your request. Please try again.');
                 }
             });
         });
     });
 </script>
+
