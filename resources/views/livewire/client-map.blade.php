@@ -999,7 +999,7 @@
             });
 
 
-
+            buildingStyle();
 
             //ajax for building data
             $(document).ready(function() {
@@ -1077,7 +1077,7 @@
                     });
                 });
             });
-            buildingStyle();
+
         </script>
     @endpush
 </div>
