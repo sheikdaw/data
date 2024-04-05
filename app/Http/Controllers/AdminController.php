@@ -398,7 +398,7 @@ class AdminController extends Controller
                 "Region_Nam" => "Central",
                 "Zone" => "Zone-B",
                 "Ward_Numbe" => "68",
-                "Road_ID" => "W68RN3",
+                "Road_ID" => $lastFeatureId + 1,
                 "Road_Name" => "ANNA STREET",
                 "GIS_ID" => "68WN3343", // Replace with the calculated GIS_ID
                 "Building_T" => "Independent",
