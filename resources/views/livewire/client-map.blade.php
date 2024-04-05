@@ -263,7 +263,7 @@
                             <div class="form-group">
                                 <label for="value">Picture</label>
                                 <input type="file" name="image" id="image" class="form-control">
-                                <div id="image_error"></div>
+                                <div id="image_error" class="text-danger"></div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -299,7 +299,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="pointgis" name="point_gisid" readonly>
+                                <input type="text" class="form-control" id="pointgis" name="point_gisid"
+                                    readonly>
                                 <div id="pointgis_error"></div>
                             </div>
                             <div class="form-group">
@@ -311,7 +312,7 @@
                                 <label for="old_assessment">Old Assessment</label>
                                 <input type="text" name="old_assessment" class="form-control"
                                     id="old_assessment">
-                                    <div id="old_assessment_error"></div>
+                                <div id="old_assessment_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="floor"> Floor</label>
@@ -601,41 +602,46 @@
                                         gisId; // Set the GIS ID value in the form
 
                                     var building_data =
-                                    @json($building_data); // Get building data from server-side
+                                        @json($building_data); // Get building data from server-side
                                     building_data.forEach(function(selectedBuilding) {
-                                        if(selectedBuilding.gisid == gisId){
-                                        alert(selectedBuilding.gisid);
-                                        document.getElementById('number_bill').value = selectedBuilding
-                                            .number_bill;
-                                        document.getElementById('number_floor').value = selectedBuilding
-                                            .number_floor;
-                                        document.getElementById('watet_tax').value = selectedBuilding
-                                            .watet_tax;
-                                        document.getElementById('eb').value = selectedBuilding.eb;
-                                        document.getElementById('building_name').value = selectedBuilding
-                                            .building_name;
-                                        document.getElementById('building_usage').value = selectedBuilding
-                                            .building_usage;
-                                        document.getElementById('construction_type').value =
-                                            selectedBuilding
-                                            .construction_type;
-                                        document.getElementById('road_name').value = selectedBuilding
-                                            .road_name;
-                                        document.getElementById('ugd').value = selectedBuilding.ugd;
-                                        document.getElementById('rainwater_harvesting').value =
-                                            selectedBuilding.rainwater_harvesting;
-                                        document.getElementById('parking').value = selectedBuilding.parking;
-                                        document.getElementById('ramp').value = selectedBuilding.ramp;
-                                        document.getElementById('hoarding').value = selectedBuilding
-                                            .hoarding;
-                                        document.getElementById('cell_tower').value = selectedBuilding
-                                            .cell_tower;
-                                        document.getElementById('solar_panel').value = selectedBuilding
-                                            .solar_panel;
-                                        document.getElementById('water_connection').value = selectedBuilding
-                                            .water_connection;
-                                        document.getElementById('phone').value = selectedBuilding.phone;
-                                        document.getElementById('building_img').setAttribute('src', selectedBuilding.image);
+                                        if (selectedBuilding.gisid == gisId) {
+                                            alert(selectedBuilding.gisid);
+                                            document.getElementById('number_bill').value = selectedBuilding
+                                                .number_bill;
+                                            document.getElementById('number_floor').value = selectedBuilding
+                                                .number_floor;
+                                            document.getElementById('watet_tax').value = selectedBuilding
+                                                .watet_tax;
+                                            document.getElementById('eb').value = selectedBuilding.eb;
+                                            document.getElementById('building_name').value =
+                                                selectedBuilding
+                                                .building_name;
+                                            document.getElementById('building_usage').value =
+                                                selectedBuilding
+                                                .building_usage;
+                                            document.getElementById('construction_type').value =
+                                                selectedBuilding
+                                                .construction_type;
+                                            document.getElementById('road_name').value = selectedBuilding
+                                                .road_name;
+                                            document.getElementById('ugd').value = selectedBuilding.ugd;
+                                            document.getElementById('rainwater_harvesting').value =
+                                                selectedBuilding.rainwater_harvesting;
+                                            document.getElementById('parking').value = selectedBuilding
+                                                .parking;
+                                            document.getElementById('ramp').value = selectedBuilding.ramp;
+                                            document.getElementById('hoarding').value = selectedBuilding
+                                                .hoarding;
+                                            document.getElementById('cell_tower').value = selectedBuilding
+                                                .cell_tower;
+                                            document.getElementById('solar_panel').value = selectedBuilding
+                                                .solar_panel;
+                                            document.getElementById('water_connection').value =
+                                                selectedBuilding
+                                                .water_connection;
+                                            document.getElementById('phone').value = selectedBuilding.phone;
+                                            document.getElementById('building_img').setAttribute('src',
+                                                selectedBuilding.image);
 
                                         }
                                     });
@@ -954,37 +960,41 @@
 
             //ajax for building data
             $(document).ready(function() {
-                $('#buildingForm').submit(function(e) {
-                    e.preventDefault();
-                    $('.error-message').text('');
-                    $('input').removeClass('is-invalid');
-                    var buildingData = $(this).serialize(); // Using $(this) to refer to the current form
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('client.buildingdata-upload') }}',
-                        data: buildingData,
-                        success: function(response) {
-                            if (response.success) {
-                                alert('Data saved successfully!');
-                                // You can close the modal or do any other action upon success
+                $(document).ready(function() {
+                    $('#buildingForm').submit(function(e) {
+                        e.preventDefault();
+                        $('.error-message').text('');
+                        $('input').removeClass('is-invalid');
+
+                        var formData = new FormData(this);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ route('client.buildingdata-upload') }}',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                if (response.success) {
+                                    alert('Data saved successfully!');
+                                    // You can close the modal or do any other action upon success
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(xhr.responseText);
+                                alert(
+                                    'An error occurred while processing your request. Please try again.');
+                                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                    $.each(xhr.responseJSON.errors, function(key, value) {
+                                        $('#' + key).addClass('is-invalid');
+                                        $('#' + key + '_error').text(value[0]);
+                                    });
+                                }
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
-                            alert(
-                                'An error occurred while processing your request. Please try again.'
-                            );
-                            if (xhr.responseJSON && xhr.responseJSON.errors) {
-                                $.each(xhr.responseJSON.errors, function(key, value) {
-                                    $('#' + key).addClass(
-                                        'is-invalid'); // Add invalid class to input field
-                                    $('#' + key + '_error').text(value[
-                                        0]); // Display the error message next to the field
-                                });
-                            }
-                        }
+                        });
                     });
                 });
+
 
                 $('#pointForm').submit(function(e) {
                     e.preventDefault();
@@ -1013,8 +1023,10 @@
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
                                 alert(xhr.responseJSON.message);
                                 $.each(xhr.responseJSON.errors, function(key, value) {
-                                    $('#' + key).addClass('is-invalid'); // Add invalid class to input field
-                                    $('#' + key + '_error').text(value[0]); // Display the error message next to the field
+                                    $('#' + key).addClass(
+                                    'is-invalid'); // Add invalid class to input field
+                                    $('#' + key + '_error').text(value[
+                                    0]); // Display the error message next to the field
                                     console.log('#' + key + '_error');
                                 });
                             }
