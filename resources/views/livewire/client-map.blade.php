@@ -1093,7 +1093,6 @@
                         success: function(response) {
                             if (response.success) {
                                 alert('Data saved successfully!');
-
                                 // You can close the modal or do any other action upon success
                             }
                         },
