@@ -895,7 +895,7 @@
                                     })
                                     .then(buildingJsonData => {
                                         var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-                                        // Add new features to the vector source
+                                        // Add new features to the vector sourc e
                                         vectorBuildingSource.addFeatures(features);
 
 
