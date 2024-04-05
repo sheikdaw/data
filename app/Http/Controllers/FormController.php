@@ -441,20 +441,8 @@ class FormController extends Controller
             'ration_no' => 'required',
             'phone_number' => 'required', // Corrected field name
             'point_gisid' => 'required|exists:building_data,gisid',
-            'shop_floor.*' => 'required',
-            'shop_name.*' => 'required',
             'old_door_no' => 'required',
             'new_door_no' => 'required',
-            'shop_name.*' => 'required',
-            'shop_owner_name.*' => 'required',
-            'shop_category.*' => 'required',
-            'shop_mobile.*' => 'required',
-            'license.*' => 'required',
-            'professional_tax.*' => 'required',
-            'gst.*' => 'required',
-            'number_of_employee.*' => 'required',
-            'trade_income.*' => 'required',
-            'establishment_remarks.*' => 'required',
         ]);
 
         // Retrieve the associated building data
