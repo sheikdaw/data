@@ -544,19 +544,18 @@ class FormController extends Controller
     ]);
 
     // Find the PointData record by its ID
-    // $pointData = PointData::find($validatedData['id']);
+    $pointData = PointData::find($validatedData['id']);
 
-    // // If the PointData record exists, update its fields
-    // if ($pointData) {
-    //     $pointData->update($validatedData);
+    // If the PointData record exists, update its fields
+    if ($pointData) {
+        $pointData->update($validatedData);
 
-    //     // Return a success response
-    //     return response()->json(['success' => true, 'message' => 'Point data updated successfully'], 200);
-    // }
+        // Return a success response
+        return response()->json(['success' => true, 'message' => 'Point data updated successfully'], 200);
+    }
 
     // If the PointData record does not exist, return a failure response
-    $data=$request->all();
-    return response()->json(['success' => true, 'message' => 'Point data not found','data'=>$data], 404);
+    return response()->json(['success' => false, 'message' => 'Point data not found','pointData'=>$pointData], 404);
 
     }
 
