@@ -431,7 +431,7 @@ class FormController extends Controller
 
     public function pointdataUpload(Request $request)
     {
-        dd($request->all());
+
         // Validate the incoming request data
         $validatedData = $request->validate([
             'assessment' => 'required',
