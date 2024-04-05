@@ -30,7 +30,7 @@ class ClientMap extends Component
     {
         // Fetch surveyed data and assign it to the property
         $this->point = asset('public/kovai/test.json');
-        $this->point_data = PointData::all();
+        $this->surveyed = PointData::all();
         $this->building_data = BuildingData::all();
         $this->road_name = mis::distinct('road_name')
             ->selectRaw('road_name, count(*) as total_road_count')
@@ -41,7 +41,7 @@ class ClientMap extends Component
     public function render()
     {
         return view('livewire.client-map', [
-            'surveyed' => $this->point_data,
+            'surveyed' => $this->surveyed,
             'building_data' => $this->building_data,
             'road_name' => $this->road_name
         ]);
