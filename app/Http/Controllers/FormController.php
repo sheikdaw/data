@@ -533,8 +533,8 @@ class FormController extends Controller
 
     public function editPostGis(Request $request){
         $id = $request->point_gis;
-        $datas = PointData::where('point_gis',$id)->get;
-        return view('back.page.client.update-form',compact('datas'));
+        $datas = PointData::where('point_gis', $id)->get(); // Add parentheses after get
+        return view('back.page.client.update-form', compact('datas'));
     }
 
 
