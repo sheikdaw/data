@@ -91,6 +91,9 @@
 
             console.log(data); // You can serialize or send this data as needed
             $.ajax({
+                headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
                 type: "POST",
                 url: "{{ route('client.update-point') }}",
                 data:data,
