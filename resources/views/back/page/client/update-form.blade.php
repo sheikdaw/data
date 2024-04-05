@@ -28,7 +28,7 @@
         <tbody>
             @foreach ($datas as $data)
                 <tr>
-                    <td><input type="text" name="id" id="id"
+                    <td><input type="hidden" name="id" id="id"
                         value="{{ $data->id }}"></td>
                     <td><input type="text" name="assessment" id="assessment_{{ $data->id }}"
                             value="{{ $data->assessment }}"></td>

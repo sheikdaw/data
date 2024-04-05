@@ -538,7 +538,11 @@ class FormController extends Controller
     }
     public function updatePostGis(Request $request){
        // Validate the incoming request data
-       $validatedData = $request->all();
+       $validatedData = $request->validate([
+        'id' => 'required|exists:point_data,id', // Ensure the provided ID exists in the database
+
+    ]);
+
     // Find the PointData record by its ID
     $pointData = PointData::find($validatedData['id']);
 
