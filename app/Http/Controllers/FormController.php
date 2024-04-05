@@ -467,7 +467,7 @@ class FormController extends Controller
             if ($validatedData['bill_usage'] != "Residential") {
                 foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
                     // Check if shop floor exceeds the total number of floors in the building
-                    if ($shopFloor > $buildingData->floor) {
+                    if ($shopFloor > $buildingData->number_floor) {
                         return response()->json(['success' => false, 'message' => 'Shop floor number for shop ' . ($index) . ' cannot be greater than the total number of floors in the building'], 404);
                     }
 
