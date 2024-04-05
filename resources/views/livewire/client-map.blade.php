@@ -475,14 +475,13 @@
                             zoom: 20
                         })
                     });
-                    // Function to create style with text label and red border
                     var createLabelStyleFunction = function(text) {
                         return new ol.style.Style({
                             text: new ol.style.Text({
-                                text: text.toString(), // Convert Id to string
+                                text: text.toString(),
                                 font: '20px Calibri,sans-serif',
                                 fill: new ol.style.Fill({
-                                    color: '#ffff00' // Changed to yellow color
+                                    color: '#ffff00' // Yellow color
                                 }),
                                 stroke: new ol.style.Stroke({
                                     color: '#ffff00',
@@ -500,16 +499,15 @@
                                 width: 1
                             }),
                             fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                                color: 'rgba(255, 0, 0, 0)'
                             })
                         });
                     };
 
-                    // Function to create complete label style with blue text and blue border
                     var completeLabelStyleFunction = function(text) {
                         return new ol.style.Style({
                             text: new ol.style.Text({
-                                text: text.toString(), // Convert Id to string
+                                text: text.toString(),
                                 font: '20px Calibri,sans-serif',
                                 fill: new ol.style.Fill({
                                     color: 'blue'
@@ -530,7 +528,7 @@
                                 width: 1
                             }),
                             fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0)' // Red fill with opacity
+                                color: 'rgba(255, 0, 0, 0)'
                             })
                         });
                     };
@@ -539,20 +537,21 @@
 
                     var buildingGisIdSet = new Set();
 
-                    building_data.forEach(function(survey) {
-                        buildingGisIdSet.add(survey.point_gisid);
+                    building_data.forEach(function(building) {
+                        buildingGisIdSet.add(building.point_gisid);
                     });
 
-                    // Apply the style function to the vector building layer
                     vectorBuildingLayer.setStyle(function(feature) {
                         var id = feature.get('GIS_ID'); // Extract Id from feature properties
-                        if (buildingGisIdSet.has(id)) { // Fixed the issue here
-                            alert('hi');
+                        if (buildingGisIdSet.has(id)) {
+                            console.log('GIS_ID', id, 'is present in building data');
                             return completeLabelStyleFunction(id);
                         } else {
+                            console.log('GIS_ID', id, 'is not present in building data');
                             return createLabelStyleFunction(id);
                         }
                     });
+
 
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
@@ -1025,7 +1024,7 @@
                                 console.error(xhr.responseText);
                                 alert(
                                     'An error occurred while processing your request. Please try again.'
-                                    );
+                                );
                                 if (xhr.responseJSON && xhr.responseJSON.errors) {
                                     $.each(xhr.responseJSON.errors, function(key, value) {
                                         $('#' + key).addClass('is-invalid');
