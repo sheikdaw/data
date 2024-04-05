@@ -2,6 +2,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Assessment</th>
                 <th>Old Assessment</th>
                 <th>Floor</th>
@@ -28,8 +29,8 @@
         <tbody>
             @foreach ($datas as $data)
                 <tr>
-                    <td><input type="hidden" name="id" id="id"
-                        value="{{ $data->id }}"></td>
+                    <td><input type="text" name="id" id="id"
+                        value="{{ $data->id }}" readonly></td>
                     <td><input type="text" name="assessment" id="assessment_{{ $data->id }}"
                             value="{{ $data->assessment }}"></td>
                     <td><input type="text" name="old_assessment" id="old_assessment_{{ $data->id }}"
