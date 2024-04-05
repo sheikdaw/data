@@ -389,37 +389,38 @@ class FormController extends Controller
             'solar_panel' => 'required',
             'water_connection' => 'required',
             'phone' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif', // Example validation for image upload
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Example validation for image upload
         ]);
 
         $buildingData = BuildingData::where('gisid', $validatedData['gisid'])->first();
 
         // If the record exists, update it
         if ($buildingData) {
-
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move(public_path('images'), $imageName); // Move image to public/images directory
+                $validatedData['image'] = 'images/' . $imageName;
             }
-            $validatedData->image = 'images/' . $imageName;
 
             $buildingData->update($validatedData);
         } else {
             // Otherwise, create a new record
             $buildingData = new BuildingData($validatedData);
+
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move(public_path('images'), $imageName); // Move image to public/images directory
+                $validatedData['image'] = 'images/' . $imageName;
             }
-            $buildingData->image = 'images/' . $imageName;
 
             $buildingData->save();
         }
 
         return response()->json(['success' => true]);
     }
+
 
 
 
