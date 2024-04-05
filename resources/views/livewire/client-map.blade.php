@@ -191,7 +191,7 @@
                                 <label for="new_address_select">New Address</label>
                                 <select name="new_address" id="new_address_select">
                                     @foreach ($road_name as $road)
-                                        <option value="{{ $road }}">{{ $road }}</option>
+                                        <option value="{{ $road->road_name}}">{{ $road->road_name }}</option>
                                     @endforeach
                                 </select>
                                 <div id="new_address_div"></div>
