@@ -384,20 +384,27 @@ class AdminController extends Controller
             // Assuming 'features' is an existing array in your JSON data
             $features = $data['features'];
 
+            // Corrected coordinates structure for Polygon
+            $coordinates = $request->input('coordinates');
+
+            // Calculate the centroid of the polygon
+            $centroid = calculateCentroid($coordinates);
+
             // Get the last feature ID and increment it by 1 for GIS_ID
             $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['GIS_ID'] : 0;
             $gisId = $lastFeatureId + 1;
 
             // Add all the fields from the provided JSON data
             $properties = [
-                // Other properties...
-                "GIS_ID" => $gisId
+                "OBJECTID" => $lastFeatureId + 1,
+                "Corporatio" => "Coimbatore",
+                // Add other properties as needed
             ];
 
             // Prepare the new feature
             $newFeature = [
                 "type" => "Feature",
-                "id" => uniqid(), // Assigning a unique ID
+                "id" => count($features) + 1, // Assigning an ID based on the current number of features
                 "geometry" => [
                     "type" => "Polygon",
                     "coordinates" => $coordinates // Use the provided coordinates
@@ -414,24 +421,70 @@ class AdminController extends Controller
             // Write the updated JSON data back to the file
             file_put_contents(public_path('kovai/building.json'), json_encode($data, JSON_PRETTY_PRINT));
 
+            // Add the point feature
+            $pointdata = json_decode(file_get_contents(public_path('kovai/test.json')), true);
+            $pointFeatures = $pointdata['features'];
+
+            // Prepare the new point feature
+            $pointFeature = [
+                "type" => "Feature",
+                "id" => count($pointFeatures) + 1,
+                "geometry" => [
+                    "type" => "Point",
+                    "coordinates" => $centroid // Use the calculated centroid
+                ],
+                "properties" => [
+                    "FID" => count($pointFeatures) + 1, // Assigning an ID based on the current number of features
+                    "Id" => 0,
+                    "GIS_ID" => $gisId // Use the same GIS_ID as the polygon feature
+                ]
+            ];
+
+            // Add the new point feature to the existing features array
+            $pointFeatures[] = $pointFeature;
+
+            // Update the 'features' array in the JSON data
+            $pointdata['features'] = $pointFeatures;
+
+            // Write the updated JSON data back to the file
+            file_put_contents(public_path('kovai/test.json'), json_encode($pointdata, JSON_PRETTY_PRINT));
+
             return response()->json(['message' => 'Feature added successfully']);
         }
 
-        // Point
+        // Function to calculate centroid of a polygon
+        function calculateCentroid($coordinates) {
+            $totalPoints = count($coordinates[0]);
+            $x = 0;
+            $y = 0;
+
+            foreach ($coordinates[0] as $point) {
+                $x += $point[0];
+                $y += $point[1];
+            }
+
+            $centroidX = $x / $totalPoints;
+            $centroidY = $y / $totalPoints;
+
+            return [$centroidX, $centroidY];
+        }
+
+
+
+        //point
         if ($request->type == "Point") {
             $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
 
             // Assuming 'features' is an existing array in your JSON data
             $features = $data['features'];
 
-            // Get the last feature ID and increment it by 1 for GIS_ID
-            $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['GIS_ID'] : 0;
-            $gisId = $lastFeatureId + 1;
+            // Primary GIS ID
+            $primaryGisId = $request->input('primary_gis_id');
 
             // Prepare the new feature
             $newFeature = [
                 "type" => "Feature",
-                "id" => uniqid(), // Assigning a unique ID
+                "id" => count($features), // Assigning an ID based on the current number of features
                 "geometry" => [
                     "type" => "Point",
                     "coordinates" => [
@@ -440,8 +493,9 @@ class AdminController extends Controller
                     ]
                 ],
                 "properties" => [
-                    // Other properties...
-                    "GIS_ID" => $gisId
+                    "FID" => count($features), // Using the same ID as 'id' for simplicity
+                    "Id" => 0,
+                    "GIS_ID" => count($features) + 1
                 ]
             ];
 
@@ -456,7 +510,6 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'Feature added successfully']);
         }
-
     }
 
 
