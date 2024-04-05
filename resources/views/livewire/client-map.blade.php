@@ -640,8 +640,7 @@
                                                 selectedBuilding
                                                 .water_connection;
                                             document.getElementById('phone').value = selectedBuilding.phone;
-                                            document.getElementById('building_img').setAttribute('src', '{{ asset('selectedBuilding.image') }}');
-
+                                            document.getElementById('building_img').setAttribute('src', '{{ asset(selectedBuilding.image) }}');
 
                                         }
                                     });
