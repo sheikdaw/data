@@ -189,7 +189,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="new_address_select">New Address</label>
-                                <select name="new_address" id="new_address_select">
+                                <select name="new_address" id="new_address_select" class="form-control">
                                     @foreach ($road_name as $road)
                                         <option value="{{ $road->road_name}}">{{ $road->road_name }}</option>
                                     @endforeach
