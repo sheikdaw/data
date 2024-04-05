@@ -22,7 +22,7 @@ Route::prefix('client')->name('client.')->group(function () {
         Route::get('/profile', [ClientController::class, 'profileView'])->name('profile');
         Route::post('/change-profile-picture', [ClientController::class, 'changeProfilePicture'])->name('change-profile-picture');
         Route::get('/admin/get-profile-picture', [ClientController::class, 'getProfilePicture'])->name('get-profile-picture');
-        Route::view('/survey-gis', 'back.page.client.survey-gis')->name('Survey-Gis');
+        // Route::view('/survey-gis', 'back.page.client.survey-gis')->name('Survey-Gis');
         Route::post('/survey-form', [ClientController::class, 'surveyForm'])->name('Survey-Form');
         Route::post('/survey-formpoint', [ClientController::class, 'surveyFormPoint'])->name('Survey-Form-Point');
         Route::post('/form-property', [FormController::class, 'property'])->name('form-property');
@@ -35,7 +35,8 @@ Route::prefix('client')->name('client.')->group(function () {
         Route::get('/new-assessment', [ClientController::class, 'newAssessment'])->name('new-assessment');
         Route::post('/building-update', [FormController::class, 'buildingdataUpload'])->name('buildingdata-upload');
         Route::post('/point-update', [FormController::class, 'pointdataUpload'])->name('pointdata-upload');
-
+        Route::view('/update-gis', 'back.page.client.update-assessment')->name('Survey-Gis');
+        Route::post('/point-update', [FormController::class, 'editPostGis'])->name('point-gis-edit');
     });
 });
 

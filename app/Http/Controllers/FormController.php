@@ -539,5 +539,11 @@ class FormController extends Controller
         return response()->json(['success' => false, 'message' => 'Building data not found'], 404);
     }
 
+    public function editPostGis(Request $request){
+        $id = $request->point_gis;
+        $datas = PointData::where('point_gis',$id)->get;
+        return view('back.page.client.update-form',compact('datas'));
+    }
+
 
 }
