@@ -92,7 +92,7 @@
             console.log(data); // You can serialize or send this data as needed
             $.ajax({
                 type: "POST",
-                url: "{{ route('update-pont') }}",
+                url: "{{ route('client.update-pont') }}",
                 data:data,
                 success: function(response) {
                     // Handle success response
