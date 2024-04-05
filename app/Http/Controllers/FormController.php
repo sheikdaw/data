@@ -537,11 +537,45 @@ class FormController extends Controller
         return view('back.page.client.update-form', compact('datas'));
     }
     public function updatePostGis(Request $request){
-        $id = $request->id;
-        $pointData = PointData::findOrFail($id);
-        $pointData->fill($request->all());
-        $pointData->save();
+       // Validate the incoming request data
+       $validatedData = $request->validate([
+        'id' => 'required|exists:point_data,id', // Ensure the provided ID exists in the database
+        'assessment' => 'required',
+        'old_assessment' => 'required',
+        'floor' => 'required',
+        'bill_usage' => 'required',
+        'aadhar_no' => 'required',
+        'ration_no' => 'required',
+        'phone_number' => 'required',
+        'shop_floor' => 'required',
+        'shop_name' => 'required',
+        'old_door_no' => 'required',
+        'new_door_no' => 'required',
+        'shop_owner_name' => 'required',
+        'shop_category' => 'required',
+        'shop_mobile' => 'required',
+        'license' => 'required',
+        'professional_tax' => 'required',
+        'gst' => 'required',
+        'number_of_employee' => 'required',
+        'trade_income' => 'required',
+        'establishment_remarks' => 'required',
+    ]);
+
+    // Find the PointData record by its ID
+    $pointData = PointData::find($validatedData['id']);
+
+    // If the PointData record exists, update its fields
+    if ($pointData) {
+        $pointData->update($validatedData);
+
+        // Return a success response
         return response()->json(['success' => true, 'message' => 'Point data updated successfully'], 200);
+    }
+
+    // If the PointData record does not exist, return a failure response
+    return response()->json(['success' => false, 'message' => 'Point data not found'], 404);
+
     }
 
 
