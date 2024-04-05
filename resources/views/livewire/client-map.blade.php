@@ -475,84 +475,7 @@
                             zoom: 20
                         })
                     });
-                    var createLabelStyleFunction = function(text) {
-                        return new ol.style.Style({
-                            text: new ol.style.Text({
-                                text: text.toString(),
-                                font: '20px Calibri,sans-serif',
-                                fill: new ol.style.Fill({
-                                    color: '#ffff00' // Yellow color
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#ffff00',
-                                    width: 1
-                                }),
-                                offsetX: 0,
-                                offsetY: -20,
-                                textAlign: 'center',
-                                textBaseline: 'bottom',
-                                placement: 'point',
-                                maxAngle: Math.PI / 4
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'red',
-                                width: 1
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0)'
-                            })
-                        });
-                    };
 
-                    var completeLabelStyleFunction = function(text) {
-                        return new ol.style.Style({
-                            text: new ol.style.Text({
-                                text: text.toString(),
-                                font: '20px Calibri,sans-serif',
-                                fill: new ol.style.Fill({
-                                    color: 'blue'
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: 'blue',
-                                    width: 1
-                                }),
-                                offsetX: 0,
-                                offsetY: -20,
-                                textAlign: 'center',
-                                textBaseline: 'bottom',
-                                placement: 'point',
-                                maxAngle: Math.PI / 4
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'blue',
-                                width: 1
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0)'
-                            })
-                        });
-                    };
-
-                    var building_data = @json($building_data); // Assuming this part is correctly handled server-side
-
-                    var buildingGisIdSet = new Set();
-
-                    building_data.forEach(function(building) {
-                        buildingGisIdSet.add(building.gisid);
-                    });
-
-                    function buildingStyle() {
-                        vectorBuildingLayer.setStyle(function(feature) {
-                            var id = feature.get('GIS_ID'); // Extract Id from feature properties
-                            if (buildingGisIdSet.has(id)) {
-                                console.log('GIS_ID', id, 'is present in building data');
-                                return completeLabelStyleFunction(id);
-                            } else {
-                                console.log('GIS_ID', id, 'is not present in building data');
-                                return createLabelStyleFunction(id);
-                            }
-                        });
-                    }
 
 
                     var markerLayer = new ol.layer.Vector({
@@ -997,7 +920,84 @@
                     $(this).closest(".added").remove();
                 });
             });
+            var createLabelStyleFunction = function(text) {
+                        return new ol.style.Style({
+                            text: new ol.style.Text({
+                                text: text.toString(),
+                                font: '20px Calibri,sans-serif',
+                                fill: new ol.style.Fill({
+                                    color: '#ffff00' // Yellow color
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#ffff00',
+                                    width: 1
+                                }),
+                                offsetX: 0,
+                                offsetY: -20,
+                                textAlign: 'center',
+                                textBaseline: 'bottom',
+                                placement: 'point',
+                                maxAngle: Math.PI / 4
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: 1
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0)'
+                            })
+                        });
+                    };
 
+                    var completeLabelStyleFunction = function(text) {
+                        return new ol.style.Style({
+                            text: new ol.style.Text({
+                                text: text.toString(),
+                                font: '20px Calibri,sans-serif',
+                                fill: new ol.style.Fill({
+                                    color: 'blue'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: 'blue',
+                                    width: 1
+                                }),
+                                offsetX: 0,
+                                offsetY: -20,
+                                textAlign: 'center',
+                                textBaseline: 'bottom',
+                                placement: 'point',
+                                maxAngle: Math.PI / 4
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'blue',
+                                width: 1
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0)'
+                            })
+                        });
+                    };
+
+                    var building_data = @json($building_data); // Assuming this part is correctly handled server-side
+
+                    var buildingGisIdSet = new Set();
+
+                    building_data.forEach(function(building) {
+                        buildingGisIdSet.add(building.gisid);
+                    });
+
+                    function buildingStyle() {
+                        vectorBuildingLayer.setStyle(function(feature) {
+                            var id = feature.get('GIS_ID'); // Extract Id from feature properties
+                            if (buildingGisIdSet.has(id)) {
+                                console.log('GIS_ID', id, 'is present in building data');
+                                return completeLabelStyleFunction(id);
+                            } else {
+                                console.log('GIS_ID', id, 'is not present in building data');
+                                return createLabelStyleFunction(id);
+                            }
+                        });
+                    }
 
             buildingStyle();
 
