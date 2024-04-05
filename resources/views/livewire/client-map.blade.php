@@ -538,7 +538,7 @@
                     var buildingGisIdSet = new Set();
 
                     building_data.forEach(function(building) {
-                        buildingGisIdSet.add(building.point_gisid);
+                        buildingGisIdSet.add(building.gisid);
                     });
 
                     vectorBuildingLayer.setStyle(function(feature) {
