@@ -11,6 +11,11 @@ class BuildingData extends Model
     protected $fillable = [
         'gisid',
         'number_bill',
+        'overhead_tank',
+        'liftroom',
+        'percentage',
+        'headroom',
+        'new_address',
         'number_floor',
         'watet_tax',
         'eb',

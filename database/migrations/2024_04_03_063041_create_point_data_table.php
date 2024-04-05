@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('shop_floor')->nullable();
             $table->string('shop_name')->nullable();
             $table->string('shop_owner_name')->nullable();
+            $table->string('old_door_no')->nullable();
+            $table->string('new_door_no')->nullable();
             $table->string('shop_category')->nullable();
             $table->string('shop_mobile')->nullable();
             $table->string('license')->nullable();

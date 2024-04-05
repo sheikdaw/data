@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('number_bill');
             $table->string('number_floor');
             $table->string('watet_tax');
+            $table->string('new_address');
+            $table->string('liftroom');
+            $table->string('headroom');
+            $table->string('overhead_tank');
+            $table->string('percentage');
             $table->string('eb');
             $table->string('building_name');
             $table->string('building_usage');

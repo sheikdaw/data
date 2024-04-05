@@ -149,6 +149,22 @@
                                 <div id="number_floor_error"></div>
                             </div>
                             <div class="form-group">
+                                <label for="Percentage">Percentage</label>
+                                <select name="percentage" id="percentage" class="form-control">
+                                    <option value=""></option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                    <option value="60">60</option>
+                                    <option value="70">70</option>
+                                    <option value="80">80</option>
+                                    <option value="90">90</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="watet_tax">Watet_tax</label>
                                 <input type="text" name="watet_tax" class="form-control" id="watet_tax">
                                 <div id="watet_tax_error"></div>
@@ -243,6 +259,30 @@
                                     <option value="YES">YES</option>
                                 </select>
                                 <div id="cell_tower_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="overhead_tank">OverHead Tank</label>
+                                <select name="overhead_tank" id="overhead_tank" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                                <div id="overhead_tank_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="headroom">Head Room</label>
+                                <select name="headroom" id="headroom" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                                <div id="headroom_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="liftroom">Head Room</label>
+                                <select name="liftroom" id="liftroom" class="form-control">
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                                <div id="liftroom_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="solar_panel">Solar_panel</label>

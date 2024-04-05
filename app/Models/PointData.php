@@ -18,6 +18,8 @@ class PointData extends Model
         'phone_number',
         'shop_floor',
         'shop_name',
+        'old_door_no',
+        'new_door_no',
         'shop_owner_name',
         'shop_category',
         'shop_mobile',
