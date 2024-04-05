@@ -577,7 +577,7 @@
                                     }),
                                     stroke: new ol.style.Stroke({
                                         color: 'blue',
-                                        width: 1
+                                        width: 3
                                     }),
                                     offsetX: 0,
                                     offsetY: -20,
