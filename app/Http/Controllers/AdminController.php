@@ -377,18 +377,20 @@ class AdminController extends Controller
 
     public function addFeature(Request $request)
     {
+        // Read the GeoJSON file and decode it
+        $polygonData = json_decode(file_get_contents(public_path('kovai/building.json')), true);
+        $pointData = json_decode(file_get_contents(public_path('kovai/test.json')), true);
+
+        // Assuming 'features' is an existing array in your JSON data
+        $polygonFeatures = $polygonData['features'];
+        $pointFeatures = $pointData['features'];
+
         if ($request->type == "Polygon") {
-            // Read the GeoJSON file and decode it
-            $data = json_decode(file_get_contents(public_path('kovai/building.json')), true);
-
-            // Assuming 'features' is an existing array in your JSON data
-            $features = $data['features'];
-
             // Corrected coordinates structure for Polygon
             $coordinates = $request->input('coordinates');
 
             // Get the last feature ID and increment it by 1 for GIS_ID
-            $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['OBJECTID'] : 0;
+            $lastFeatureId = count($polygonFeatures) > 0 ? $polygonFeatures[count($polygonFeatures) - 1]['properties']['OBJECTID'] : 0;
             $gisId = $lastFeatureId + 1;
 
             // Add all the fields from the provided JSON data
@@ -401,29 +403,13 @@ class AdminController extends Controller
                 "Road_ID" => $lastFeatureId + 1,
                 "Road_Name" => "ANNA STREET",
                 "GIS_ID" => $lastFeatureId + 1,
-                "Building_T" => "Independent",
-                "Building_U" => "Residential",
-                "Door_Old_N" => "242 & 243",
-                "Door_New_N" => "148",
-                "MIS_Max_Fl" => "0",
-                "Survey_Max" => "2",
-                "MIS_Total_" => "0.00000000000e+000",
-                "Drone_Area" => "7.84094889000e+002",
-                "Variation_" => "0.00000000000e+000",
-                "Shape_Leng" => "1.79893216299e-004",
-                "Shape_Area" => "2.00812108491e-009",
-                "MIS_Usage" => "New",
-                "Variation1" => "New",
-                "Variatio_1" => "NEW ASSESSMENT",
-                "SGT_Remark" => "Integrated",
-                "AREA_IN_SQ" => "2.61364963329e+002",
-                "Plot_No" => ""
+                // Add other properties here
             ];
 
             // Prepare the new feature
             $newFeature = [
                 "type" => "Feature",
-                "id" => count($features) + 1, // Assigning an ID based on the current number of features
+                "id" => count($polygonFeatures) + 1, // Assigning an ID based on the current number of features
                 "geometry" => [
                     "type" => "Polygon",
                     "coordinates" => $coordinates // Use the provided coordinates
@@ -432,33 +418,23 @@ class AdminController extends Controller
             ];
 
             // Add the new feature to the existing features array
-            $features[] = $newFeature;
+            $polygonFeatures[] = $newFeature;
 
             // Update the 'features' array in the JSON data
-            $data['features'] = $features;
+            $polygonData['features'] = $polygonFeatures;
 
             // Write the updated JSON data back to the file
-            file_put_contents(public_path('kovai/building.json'), json_encode($data, JSON_PRETTY_PRINT));
+            file_put_contents(public_path('kovai/building.json'), json_encode($polygonData, JSON_PRETTY_PRINT));
 
-            return response()->json(['message' => 'Feature added successfully']);
+            return response()->json(['message' => 'Polygon feature added successfully']);
         }
 
-
-
-        //point
+        // Point
         if ($request->type == "Point") {
-            $data = json_decode(file_get_contents(public_path('kovai/test.json')), true);
-
-            // Assuming 'features' is an existing array in your JSON data
-            $features = $data['features'];
-
-            // Primary GIS ID
-            $primaryGisId = $request->input('primary_gis_id');
-
             // Prepare the new feature
             $newFeature = [
                 "type" => "Feature",
-                "id" => count($features), // Assigning an ID based on the current number of features
+                "id" => count($pointFeatures) + 1, // Assigning an ID based on the current number of features
                 "geometry" => [
                     "type" => "Point",
                     "coordinates" => [
@@ -467,24 +443,26 @@ class AdminController extends Controller
                     ]
                 ],
                 "properties" => [
-                    "FID" => count($features), // Using the same ID as 'id' for simplicity
+                    "FID" => count($pointFeatures), // Using the same ID as 'id' for simplicity
                     "Id" => 0,
-                    "GIS_ID" => count($features) + 1
+                    "GIS_ID" => count($pointFeatures) + 1
+                    // Add other properties here
                 ]
             ];
 
             // Add the new feature to the existing features array
-            $features[] = $newFeature;
+            $pointFeatures[] = $newFeature;
 
             // Update the 'features' array in the JSON data
-            $data['features'] = $features;
+            $pointData['features'] = $pointFeatures;
 
             // Write the updated JSON data back to the file
-            file_put_contents(public_path('kovai/test.json'), json_encode($data, JSON_PRETTY_PRINT));
+            file_put_contents(public_path('kovai/test.json'), json_encode($pointData, JSON_PRETTY_PRINT));
 
-            return response()->json(['message' => 'Feature added successfully']);
+            return response()->json(['message' => 'Point feature added successfully']);
         }
     }
+
 
 
     public function deleteLastFeature($value)
