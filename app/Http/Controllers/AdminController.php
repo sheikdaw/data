@@ -398,6 +398,7 @@ class AdminController extends Controller
             $properties = [
                 "OBJECTID" => $lastFeatureId + 1,
                 "Corporatio" => "Coimbatore",
+                "GIS_ID" => $gisId
                 // Add other properties as needed
             ];
 

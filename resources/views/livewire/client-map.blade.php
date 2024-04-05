@@ -818,6 +818,7 @@
                                                 // Handle success response
                                                 // Refresh the map and update JSON data after point addition
                                                 refreshMapAndData("Polygon");
+                                                refreshMapAndData("Point");
                                             },
                                             error: function(xhr, status, error) {
                                                 console.error(error);
