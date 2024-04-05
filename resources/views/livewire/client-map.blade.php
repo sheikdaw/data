@@ -349,8 +349,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="pointgis" name="point_gisid"
-                                    readonly>
+                                <input type="text" name="point_gisid" id="point_gisid" class="form-control" readonly />
                                 <div id="pointgis_error"></div>
                             </div>
                             <div class="form-group">
