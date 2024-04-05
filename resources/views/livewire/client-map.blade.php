@@ -482,7 +482,7 @@
                                 text: text.toString(), // Convert Id to string
                                 font: '20px Calibri,sans-serif',
                                 fill: new ol.style.Fill({
-                                    color: '##ffff00'
+                                    color: '#ffff00' // Changed to yellow color
                                 }),
                                 stroke: new ol.style.Stroke({
                                     color: '#ffff00',
@@ -504,16 +504,18 @@
                             })
                         });
                     };
+
+                    // Function to create complete label style with blue text and blue border
                     var completeLabelStyleFunction = function(text) {
                         return new ol.style.Style({
                             text: new ol.style.Text({
                                 text: text.toString(), // Convert Id to string
                                 font: '20px Calibri,sans-serif',
                                 fill: new ol.style.Fill({
-                                    color: '##ffff00'
+                                    color: 'blue'
                                 }),
                                 stroke: new ol.style.Stroke({
-                                    color: '#ffff00',
+                                    color: 'blue',
                                     width: 1
                                 }),
                                 offsetX: 0,
@@ -533,12 +535,24 @@
                         });
                     };
 
+                    var building_data = @json($building_data); // Assuming this part is correctly handled server-side
 
-                    // // Apply the style function to the vector building layer
-                    // vectorBuildingLayer.setStyle(function(feature) {
-                    //     var id = feature.get('GIS_ID'); // Extract Id from feature properties
-                    //     return createLabelStyleFunction(id);
-                    // });
+                    var buildingGisIdSet = new Set();
+
+                    building_data.forEach(function(survey) {
+                        buildingGisIdSet.add(survey.point_gisid);
+                    });
+
+                    // Apply the style function to the vector building layer
+                    vectorBuildingLayer.setStyle(function(feature) {
+                        var id = feature.get('GIS_ID'); // Extract Id from feature properties
+                        if (buildingGisIdSet.has(id)) { // Fixed the issue here
+                            return completeLabelStyleFunction(id);
+                        } else {
+                            return createLabelStyleFunction(id);
+                        }
+                    });
+
                     var markerLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                         style: new ol.style.Style({
@@ -575,34 +589,11 @@
                         }
                     });
                     map.addOverlay(popup);
-
-                    var building_data = @json($building_data);
-
-                    var gisIdSet = new Set();
-
-                    building_data.forEach(function(survey) {
-                        gisIdSet.add(survey.gisid);
-                    });
-
-
-                    buildingfeatures.forEach(function(feature) {
-                        var properties = feature.getProperties();
-                        if (gisIdSet.has(properties['GIS_ID'])) {
-                            return completeLabelStyleFunction(id);
-                        } else {
-                            return createLabelStyleFunction(id);
-                        }
-                    });
-
                     var surveyed = @json($surveyed);
-
                     var gisIdSet = new Set();
-
                     surveyed.forEach(function(survey) {
                         gisIdSet.add(survey.gisid);
                     });
-
-
                     features.forEach(function(feature) {
                         var properties = feature.getProperties();
                         if (gisIdSet.has(properties['GIS_ID'])) {
@@ -689,7 +680,8 @@
                                                 selectedBuilding
                                                 .water_connection;
                                             document.getElementById('phone').value = selectedBuilding.phone;
-                                            document.getElementById('building_img').setAttribute('src', selectedBuilding.image);
+                                            document.getElementById('building_img').setAttribute('src',
+                                                selectedBuilding.image);
 
                                         }
                                     });
@@ -1031,7 +1023,8 @@
                             error: function(xhr, status, error) {
                                 console.error(xhr.responseText);
                                 alert(
-                                    'An error occurred while processing your request. Please try again.');
+                                    'An error occurred while processing your request. Please try again.'
+                                    );
                                 if (xhr.responseJSON && xhr.responseJSON.errors) {
                                     $.each(xhr.responseJSON.errors, function(key, value) {
                                         $('#' + key).addClass('is-invalid');
@@ -1072,9 +1065,9 @@
                                 alert(xhr.responseJSON.message);
                                 $.each(xhr.responseJSON.errors, function(key, value) {
                                     $('#' + key).addClass(
-                                    'is-invalid'); // Add invalid class to input field
+                                        'is-invalid'); // Add invalid class to input field
                                     $('#' + key + '_error').text(value[
-                                    0]); // Display the error message next to the field
+                                        0]); // Display the error message next to the field
                                     console.log('#' + key + '_error');
                                 });
                             }
