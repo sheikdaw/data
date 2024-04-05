@@ -388,7 +388,7 @@ class AdminController extends Controller
             $coordinates = $request->input('coordinates');
 
             // Get the last feature ID and increment it by 1 for GIS_ID
-            $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['GIS_ID'] : 0;
+            $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['OBJECTID'] : 0;
             $gisId = $lastFeatureId + 1;
 
             // Add all the fields from the provided JSON data
@@ -440,10 +440,6 @@ class AdminController extends Controller
             // Write the updated JSON data back to the file
             file_put_contents(public_path('kovai/building.json'), json_encode($data, JSON_PRETTY_PRINT));
 
-
-            ///
-
-
             return response()->json(['message' => 'Feature added successfully']);
         }
 
@@ -456,8 +452,8 @@ class AdminController extends Controller
             // Assuming 'features' is an existing array in your JSON data
             $features = $data['features'];
 
-            // // Primary GIS ID
-            // $primaryGisId = $request->input('primary_gis_id');
+            // Primary GIS ID
+            $primaryGisId = $request->input('primary_gis_id');
 
             // Prepare the new feature
             $newFeature = [
