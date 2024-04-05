@@ -370,6 +370,16 @@
                                 <div id="floor_error"></div>
                             </div>
                             <div class="form-group">
+                                <label for="old_door_no"> Old_door_no</label>
+                                <input type="text" name="old_door_no" class="form-control" id="old_door_no">
+                                <div id="old_door_no_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="new_door_no"> New_door_no</label>
+                                <input type="text" name="new_door_no" class="form-control" id="new_door_no">
+                                <div id="new_door_no_error"></div>
+                            </div>
+                            <div class="form-group">
                                 <label for="bill_usage">Bill_usage</label>
                                 <select name="bill_usage" id="bill_usage" class="form-control">
                                     <option value="Residential">Residential</option>
