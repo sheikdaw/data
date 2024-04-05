@@ -87,7 +87,7 @@
             var data = {};
 
             inputs.each(function() {
-                var id = $(this).attr('id');
+                var id = $(this).attr('name');
                 var value = $(this).val();
                 data[id] = value;
             });
