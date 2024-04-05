@@ -541,20 +541,18 @@
                         buildingGisIdSet.add(building.gisid);
                     });
 
-                    function buildingStyle(){
+                    function buildingStyle() {
                         vectorBuildingLayer.setStyle(function(feature) {
-                        var id = feature.get('GIS_ID'); // Extract Id from feature properties
-                        if (buildingGisIdSet.has(id)) {
-                            console.log('GIS_ID', id, 'is present in building data');
-                            return completeLabelStyleFunction(id);
-                        } else {
-                            console.log('GIS_ID', id, 'is not present in building data');
-                            return createLabelStyleFunction(id);
-                        }
-                    });
+                            var id = feature.get('GIS_ID'); // Extract Id from feature properties
+                            if (buildingGisIdSet.has(id)) {
+                                console.log('GIS_ID', id, 'is present in building data');
+                                return completeLabelStyleFunction(id);
+                            } else {
+                                console.log('GIS_ID', id, 'is not present in building data');
+                                return createLabelStyleFunction(id);
+                            }
+                        });
                     }
-
-                   buildingStyle();
 
 
                     var markerLayer = new ol.layer.Vector({
@@ -1005,40 +1003,38 @@
 
             //ajax for building data
             $(document).ready(function() {
-                $(document).ready(function() {
-                    $('#buildingForm').submit(function(e) {
-                        e.preventDefault();
-                        $('.error-message').text('');
-                        $('input').removeClass('is-invalid');
+                $('#buildingForm').submit(function(e) {
+                    e.preventDefault();
+                    $('.error-message').text('');
+                    $('input').removeClass('is-invalid');
 
-                        var formData = new FormData(this);
+                    var formData = new FormData(this);
 
-                        $.ajax({
-                            type: 'POST',
-                            url: '{{ route('client.buildingdata-upload') }}',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                if (response.success) {
-                                    alert('Data saved successfully!');
-                                    buildingStyle();
-                                    // You can close the modal or do any other action upon success
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(xhr.responseText);
-                                alert(
-                                    'An error occurred while processing your request. Please try again.'
-                                );
-                                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                                    $.each(xhr.responseJSON.errors, function(key, value) {
-                                        $('#' + key).addClass('is-invalid');
-                                        $('#' + key + '_error').text(value[0]);
-                                    });
-                                }
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('client.buildingdata-upload') }}',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Data saved successfully!');
+                                buildingStyle();
+                                // You can close the modal or do any other action upon success
                             }
-                        });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert(
+                                'An error occurred while processing your request. Please try again.'
+                            );
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                $.each(xhr.responseJSON.errors, function(key, value) {
+                                    $('#' + key).addClass('is-invalid');
+                                    $('#' + key + '_error').text(value[0]);
+                                });
+                            }
+                        }
                     });
                 });
 
@@ -1081,6 +1077,7 @@
                     });
                 });
             });
+            buildingStyle();
         </script>
     @endpush
 </div>
