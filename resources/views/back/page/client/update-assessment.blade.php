@@ -34,7 +34,7 @@
             e.preventDefault(); // prevent the form from submitting normally
             $.ajax({
                 type: "POST",
-                url: "{{ route('point-gis-edit') }}",
+                url: "{{ route('client.point-gis-edit') }}",
                 data: $(this).serialize(), // Serialize the form data
                 success: function(response) {
                     $('#data').html(response);
