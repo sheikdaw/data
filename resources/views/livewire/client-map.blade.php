@@ -362,9 +362,7 @@
 
         <script type="text/javascript">
             var clickedStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 0, 0.6)' // Red color with some opacity
-                }),
+
                 stroke: new ol.style.Stroke({
                     color: 'rgba(255, 0, 0, 1)', // Red color for outline
                     width: 2 // Outline width
@@ -378,9 +376,7 @@
             });
 
             var completeStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 48, 143, 0.6)' // Blue color with some opacity
-                }),
+
                 stroke: new ol.style.Stroke({
                     color: 'rgba(0, 48, 143, 1)', // Green color for outline
                     width: 2 // Outline width
