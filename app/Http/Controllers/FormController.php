@@ -389,7 +389,7 @@ class FormController extends Controller
             'solar_panel' => 'required',
             'water_connection' => 'required',
             'phone' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Example validation for image upload
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif', // Example validation for image upload
         ]);
 
         $buildingData = BuildingData::where('gisid', $validatedData['gisid'])->first();
