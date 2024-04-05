@@ -479,7 +479,7 @@
                     var createLabelStyleFunction = function(text) {
                         return new ol.style.Style({
                             text: new ol.style.Text({
-                                text: "text.toString()", // Convert Id to string
+                                text: text.toString(), // Convert Id to string
                                 font: '20px Calibri,sans-serif',
                                 fill: new ol.style.Fill({
                                     color: '#ffff00' // Changed to yellow color
@@ -547,6 +547,7 @@
                     vectorBuildingLayer.setStyle(function(feature) {
                         var id = feature.get('GIS_ID'); // Extract Id from feature properties
                         if (buildingGisIdSet.has(id)) { // Fixed the issue here
+                            alert('hi');
                             return completeLabelStyleFunction(id);
                         } else {
                             return createLabelStyleFunction(id);
