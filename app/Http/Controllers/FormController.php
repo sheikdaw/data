@@ -431,7 +431,6 @@ class FormController extends Controller
 
     public function pointdataUpload(Request $request)
     {
-
         // Validate the incoming request data
         $validatedData = $request->validate([
             'assessment' => 'required',
@@ -445,11 +444,30 @@ class FormController extends Controller
             'old_door_no' => 'required',
             'new_door_no' => 'required',
         ]);
-        if ($validatedData['bill_usage'] != "Residential") {
-            $validatedData = $request->validate([
 
+        // Retrieve the associated building data
+        $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
+
+        // Check if building data is found
+        if (!$buildingData) {
+            return response()->json(['success' => false, 'message' => 'Building data not found'], 404);
+        }
+
+        // Check if bill usage matches building usage
+        if ($validatedData['bill_usage'] != $buildingData->building_usage) {
+            return response()->json(['success' => false, 'message' => 'Usage Variation'], 404);
+        }
+
+        // Check if floor exceeds building floor
+        if ($validatedData['floor'] > $buildingData->number_floor) {
+            return response()->json(['success' => false, 'message' => 'Floor is greater than building floor'], 404);
+        }
+
+        // Check if bill usage is not "Residential"
+        if ($validatedData['bill_usage'] != "Residential") {
+            // Validate shop related data
+            $request->validate([
                 'shop_floor.*' => 'required',
-                'shop_name.*' => 'required',
                 'shop_name.*' => 'required',
                 'shop_owner_name.*' => 'required',
                 'shop_category.*' => 'required',
@@ -460,89 +478,57 @@ class FormController extends Controller
                 'number_of_employee.*' => 'required',
                 'trade_income.*' => 'required',
                 'establishment_remarks.*' => 'required',
-            ]);}
+            ]);
 
-        // Retrieve the associated building data
-        $buildingData = BuildingData::where('gisid', $validatedData['point_gisid'])->first();
-
-        // Check if building data is found
-        if($validatedData['bill_usage']   != $buildingData->building_usage)
-            {
-              return response()->json(['success' => false, 'message' => 'Usage Variaton'], 404);
-            }
-            if($validatedData['floor'] > $buildingData->number_floor)
-            {
-              return response()->json(['success' => false, 'message' => 'Floor is greater than building floor'], 404);
-            }
-        if ($buildingData) {
-            // Check if bill usage is not "Residential"
-            if ($validatedData['bill_usage'] != "Residential") {
-
-                foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
-                    // Check if shop floor exceeds the total number of floors in the building
-                    if ($shopFloor > $buildingData->number_floor) {
-                        return response()->json(['success' => false, 'message' => 'Shop floor number for shop ' . ($index) . ' cannot be greater than the total number of floors in the building'], 404);
-                    }
-
+            // Iterate over the arrays to create multiple PointData instances
+            foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
+                // Check if shop floor exceeds the total number of floors in the building
+                if ($shopFloor > $buildingData->number_floor) {
+                    return response()->json(['success' => false, 'message' => 'Shop floor number for shop ' . ($index + 1) . ' cannot be greater than the total number of floors in the building'], 404);
                 }
-                // Iterate over the arrays to create multiple PointData instances
-                foreach ($validatedData['shop_floor'] as $index => $shopFloor) {
-                    // Create a new PointData instance with the current array values
-                    $pointData = [
-                    'point_gisid' => $validatedData['point_gisid'],
-                        'assessment' => $validatedData['assessment'],
-                        'old_assessment' => $validatedData['old_assessment'],
-                        'floor' => $validatedData['floor'],
-                        'bill_usage' => $validatedData['bill_usage'],
-                        'aadhar_no' => $validatedData['aadhar_no'],
-                        'ration_no' => $validatedData['ration_no'],
-                        'phone_number' => $validatedData['phone_number'],
-                        'shop_floor' => $validatedData['shop_floor'][$index],
-                        'shop_name' => $validatedData['shop_name'][$index],
-                        'shop_owner_name' => $validatedData['shop_owner_name'][$index],
-                        'shop_category' => $validatedData['shop_category'][$index],
-                        'shop_mobile' => $validatedData['shop_mobile'][$index],
-                        'license' => $validatedData['license'][$index],
-                        'professional_tax' => $validatedData['professional_tax'][$index],
-                        'gst' => $validatedData['gst'][$index],
-                        'number_of_employee' => $validatedData['number_of_employee'][$index],
-                        'trade_income' => $validatedData['trade_income'][$index],
-                        'establishment_remarks' => $validatedData['establishment_remarks'][$index],
-                        'building_data_id' => $buildingData->id,
-                        // Add other fields here
-                    ];
 
-                    // Save the PointData instance to the database
-                    PointData::create($pointData);
-                }
+                // Create a new PointData instance with the current array values
+                $pointData = array_merge($validatedData, [
+                    'shop_floor' => $shopFloor,
+                    'shop_name' => $validatedData['shop_name'][$index],
+                    'shop_owner_name' => $validatedData['shop_owner_name'][$index],
+                    'shop_category' => $validatedData['shop_category'][$index],
+                    'shop_mobile' => $validatedData['shop_mobile'][$index],
+                    'license' => $validatedData['license'][$index],
+                    'professional_tax' => $validatedData['professional_tax'][$index],
+                    'gst' => $validatedData['gst'][$index],
+                    'number_of_employee' => $validatedData['number_of_employee'][$index],
+                    'trade_income' => $validatedData['trade_income'][$index],
+                    'establishment_remarks' => $validatedData['establishment_remarks'][$index],
+                    'building_data_id' => $buildingData->id,
+                ]);
+
+                // Save the PointData instance to the database
+                PointData::create($pointData);
             }
-            else if ($validatedData['bill_usage'] == "Residential"){
+        } else {
+            // For Residential usage, create a single PointData instance
+            $pointData = [
+                'point_gisid' => $validatedData['point_gisid'],
+                'assessment' => $validatedData['assessment'],
+                'old_assessment' => $validatedData['old_assessment'],
+                'floor' => $validatedData['floor'],
+                'bill_usage' => $validatedData['bill_usage'],
+                'aadhar_no' => $validatedData['aadhar_no'],
+                'ration_no' => $validatedData['ration_no'],
+                'phone_number' => $validatedData['phone_number'],
+                'building_data_id' => $buildingData->id,
+                // Add other fields here
+            ];
 
-                    $pointData = [
-                        'point_gisid' => $validatedData['point_gisid'],
-                        'assessment' => $validatedData['assessment'],
-                        'old_assessment' => $validatedData['old_assessment'],
-                        'floor' => $validatedData['floor'],
-                        'bill_usage' => $validatedData['bill_usage'],
-                        'aadhar_no' => $validatedData['aadhar_no'],
-                        'ration_no' => $validatedData['ration_no'],
-                        'phone_number' => $validatedData['phone_number'],
-                        'building_data_id' => $buildingData->id,
-                        // Add other fields here
-                    ];
-
-                    // Save the PointData instance to the database
-                    PointData::create($pointData);
-
-            }
-
-            // Return a success response
-            return response()->json(['success' => true, 'message' => 'Point data created successfully'], 201);
+            // Save the PointData instance to the database
+            PointData::create($pointData);
         }
 
-        // Return a failure response if building data is not found
-        return response()->json(['success' => false, 'message' => 'Building data not found'], 404);
+        // Return a success response
+        return response()->json(['success' => true, 'message' => 'Point data created successfully'], 201);
     }
+
 
     public function editPostGis(Request $request){
         $id = $request->point_gis;
