@@ -387,9 +387,6 @@ class AdminController extends Controller
             // Corrected coordinates structure for Polygon
             $coordinates = $request->input('coordinates');
 
-            // Calculate the centroid of the polygon
-            $centroid = calculateCentroid($coordinates);
-
             // Get the last feature ID and increment it by 1 for GIS_ID
             $lastFeatureId = count($features) > 0 ? $features[count($features) - 1]['properties']['GIS_ID'] : 0;
             $gisId = $lastFeatureId + 1;
@@ -398,8 +395,29 @@ class AdminController extends Controller
             $properties = [
                 "OBJECTID" => $lastFeatureId + 1,
                 "Corporatio" => "Coimbatore",
-                "GIS_ID" => $gisId
-                // Add other properties as needed
+                "Region_Nam" => "Central",
+                "Zone" => "Zone-B",
+                "Ward_Numbe" => "68",
+                "Road_ID" => $lastFeatureId + 1,
+                "Road_Name" => "ANNA STREET",
+                "GIS_ID" => $lastFeatureId + 1,
+                "Building_T" => "Independent",
+                "Building_U" => "Residential",
+                "Door_Old_N" => "242 & 243",
+                "Door_New_N" => "148",
+                "MIS_Max_Fl" => "0",
+                "Survey_Max" => "2",
+                "MIS_Total_" => "0.00000000000e+000",
+                "Drone_Area" => "7.84094889000e+002",
+                "Variation_" => "0.00000000000e+000",
+                "Shape_Leng" => "1.79893216299e-004",
+                "Shape_Area" => "2.00812108491e-009",
+                "MIS_Usage" => "New",
+                "Variation1" => "New",
+                "Variatio_1" => "NEW ASSESSMENT",
+                "SGT_Remark" => "Integrated",
+                "AREA_IN_SQ" => "2.61364963329e+002",
+                "Plot_No" => ""
             ];
 
             // Prepare the new feature
@@ -422,52 +440,11 @@ class AdminController extends Controller
             // Write the updated JSON data back to the file
             file_put_contents(public_path('kovai/building.json'), json_encode($data, JSON_PRETTY_PRINT));
 
-            // Add the point feature
-            $pointdata = json_decode(file_get_contents(public_path('kovai/test.json')), true);
-            $pointFeatures = $pointdata['features'];
 
-            // Prepare the new point feature
-            $pointFeature = [
-                "type" => "Feature",
-                "id" => count($pointFeatures) + 1,
-                "geometry" => [
-                    "type" => "Point",
-                    "coordinates" => $centroid // Use the calculated centroid
-                ],
-                "properties" => [
-                    "FID" => count($pointFeatures) + 1, // Assigning an ID based on the current number of features
-                    "Id" => 0,
-                    "GIS_ID" => $gisId // Use the same GIS_ID as the polygon feature
-                ]
-            ];
+            ///
 
-            // Add the new point feature to the existing features array
-            $pointFeatures[] = $pointFeature;
-
-            // Update the 'features' array in the JSON data
-            $pointdata['features'] = $pointFeatures;
-
-            // Write the updated JSON data back to the file
-            file_put_contents(public_path('kovai/test.json'), json_encode($pointdata, JSON_PRETTY_PRINT));
 
             return response()->json(['message' => 'Feature added successfully']);
-        }
-
-        // Function to calculate centroid of a polygon
-        function calculateCentroid($coordinates) {
-            $totalPoints = count($coordinates[0]);
-            $x = 0;
-            $y = 0;
-
-            foreach ($coordinates[0] as $point) {
-                $x += $point[0];
-                $y += $point[1];
-            }
-
-            $centroidX = $x / $totalPoints;
-            $centroidY = $y / $totalPoints;
-
-            return [$centroidX, $centroidY];
         }
 
 
@@ -479,8 +456,8 @@ class AdminController extends Controller
             // Assuming 'features' is an existing array in your JSON data
             $features = $data['features'];
 
-            // Primary GIS ID
-            $primaryGisId = $request->input('primary_gis_id');
+            // // Primary GIS ID
+            // $primaryGisId = $request->input('primary_gis_id');
 
             // Prepare the new feature
             $newFeature = [
