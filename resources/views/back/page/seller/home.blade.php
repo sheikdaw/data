@@ -21,6 +21,15 @@
         </div>
     </div>
 </div>
+<div>
+    @foreach ($misdata as $mis)
+        @foreach ($point_data as $point)
+        @if ($mis->assessment == $point->assessment)
+                <h2>Point</h2>
+        @endif
+        @endforeach
+    @endforeach
+</div>
 
 
 <script>
