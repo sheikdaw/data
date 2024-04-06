@@ -6,18 +6,25 @@
     height: 600px;
 }</style>
 <h2>Usage Variation</h2>
-<div class="card">
-    <h3 class="card-head">Resisential to Commercial</h3>
-    <div class="card-body">
-        <p id="rc"></p>
+<div class="card p-3">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
+            <p>Resisential to Commercial</p>
+            <div class="card shadow p-5">
+                <p id="rc"></p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
+            <p>Commercial to Resisential</p>
+            <div class="card shadow p-5">
+                <p id="cr"></p>
+            </div>
+        </div>
     </div>
 </div>
-<div class="card">
-    <h3 class="card-head">Commercial to Resisential</h3>
-    <div class="card-body">
-        <p id="cr"></p>
-    </div>
-</div>
+
+
+
 <div class="card p-3">
     <div class="row">
         <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
