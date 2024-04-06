@@ -778,8 +778,9 @@
                                                 document.getElementById('building_img')
                                                     .setAttribute('src',
                                                         `/public${selectedBuilding.image}`);
-
-
+                                                        document.getElementById('image')
+                                                    .setAttribute('src',
+                                                        `/public${selectedBuilding.image}`);
                                             }
                                         });
 
