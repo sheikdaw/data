@@ -5,6 +5,19 @@
     width: 100%;
     height: 600px;
 }</style>
+<h2>Usage Variation</h2>
+<div class="card">
+    <h3 class="card-head">Resisential to Commercial</h3>
+    <div class="card-body">
+        <p id="rc"></p>
+    </div>
+</div>
+<div class="card">
+    <h3 class="card-head">Commercial to Resisential</h3>
+    <div class="card-body">
+        <p id="cr"></p>
+    </div>
+</div>
 <div class="card p-3">
     <div class="row">
         <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
@@ -30,7 +43,9 @@
 
    console.log(@json($crcount));
    console.log(@json($rccount));
-    var barChartCtx = document.getElementById('barChart').getContext('2d');
+   $('#rc').val(@json($rccount));
+    $("#cr").val(@json($crcount));
+   var barChartCtx = document.getElementById('barChart').getContext('2d');
     var barLabels = @json($labels);
     var barValues = @json($values);
 
