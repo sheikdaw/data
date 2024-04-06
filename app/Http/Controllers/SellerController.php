@@ -49,7 +49,7 @@ class SellerController extends Controller
 
         $comlabels = array_column($complete, 'road_name');
         $comvalues = array_column($complete, 'count');
- // Variation
+         // Variation
 // Fetch variations count from table1
 $table1Variations = DB::table('mis')
 ->select('assessment', DB::raw('COUNT(*) as count'))
@@ -73,13 +73,8 @@ $table2Variations = DB::table('point_data')
             }
         }
     }
-
-    return view('back.page.seller.home', compact('labels', 'values', 'comLabels', 'comValues', 'totalMisCount', 'totalSurveyCount', 'comparisonResults', 'table1Variations', 'table2Variations')); }
-
-
-
-
-
+  return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount','comparisonResults', 'table1Variations', 'table2Variations'));
+    }
 
     public function loginHandler(Request $request)
     {
