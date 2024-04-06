@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
             <p>Total Count of Records in Mis: {{ $totalMisCount }}</p>
-            <div class="card shadow p-5">               
+            <div class="card shadow p-5">
                 <canvas id="barChart" width="100" height="100"></canvas>
             </div>
         </div>
@@ -18,7 +18,7 @@
     </div>
 </div>
 
-
+@livewire('client-map')
 <script>
     // Bar Chart
     var barChartCtx = document.getElementById('barChart').getContext('2d');
