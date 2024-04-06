@@ -27,7 +27,7 @@
 
 <script>
     // Bar Chart
-//    console.log(@json($point_data));
+
    console.log(@json($crcount));
    console.log(@json($rccount));
     var barChartCtx = document.getElementById('barChart').getContext('2d');
