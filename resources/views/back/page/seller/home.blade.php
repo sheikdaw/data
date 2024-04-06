@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
-            <p>Total Count of Records in Surveyed: {{ $totalSueveyCount }}</p>
+            <p>Total Count of Records in Surveyed: {{ $totalSurveyCount }}</p>
             <div class="card shadow p-5">
                 <canvas id="pieChart" width="50" height="50"></canvas>
             </div>

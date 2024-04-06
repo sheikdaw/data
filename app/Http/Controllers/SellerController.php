@@ -29,29 +29,27 @@ use Illuminate\Pagination\Paginator;
 class SellerController extends Controller
 {
     public function home()
-{
-    $totalMisCount = DB::table('mis')->count();
-    $totalSurveyCount = DB::table('surveyeds')->count();
-    $line = DB::table('mis')
-        ->select('road_name', DB::raw('COUNT(*) as count'))
-        ->groupBy('road_name')
-        ->orderByDesc('count')
-        ->get()
-        ->toArray();
+    {    $totalMisCount = DB::table('mis')->count();
+        $totalSueveyCount = DB::table('surveyeds')->count();
+        $line = DB::table('mis')
+            ->select('road_name', DB::raw('COUNT(*) as count'))
+            ->groupBy('road_name')
+            ->orderByDesc('count')
+            ->get()
+            ->toArray();
 
-    $labels = array_column($line, 'road_name');
-    $values = array_column($line, 'count');
-    $complete = DB::table('surveyeds')
-        ->select('road_name', DB::raw('COUNT(*) as count'))
-        ->groupBy('road_name')
-        ->orderByDesc('count')
-        ->get()
-        ->toArray();
+        $labels = array_column($line, 'road_name');
+        $values = array_column($line, 'count');
+        $complete = DB::table('surveyeds')
+            ->select('road_name', DB::raw('COUNT(*) as count'))
+            ->groupBy('road_name')
+            ->orderByDesc('count')
+            ->get()
+            ->toArray();
 
-    $comLabels = array_column($complete, 'road_name');
-    $comValues = array_column($complete, 'count');
-
-    // Variation
+        $comlabels = array_column($complete, 'road_name');
+        $comvalues = array_column($complete, 'count');
+ // Variation
 // Fetch variations count from table1
 $table1Variations = DB::table('mis')
 ->select('assessment', DB::raw('COUNT(*) as count'))
@@ -76,9 +74,7 @@ $table2Variations = DB::table('point_data')
         }
     }
 
-    return view('back.page.seller.home', compact('labels', 'values', 'comLabels', 'comValues', 'totalMisCount', 'totalSurveyCount', 'comparisonResults', 'table1Variations', 'table2Variations'));
-}
-
+    return view('back.page.seller.home', compact('labels', 'values', 'comLabels', 'comValues', 'totalMisCount', 'totalSurveyCount', 'comparisonResults', 'table1Variations', 'table2Variations')); }
 
 
 
