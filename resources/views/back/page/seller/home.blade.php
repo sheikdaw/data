@@ -88,13 +88,13 @@
     @foreach ($misdata as $mis)
         @foreach ($point_data as $point)
             @if ($mis->assessment == $point->assessment)
-                {{-- @if ($mis->building_usage == "Residential" && $point->bill_usage == "Commercial")
+                @if ($mis->building_usage == "Residential" && $point->bill_usage == "Commercial")
                     <h2>R to c</h2>
                 @elseif ($mis->building_usage == "Commercial" && $point->bill_usage == "Residential")
                     <h2>c to R</h2>
-                @endif --}}
-                <h2>{{$mis->building_usage}}</h2>
-                <h2>{{$point->bill_usage}}</h2>
+                @endif
+                {{-- <h2>{{$mis->building_usage}}</h2>
+                <h2>{{$point->bill_usage}}</h2> --}}
             @endif
         @endforeach
     @endforeach
