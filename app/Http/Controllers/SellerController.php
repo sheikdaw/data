@@ -56,7 +56,7 @@ class SellerController extends Controller
 
             // Group data by assessment for both tables
             $misdata = Mis::all();
-            $point_data = PointData::groupBy('assessment')->get();
+            $point_data = PointData::all();
 
             foreach ($misdata as $mis) {
                 foreach ($point_data as $point) {
