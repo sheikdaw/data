@@ -5,7 +5,7 @@
     width: 100%;
     height: 600px;
 }</style>
-<div class="card p-3">
+{{-- <div class="card p-3">
     <div class="row">
         <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
             <p>Total Count of Records in Mis: {{ $totalMisCount }}</p>
@@ -20,12 +20,20 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <div>
     @foreach ($misdata as $mis)
         @foreach ($point_data as $point)
         @if ($mis->assessment == $point->assessment)
-                <h2>Point</h2>
+            @if ($mis->building_usage == "Residential")
+                @if ($point->building_usage == "Commercial")
+                        <h2>R to c</h2>
+                @endif
+            @elseif ($mis->building_usage == "Commercial")
+            @if ($point->building_usage == "Residential")
+                        <h2>c to R</h2>
+                @endif
+            @endif
         @endif
         @endforeach
     @endforeach
