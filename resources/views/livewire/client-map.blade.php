@@ -141,21 +141,21 @@
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="gisIdInput"  name="gisid" readonly>
+                                <input type="text" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="gisIdInput"  name="gisid" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="number_bill">Number_of_Bill</label>
-                                <input type="text" name="number_bill" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="number_bill">
+                                <input type="text" name="number_bill" class="form-control"  @if (Route::is('seller.*')) readonly @endif  id="number_bill">
                                 <div id="number_bill_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="number_floor">Number_of_Floor</label>
-                                <input type="text" name="number_floor" class="form-control" id="number_floor">
+                                <input type="text" name="number_floor" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="number_floor">
                                 <div id="number_floor_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="Percentage">Percentage</label>
-                                <select name="percentage" id="percentage" class="form-control">
+                                <select name="percentage" id="percentage" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value=""></option>
                                     <option value="10">10</option>
                                     <option value="20">20</option>
@@ -171,22 +171,22 @@
                             </div>
                             <div class="form-group">
                                 <label for="watet_tax">Watet_tax</label>
-                                <input type="text" name="watet_tax" class="form-control" id="watet_tax">
+                                <input type="text" name="watet_tax" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="watet_tax">
                                 <div id="watet_tax_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="eb">Eb_number</label>
-                                <input type="text" name="eb" class="form-control" id="eb">
+                                <input type="text" name="eb" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="eb">
                                 <div id="eb_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="building_name">Building_name</label>
-                                <input type="text" name="building_name" class="form-control" id="building_name">
+                                <input type="text" name="building_name" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="building_name">
                                 <div id="building_name_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="Building_usage">Building_usage</label>
-                                <select name="building_usage" id="building_usage" class="form-control">
+                                <select name="building_usage" id="building_usage" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value=""></option>
                                     <option value="Residential">Residential</option>
                                     <option value="Commercial">Commercial</option>
@@ -196,7 +196,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="construction_type">Construction_type</label>
-                                <select name="construction_type" id="construction_type" class="form-control">
+                                <select name="construction_type" id="construction_type" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value=""></option>
                                     <option value="PERMANENT">PERMANENT</option>
                                     <option value="SEMI-PERMANENT">SEMI-PERMANENT</option>
@@ -205,12 +205,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="road_name">Road_name</label>
-                                <input type="text" name="road_name" class="form-control" id="road_name">
+                                <input type="text" name="road_name" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="road_name">
                                 <div id="road_name_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="new_address_select">New Address</label>
-                                <select name="new_address" id="new_address_select" class="form-control">
+                                <select name="new_address" id="new_address_select" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     @foreach ($road_name as $road)
                                         <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
                                     @endforeach
@@ -220,12 +220,12 @@
 
                             <div class="form-group">
                                 <label for="ugd">UGD</label>
-                                <input type="text" name="ugd" class="form-control" id="ugd">
+                                <input type="text" name="ugd" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="ugd">
                                 <div id="ugd_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="rainwater_harvesting">Rainwater_harvesting</label>
-                                <select name="rainwater_harvesting" id="rainwater_harvesting" class="form-control">
+                                <select name="rainwater_harvesting" id="rainwater_harvesting" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -233,7 +233,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="parking">Parking</label>
-                                <select name="parking" id="parking" class="form-control">
+                                <select name="parking" id="parking" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value=""></option>
                                     <option value="NO">NO</option>
                                     <option value="Basement">Basement</option>
@@ -243,7 +243,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="ramp">Ramp</label>
-                                <select name="ramp" id="ramp" class="form-control">
+                                <select name="ramp" id="ramp" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -251,7 +251,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="hoarding">Hoarding</label>
-                                <select name="hoarding" id="hoarding" class="form-control">
+                                <select name="hoarding" id="hoarding" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -259,7 +259,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="cell_tower">Cell_tower</label>
-                                <select name="cell_tower" id="cell_tower" class="form-control">
+                                <select name="cell_tower" id="cell_tower" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -267,7 +267,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="overhead_tank">OverHead Tank</label>
-                                <select name="overhead_tank" id="overhead_tank" class="form-control">
+                                <select name="overhead_tank" id="overhead_tank" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -275,7 +275,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="headroom">Head Room</label>
-                                <select name="headroom" id="headroom" class="form-control">
+                                <select name="headroom" id="headroom" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -283,7 +283,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="liftroom">Head Room</label>
-                                <select name="liftroom" id="liftroom" class="form-control">
+                                <select name="liftroom" id="liftroom" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -291,7 +291,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="solar_panel">Solar_panel</label>
-                                <select name="solar_panel" id="solar_panel" class="form-control">
+                                <select name="solar_panel" id="solar_panel" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -299,7 +299,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="water_connection">Water_connection</label>
-                                <select name="water_connection" id="water_connection" class="form-control">
+                                <select name="water_connection" id="water_connection" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="Bore">Bore</option>
                                     <option value="OPEN-WELL">OPEN-WELL</option>
@@ -309,7 +309,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="phone">phone_numnber</label>
-                                <select name="phone" id="phone" class="form-control">
+                                <select name="phone" id="phone" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
@@ -317,7 +317,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="value">Picture</label>
-                                <input type="file" name="image" id="image" class="form-control">
+                                <input type="file" name="image" id="image" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                 <div id="image_error" class="text-danger"></div>
                             </div>
                         </div>
@@ -354,39 +354,39 @@
                             </div>
                             <div class="form-group">
                                 <label for="gis">Gis</label>
-                                <input type="text" class="form-control" id="pointgis" name="point_gisid"
+                                <input type="text" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="pointgis" name="point_gisid"
                                     readonly>
                                 <div id="pointgis_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="assessment">Assessment_no</label>
-                                <input type="text" name="assessment" class="form-control" id="assessment">
+                                <input type="text" name="assessment" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="assessment">
                                 <div id="assessment_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="old_assessment">Old Assessment</label>
-                                <input type="text" name="old_assessment" class="form-control"
+                                <input type="text" name="old_assessment" class="form-control"  @if (Route::is('seller.*')) readonly @endif
                                     id="old_assessment">
                                 <div id="old_assessment_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="floor"> Floor</label>
-                                <input type="text" name="floor" class="form-control" id="floor">
+                                <input type="text" name="floor" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="floor">
                                 <div id="floor_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="old_door_no"> Old_door_no</label>
-                                <input type="text" name="old_door_no" class="form-control" id="old_door_no">
+                                <input type="text" name="old_door_no" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="old_door_no">
                                 <div id="old_door_no_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="new_door_no"> New_door_no</label>
-                                <input type="text" name="new_door_no" class="form-control" id="new_door_no">
+                                <input type="text" name="new_door_no" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="new_door_no">
                                 <div id="new_door_no_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="bill_usage">Bill_usage</label>
-                                <select name="bill_usage" id="bill_usage" class="form-control">
+                                <select name="bill_usage" id="bill_usage" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                     <option value="Residential">Residential</option>
                                     <option value="Commercial">Commercial</option>
                                     <option value="Mixed">Mixed</option>
@@ -395,18 +395,18 @@
                             </div>
                             <div class="form-group">
                                 <label for="aadhar_no">Aadhar_no</label>
-                                <input type="text" name="aadhar_no" class="form-control" id="aadhar_no">
+                                <input type="text" name="aadhar_no" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="aadhar_no">
                                 <div id="aadhar_no_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="ration_no">Ration_no</label>
-                                <input type="text" name="ration_no" class="form-control" id="ration_no">
+                                <input type="text" name="ration_no" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="ration_no">
                                 <div id="ration_no_error"></div>
                             </div>
 
                             <div class="form-group">
                                 <label for="phone">phone_numnber</label>
-                                <input type="text" name="phone_number" class="form-control" id="phone">
+                                <input type="text" name="phone_number" class="form-control"  @if (Route::is('seller.*')) readonly @endif id="phone">
                                 <div id="phone_number_error"></div>
                             </div>
                             <div id="append"></div>
@@ -1016,64 +1016,64 @@
                                 <button class="btn btn-sm btn-dark removeEstablishment">Remove Floor</button>
                                         <div class="form-group">
                                             <label for="shop_floor" >Shop Floor</label>
-                                            <input type="text" name="shop_floor[${establishmentadd}]" id="shop_floor" class="form-control" placeholder="Shop Floor">
+                                            <input type="text" name="shop_floor[${establishmentadd}]" id="shop_floor" class="form-control"  @if (Route::is('seller.*')) readonly @endif placeholder="Shop Floor">
                                             <div class="text-danger" id="shop_floor.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="shop_name" >Shop Name</label>
-                                            <input type="text" name="shop_name[${establishmentadd}]" id="shop_name" class="form-control" placeholder="Shop Name">
+                                            <input type="text" name="shop_name[${establishmentadd}]" id="shop_name" class="form-control"  @if (Route::is('seller.*')) readonly @endif placeholder="Shop Name">
                                             <div class="text-danger" id="shop_name.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="shop_owner_name" >Shop Owner Name</label>
-                                            <input type="text" name="shop_owner_name[${establishmentadd}]" id="shop_owner_name" class="form-control" placeholder="Shop Owner Name">
+                                            <input type="text" name="shop_owner_name[${establishmentadd}]" id="shop_owner_name" class="form-control"  @if (Route::is('seller.*')) readonly @endif placeholder="Shop Owner Name">
                                             <div class="text-danger" id="shop_owner_name.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="shop_category" >Shop Category</label>
-                                            <select name="shop_category[${establishmentadd}]" id="shop_category" class="form-control">
+                                            <select name="shop_category[${establishmentadd}]" id="shop_category" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                                 <option value="1">1</option>
                                             </select>
                                             <div class="text-danger" id="shop_category.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="shop_mobile" >Shop Mobile</label>
-                                            <input type="text" name="shop_mobile[${establishmentadd}]" id="shop_mobile" class="form-control" placeholder="Shop Mobile">
+                                            <input type="text" name="shop_mobile[${establishmentadd}]" id="shop_mobile" class="form-control"  @if (Route::is('seller.*')) readonly @endif placeholder="Shop Mobile">
                                             <div class="text-danger" id="shop_mobile.${establishmentadd}_error"></div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="license" >License</label>
-                                            <select name="license[${establishmentadd}]" id="license" class="form-control">
+                                            <select name="license[${establishmentadd}]" id="license" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                                 <option value="1">1</option>
                                             </select>
                                             <div class="text-danger" id="license.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="professional_tax" >Professional Tax</label>
-                                            <select name="professional_tax[${establishmentadd}]" id="professional_tax" class="form-control">
+                                            <select name="professional_tax[${establishmentadd}]" id="professional_tax" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
                                                 <option value="1">1</option>
                                             </select>
                                             <div class="text-danger" id="professional_tax.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="gst" >GST Number</label>
-                                            <input type="text" name="gst[${establishmentadd}]" id="gst" class="form-control" placeholder="GST">
+                                            <input type="text" name="gst[${establishmentadd}]" id="gst" class="form-control"  @if (Route::is('seller.*')) readonly @endif placeholder="GST">
                                             <div class="text-danger" id="gst.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="number_of_emplyee" >Number of Employee</label>
-                                            <input type="text" name="number_of_employee[${establishmentadd}]" id="number_of_employee" class="form-control" placeholder="Number of Employee">
+                                            <input type="text" name="number_of_employee[${establishmentadd}]" id="number_of_employee" class="form-control"  @if (Route::is('seller.*')) readonly @endif placeholder="Number of Employee">
                                             <div class="text-danger" id="number_of_employee.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="trade_income" >Trade Income</label>
-                                            <input type="text" name="trade_income[${establishmentadd}]" id="trade_income" class="form-control" placeholder="Trade Income">
+                                            <input type="text" name="trade_income[${establishmentadd}]" id="trade_income" class="form-control"  @if (Route::is('seller.*')) readonly @endif placeholder="Trade Income">
                                             <div class="text-danger" id="trade_income.${establishmentadd}_error"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="establishment_remarks" >Establishment Remarks</label>
-                                            <input type="text" name="establishment_remarks[${establishmentadd}]" id="establishment_remarks" class="form-control" placeholder="Establishment Remarks">
+                                            <input type="text" name="establishment_remarks[${establishmentadd}]" id="establishment_remarks" class="form-control"  @if (Route::is('seller.*')) readonly @endif placeholder="Establishment Remarks">
                                             <div class="text-danger" id="establishment_remarks.${establishmentadd}_error"></div>
                                         </div>
 
