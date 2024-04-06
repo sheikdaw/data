@@ -671,7 +671,7 @@
                         surveyed.forEach(function(survey) {
                             gisIdSet.add(survey.gisid);
                         });
-                        console.log(gisIdSet);
+                        console.log(surveyed);
                         features.forEach(function(pointfeature) {
                             var properties = pointfeature.getProperties();
 
