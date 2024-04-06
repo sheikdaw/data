@@ -43,8 +43,8 @@
 
    console.log(@json($crcount));
    console.log(@json($rccount));
-   $('#rc').val(@json($rccount));
-    $("#cr").val(@json($crcount));
+   $('#rc').html(@json($rccount));
+    $("#cr").html(@json($crcount));
    var barChartCtx = document.getElementById('barChart').getContext('2d');
     var barLabels = @json($labels);
     var barValues = @json($values);
