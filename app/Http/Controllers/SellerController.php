@@ -52,15 +52,18 @@ class SellerController extends Controller
     $comValues = array_column($complete, 'count');
 
     // Variation
-    // Fetch variations count from table1
-    $table1Variations = DB::table('mis')
-        ->groupBy('assessment')
-        ->get();
+// Fetch variations count from table1
+$table1Variations = DB::table('mis')
+->select('assessment', DB::raw('COUNT(*) as count'))
+->groupBy('assessment')
+->get();
 
-    // Fetch variations count from table2
-    $table2Variations = DB::table('point_data')
-        ->groupBy('assessment')
-        ->get();
+// Fetch variations count from table2
+$table2Variations = DB::table('point_data')
+->select('assessment', DB::raw('COUNT(*) as count'))
+->groupBy('assessment')
+->get();
+
 
     // Comparing counts
     $comparisonResults = [];
