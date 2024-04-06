@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
-            <p>Total Count of Records in Surveyed: {{ $totalSurveyCount }}</p>
+            <p>Total Count of Records in Surveyed: {{ $totalSueveyCount }}</p>
             <div class="card shadow p-5">
                 <canvas id="pieChart" width="50" height="50"></canvas>
             </div>
@@ -25,7 +25,6 @@
 
 <script>
     // Bar Chart
-    console.log(@json($table1Variations));
     var barChartCtx = document.getElementById('barChart').getContext('2d');
     var barLabels = @json($labels);
     var barValues = @json($values);
