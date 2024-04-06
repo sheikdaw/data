@@ -49,31 +49,8 @@ class SellerController extends Controller
 
         $comlabels = array_column($complete, 'road_name');
         $comvalues = array_column($complete, 'count');
-         // Variation
-// Fetch variations count from table1
-$table1Variations = DB::table('mis')
-->select('assessment', DB::raw('COUNT(*) as count'))
-->groupBy('assessment')
-->get();
 
-// Fetch variations count from table2
-$table2Variations = DB::table('point_data')
-->select('assessment', DB::raw('COUNT(*) as count'))
-->groupBy('assessment')
-->get();
-
-
-    // Comparing counts
-    $comparisonResults = [];
-
-    foreach ($table1Variations as $table1Variation) {
-        foreach ($table2Variations as $table2Variation) {
-            if ($table1Variation->assessment == $table2Variation->assessment) {
-                $comparisonResults[] = $table2Variation->assessment;
-            }
-        }
-    }
-  return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount','comparisonResults', 'table1Variations', 'table2Variations'));
+        return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount'));
     }
 
     public function loginHandler(Request $request)
