@@ -323,7 +323,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            @if (Route::is('client.*'))
                             <button type="submit" id="pointSubmit" class="btn btn-primary">Save image</button>
+                             @endif
                         </div>
                     </form>
 
@@ -413,7 +415,10 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            @if (Route::is('client.*'))
                             <button type="submit" id="pointSubmit" class="btn btn-primary">Save image</button>
+                            @endif
+
                         </div>
                     </form>
 
