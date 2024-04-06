@@ -93,7 +93,8 @@
                 @elseif ($mis->building_usage == "Commercial" && $point->building_usage == "Residential")
                     <h2>c to R</h2>
                 @endif --}}
-                <h2>point</h2>
+                <h2>{{$mis->building_usage}}</h2>
+                <h2>$point->building_usage</h2>
             @endif
         @endforeach
     @endforeach

@@ -51,26 +51,27 @@ class SellerController extends Controller
         $comlabels = array_column($complete, 'road_name');
         $comvalues = array_column($complete, 'count');
 
-
+        $crcount = 0;
+            $rccount = 0;
 
             // Group data by assessment for both tables
             $misdata = Mis::all();
             $point_data = PointData::all();
 
-            foreach ($misdata as $mis) {
-                foreach ($point_data as $point) {
-                    if ($mis->assessment == $point->assessment) {
-                        if ($mis->building_usage != $point->building_usage) {
-                            if ($mis->building_usage == "Commercial" && $point->building_usage == 'Residential') {
-                                $crcount++;
-                            }
-                            if ($mis->building_usage == "Residential" && $point->building_usage == 'Commercial') {
-                                $rccount++;
-                            }
-                        }
-                    }
-                }
-            }
+            // foreach ($misdata as $mis) {
+            //     foreach ($point_data as $point) {
+            //         if ($mis->assessment == $point->assessment) {
+            //             if ($mis->building_usage != $point->building_usage) {
+            //                 if ($mis->building_usage == "Commercial" && $point->building_usage == 'Residential') {
+            //                     $crcount++;
+            //                 }
+            //                 if ($mis->building_usage == "Residential" && $point->building_usage == 'Commercial') {
+            //                     $rccount++;
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
 
 
         return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount','crcount','misdata','rccount','point_data'));
