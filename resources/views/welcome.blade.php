@@ -102,7 +102,7 @@
                                     <a class="nav-link text-white" href="{{route('client.login')}}">Surveyor</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" href="#">Client</a>
+                                    <a class="nav-link text-white"  href="{{route('seller.login')}}">Client</a>
                                 </li>
                             </ul>
                         </div>

@@ -50,8 +50,42 @@ class SellerController extends Controller
         $comlabels = array_column($complete, 'road_name');
         $comvalues = array_column($complete, 'count');
 
-        return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount'));
-    }
+
+
+
+        // ///variation
+        //  // Fetch variations count from table1
+        //             $table1Variations = DB::table('mis')
+        //             ->select('assessment', 'building_usage')
+        //             ->groupBy('assessment')
+        //             ->get();
+
+        //         // Fetch variations count from table2
+        //         $table2Variations = DB::table('building_data')
+        //             ->select('assessment', 'bulding_usage')
+        //             ->groupBy('assessment')
+        //             ->get();
+
+        //         // Comparing counts
+        //         $comparisonResults = [];
+
+        //         foreach ($table1Variations as $table1Variation) {
+        //             $comparisonResults[] = [
+        //                 'column1' => $table1Variation->column1,
+        //                 'column2' => $table1Variation->column2,
+        //                 'table1_count' => $table1Variation->count,
+        //                 'table2_count' => $this->getTable2Count($table2Variations, $table1Variation->column1, $table1Variation->column2),
+        //             ];
+        //         }
+
+        //         return $comparisonResults;
+                return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount'));
+            }
+
+
+
+
+
 
     public function loginHandler(Request $request)
     {
@@ -159,17 +193,17 @@ class SellerController extends Controller
     public function showAllSurveyData()
     {     Paginator::useBootstrap();
         $data = mis::paginate(10); // Fetch 10 items per page (adjust as needed)
-    
+
         return view('back.page.seller.view-all-survey-data', ['data' => $data]);
     }
     public function showParticularSurveyData()
-    {   
-      
+    {
+
         $data = mis::paginate(10); // Fetch 10 items per page (adjust as needed)
-    
+
         return view('back.page.seller.view-particular-survey-data', ['data' => $data]);
     }
-    
+
 
 
 }
