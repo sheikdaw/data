@@ -671,12 +671,11 @@
                         surveyed.forEach(function(survey) {
                             gisIdSet.add(survey.gisid);
                         });
-                        console.log(surveyed);
                         features.forEach(function(pointfeature) {
                             var properties = pointfeature.getProperties();
 
-                            if (gisIdSet.has(properties['GIS_ID'])) {
-                                console.log(properties['GIS_ID']);
+                            if (gisIdSet.has(properties['point_gisid'])) {
+                                console.log(properties['point_gisid']);
                                 pointfeature.setStyle(completeStyle);
                             } else {
                                 pointfeature.setStyle(clickedStyle);
