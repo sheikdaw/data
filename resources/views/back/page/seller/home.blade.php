@@ -1,7 +1,7 @@
 @extends('back.layout.page-layout')
 @section('pagetitle', isset($pagetitle) ? $pagetitle : 'Client home')
 @section('content')
-@livewire('client-map')
+
 <div class="card p-3">
     <div class="row">
         <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
@@ -75,5 +75,6 @@
         }
     });
 </script>
+@livewire('client-map')
 
 @endsection
