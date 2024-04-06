@@ -670,14 +670,14 @@
                         surveyed.forEach(function(survey) {
                             gisIdSet.add(survey.gisid);
                         });
-                        features.forEach(function(feature) {
-                            var properties = feature.getProperties();
+                        features.forEach(function(pointfeature) {
+                            var properties = pointfeature.getProperties();
 
                             if (gisIdSet.has(properties['GIS_ID'])) {
                                 console.log(properties['GIS_ID']);
-                                feature.setStyle(completeStyle);
+                                pointfeature.setStyle(completeStyle);
                             } else {
-                                feature.setStyle(clickedStyle);
+                                pointfeature.setStyle(clickedStyle);
                             }
                         });
 
