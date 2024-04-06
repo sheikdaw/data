@@ -666,10 +666,12 @@
                         });
                         map.addOverlay(popup);
                         var surveyed = @json($surveyed);
+
                         var gisIdSet = new Set();
                         surveyed.forEach(function(survey) {
                             gisIdSet.add(survey.gisid);
                         });
+                        console.log(gisIdSet);
                         features.forEach(function(pointfeature) {
                             var properties = pointfeature.getProperties();
 
