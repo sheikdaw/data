@@ -1,7 +1,10 @@
 @extends('back.layout.page-layout')
 @section('pagetitle', isset($pagetitle) ? $pagetitle : 'Client home')
 @section('content')
-
+<style>.map {
+    width: 100%;
+    height: 600px;
+}</style>
 <div class="card p-3">
     <div class="row">
         <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
