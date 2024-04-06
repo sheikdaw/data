@@ -50,7 +50,30 @@ class SellerController extends Controller
         $comlabels = array_column($complete, 'road_name');
         $comvalues = array_column($complete, 'count');
 
-        return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount'));
+        $crcount = 0;
+            $rccount = 0;
+
+            // Group data by assessment for both tables
+            $misdata = Mis::groupBy('assessment')->get();
+            $point_data = PointData::groupBy('assessment')->get();
+
+            foreach ($misdata as $mis) {
+                foreach ($point_data as $point) {
+                    if ($mis->assessment == $point->assessment) {
+                        if ($mis->building_usage != $point->building_usage) {
+                            if ($mis->building_usage == "Commercial" && $point->building_usage == 'Residential') {
+                                $crcount++;
+                            }
+                            if ($mis->building_usage == "Residential" && $point->building_usage == 'Commercial') {
+                                $rccount++;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount','crcount','rccount'));
     }
 
     public function loginHandler(Request $request)
