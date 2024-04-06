@@ -29,58 +29,53 @@ use Illuminate\Pagination\Paginator;
 class SellerController extends Controller
 {
     public function home()
-    {    $totalMisCount = DB::table('mis')->count();
-        $totalSueveyCount = DB::table('surveyeds')->count();
-        $line = DB::table('mis')
-            ->select('road_name', DB::raw('COUNT(*) as count'))
-            ->groupBy('road_name')
-            ->orderByDesc('count')
-            ->get()
-            ->toArray();
+{
+    $totalMisCount = DB::table('mis')->count();
+    $totalSurveyCount = DB::table('surveyeds')->count();
+    $line = DB::table('mis')
+        ->select('road_name', DB::raw('COUNT(*) as count'))
+        ->groupBy('road_name')
+        ->orderByDesc('count')
+        ->get()
+        ->toArray();
 
-        $labels = array_column($line, 'road_name');
-        $values = array_column($line, 'count');
-        $complete = DB::table('surveyeds')
-            ->select('road_name', DB::raw('COUNT(*) as count'))
-            ->groupBy('road_name')
-            ->orderByDesc('count')
-            ->get()
-            ->toArray();
+    $labels = array_column($line, 'road_name');
+    $values = array_column($line, 'count');
+    $complete = DB::table('surveyeds')
+        ->select('road_name', DB::raw('COUNT(*) as count'))
+        ->groupBy('road_name')
+        ->orderByDesc('count')
+        ->get()
+        ->toArray();
 
-        $comlabels = array_column($complete, 'road_name');
-        $comvalues = array_column($complete, 'count');
+    $comLabels = array_column($complete, 'road_name');
+    $comValues = array_column($complete, 'count');
 
+    // Variation
+    // Fetch variations count from table1
+    $table1Variations = DB::table('mis')
+        ->groupBy('assessment')
+        ->get();
 
+    // Fetch variations count from table2
+    $table2Variations = DB::table('point_data')
+        ->groupBy('assessment')
+        ->get();
 
+    // Comparing counts
+    $comparisonResults = [];
 
-        // ///variation
-        //  // Fetch variations count from table1
-        //             $table1Variations = DB::table('mis')
-        //             ->select('assessment', 'building_usage')
-        //             ->groupBy('assessment')
-        //             ->get();
-
-        //         // Fetch variations count from table2
-        //         $table2Variations = DB::table('building_data')
-        //             ->select('assessment', 'bulding_usage')
-        //             ->groupBy('assessment')
-        //             ->get();
-
-        //         // Comparing counts
-        //         $comparisonResults = [];
-
-        //         foreach ($table1Variations as $table1Variation) {
-        //             $comparisonResults[] = [
-        //                 'column1' => $table1Variation->column1,
-        //                 'column2' => $table1Variation->column2,
-        //                 'table1_count' => $table1Variation->count,
-        //                 'table2_count' => $this->getTable2Count($table2Variations, $table1Variation->column1, $table1Variation->column2),
-        //             ];
-        //         }
-
-        //         return $comparisonResults;
-                return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount'));
+    foreach ($table1Variations as $table1Variation) {
+        foreach ($table2Variations as $table2Variation) {
+            if ($table1Variation->assessment == $table2Variation->assessment) {
+                $comparisonResults[] = $table2Variation->assessment;
             }
+        }
+    }
+
+    return view('back.page.seller.home', compact('labels', 'values', 'comLabels', 'comValues', 'totalMisCount', 'totalSurveyCount', 'comparisonResults', 'table1Variations', 'table2Variations'));
+}
+
 
 
 

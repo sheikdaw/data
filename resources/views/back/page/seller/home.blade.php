@@ -25,6 +25,7 @@
 
 <script>
     // Bar Chart
+    console.log(@json($table1Variations));
     var barChartCtx = document.getElementById('barChart').getContext('2d');
     var barLabels = @json($labels);
     var barValues = @json($values);
