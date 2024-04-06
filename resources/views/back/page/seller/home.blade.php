@@ -21,19 +21,7 @@
         </div>
     </div>
 </div> --}}
-<div>
-    @foreach ($misdata as $mis)
-        @foreach ($point_data as $point)
-            @if ($mis->assessment == $point->assessment)
-                @if ($mis->building_usage == "Residential" && $point->building_usage == "Commercial")
-                    <h2>R to c</h2>
-                @elseif ($mis->building_usage == "Commercial" && $point->building_usage == "Residential")
-                    <h2>c to R</h2>
-                @endif
-            @endif
-        @endforeach
-    @endforeach
-</div>
+
 
 
 
@@ -96,5 +84,17 @@
     // });
 </script>
 @livewire('client-map')
-
+<div>
+    @foreach ($misdata as $mis)
+        @foreach ($point_data as $point)
+            @if ($mis->assessment == $point->assessment)
+                @if ($mis->building_usage == "Residential" && $point->building_usage == "Commercial")
+                    <h2>R to c</h2>
+                @elseif ($mis->building_usage == "Commercial" && $point->building_usage == "Residential")
+                    <h2>c to R</h2>
+                @endif
+            @endif
+        @endforeach
+    @endforeach
+</div>
 @endsection
