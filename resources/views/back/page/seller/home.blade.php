@@ -94,7 +94,7 @@
                     <h2>c to R</h2>
                 @endif --}}
                 <h2>{{$mis->building_usage}}</h2>
-                <h2>$point->building_usage</h2>
+                <h2>{{$point->building_usage}}</h2>
             @endif
         @endforeach
     @endforeach
