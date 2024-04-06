@@ -25,7 +25,7 @@
 
 <script>
     // Bar Chart
-   console.log($rccount);
+   console.log(@json($rccount));
    console.log($crcount);
     var barChartCtx = document.getElementById('barChart').getContext('2d');
     var barLabels = @json($labels);
