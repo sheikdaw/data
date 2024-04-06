@@ -5,6 +5,7 @@ use App\Models\Client;
 use App\Models\Seller;
 use App\Models\Surveyed;
 use App\Models\mis;
+use App\Models\PointData;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
