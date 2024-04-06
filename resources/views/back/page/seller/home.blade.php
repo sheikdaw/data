@@ -8,13 +8,13 @@
 <h2>Usage Variation</h2>
 <div class="card p-3">
     <div class="row">
-        <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
+        <div class="col-sm-12 col-md-3 mb-3 "> <!-- Added 'mb-4' class for margin-bottom -->
             <p>Resisential to Commercial</p>
             <div class="card shadow p-5">
                 <p id="rc"></p>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6 mb-4 "> <!-- Added 'mb-4' class for margin-bottom -->
+        <div class="col-sm-12 col-md-3 mb-3 "> <!-- Added 'mb-4' class for margin-bottom -->
             <p>Commercial to Resisential</p>
             <div class="card shadow p-5">
                 <p id="cr"></p>
