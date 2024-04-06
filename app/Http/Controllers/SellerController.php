@@ -74,7 +74,7 @@ class SellerController extends Controller
             }
 
 
-        return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount','crcount','rccount'));
+        return view('back.page.seller.home', compact('labels', 'values','comlabels', 'comvalues','totalMisCount','totalSueveyCount','crcount','rccount','point_data'));
     }
 
     public function loginHandler(Request $request)
