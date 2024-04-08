@@ -588,7 +588,7 @@
                         var lineStyle = new ol.style.Style({
                             stroke: new ol.style.Stroke({
                                 color: 'yellow', // Set the stroke color to yellow
-                                width: 2 // Set the stroke width as needed
+                                width: 4 // Set the stroke width as needed
                             })
                         });
 
