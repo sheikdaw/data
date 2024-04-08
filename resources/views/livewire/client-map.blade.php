@@ -550,7 +550,7 @@
                         var lineJsonPromise = responses[2];
                         var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
                         var buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
-
+                        var linefeatures = (new ol.format.GeoJSON()).readFeatures(lineJsonPromise);
                         var vectorSource = new ol.source.Vector({
                             features: features
                         });
