@@ -656,7 +656,7 @@
                             vectorBuildingLayer.setStyle(function(feature) {
                                 var id = feature.get('GIS_ID'); // Extract Id from feature properties
                                 if (buildingGisIdSet.has(id)) {
-                                    console.log(id);
+
 
                                     return completeLabelStyleFunction(id);
                                 } else {
