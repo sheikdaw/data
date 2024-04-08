@@ -1148,10 +1148,7 @@
                                             })
                                         })
                                     });
-                                    var extent = featureToZoom.getGeometry().getExtent();
-                                    map.getView().fit(extent, {
-                                        duration: 1000
-                                    });
+
                                 } else {
                                     newStyle = new ol.style.Style({
                                         image: new ol.style.Circle({
