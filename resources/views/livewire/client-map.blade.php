@@ -573,13 +573,14 @@
 
                         // Create the vector source and layer with the defined style
                         var vectorLineSource = new ol.source.Vector({
-                            features: linefeatures // Assuming linefeatures is an array of features
-                        });
+    features: linefeatures // Assuming linefeatures is an array of features
+});
 
-                        var vectorLineLayer = new ol.layer.Vector({
-                            source: vectorLineSource,
-                            style: lineStyle // Apply the style to the layer
-                        });
+var vectorLineLayer = new ol.layer.Vector({
+    source: vectorLineSource,
+    style: lineStyle // Apply the style to the layer
+});
+
 
 
                         var overlays;
