@@ -478,7 +478,7 @@
                         <!-- Feature properties will be displayed here -->
                     </ul>
                     <hr>
-
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
                 </div>
             </div>
@@ -595,13 +595,13 @@
 
                         // Create the vector source and layer with the defined style
                         var vectorLineSource = new ol.source.Vector({
-    features: linefeatures // Assuming linefeatures is an array of features
-});
+                            features: linefeatures // Assuming linefeatures is an array of features
+                        });
 
-var vectorLineLayer = new ol.layer.Vector({
-    source: vectorLineSource,
-    style: lineStyle // Apply the style to the layer
-});
+                        var vectorLineLayer = new ol.layer.Vector({
+                            source: vectorLineSource,
+                            style: lineStyle // Apply the style to the layer
+                        });
 
 
 
@@ -794,8 +794,7 @@ var vectorLineLayer = new ol.layer.Vector({
                                         document.getElementById('featurepoint').innerHTML = content;
                                         document.getElementById('pointgis').value = properties['GIS_ID'];
                                         $('#pointModal').modal('show');
-                                    }
-                                    else if (geometryType == 'LineString') {
+                                    } else if (geometryType == 'LineString') {
                                         var content = '';
                                         for (var key in properties) {
                                             // alert( key + ':</strong> ' + properties[key]);
@@ -1016,7 +1015,7 @@ var vectorLineLayer = new ol.layer.Vector({
                                         alert('Data saved successfully!');
 
                                         buildingStyle
-                                    (); // Call buildingStyle function with building_data
+                                            (); // Call buildingStyle function with building_data
                                         // You can close the modal or do any other action upon success
                                     }
                                 },
