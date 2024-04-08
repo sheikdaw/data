@@ -643,7 +643,10 @@
                             });
                         };
 
-                        var building_data =
+
+
+                        function buildingStyle() {
+                            var building_data =
                             @json($building_data); // Assuming this part is correctly handled server-side
 
                         var buildingGisIdSet = new Set();
@@ -651,8 +654,6 @@
                         building_data.forEach(function(building) {
                             buildingGisIdSet.add(building.gisid);
                         });
-
-                        function buildingStyle() {
                             vectorBuildingLayer.setStyle(function(feature) {
                                 var id = feature.get('GIS_ID'); // Extract Id from feature properties
                                 if (buildingGisIdSet.has(id)) {
@@ -775,6 +776,7 @@
                                         document.getElementById('ramp').value = "";
                                         document.getElementById('hoarding').value = "";
                                         document.getElementById('liftroom').value = "";
+                                        document.getElementById('overhead_tank').value = "";
                                         document.getElementById('headroom').value = "";
                                         document.getElementById('cell_tower').value = "";
                                         document.getElementById('percentage').value = "";
