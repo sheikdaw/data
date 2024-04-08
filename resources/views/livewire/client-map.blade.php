@@ -134,7 +134,7 @@
                     <hr>
                     <h4>Feature Form</h4>
 
-                    <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
+                    <form id="buildingForm" enctype="multipart/form-data"> <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
@@ -1177,7 +1177,6 @@
                         success: function(response) {
                             if (response.success) {
                                 alert('Data saved successfully!');
-                                livewire.emit('clientmap');
                                 // You can close the modal or do any other action upon success
                             }
                         },
