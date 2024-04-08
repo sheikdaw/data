@@ -134,7 +134,7 @@
                     <hr>
                     <h4>Feature Form</h4>
                     <form id="buildingForm" enctype="multipart/form-data">
-                        @csrf
+
                         <img src="{{ asset('public/images/2.jpg') }}" name="building_img" id="building_img"
                             alt="" width="300px">
                         <div class="modal-body">
