@@ -536,14 +536,14 @@
                         }
                         return response.json();
                     });
-                    var lineJsonPromise = fetch(buildingpath)
+                var lineJsonPromise = fetch(buildingpath)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Failed to load GeoJSON file');
                         }
                         return response.json();
                     });
-                Promise.all([pointJsonPromise, buildingJsonPromise,lineJsonPromise])
+                Promise.all([pointJsonPromise, buildingJsonPromise, lineJsonPromise])
                     .then(responses => {
                         var pointJsonData = responses[0];
                         var buildingJsonData = responses[1];
@@ -564,11 +564,21 @@
                         var vectorBuildingLayer = new ol.layer.Vector({
                             source: vectorBuildingSource
                         });
-                        var vectorLineSource = new ol.source.Vector({
-                            features: linefeatures
+                        var lineStyle = new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'yellow', // Set the stroke color to yellow
+                                width: 2 // Set the stroke width as needed
+                            })
                         });
+
+                        // Create the vector source and layer with the defined style
+                        var vectorLineSource = new ol.source.Vector({
+                            features: linefeatures // Assuming linefeatures is an array of features
+                        });
+
                         var vectorLineLayer = new ol.layer.Vector({
-                            source: vectorLineSource
+                            source: vectorLineSource,
+                            style: lineStyle // Apply the style to the layer
                         });
 
 
@@ -589,7 +599,7 @@
                             layers: [
                                 new ol.layer.Tile({
                                     source: new ol.source.OSM()
-                                }), imageLayer,vectorLineLayer, vectorBuildingLayer,
+                                }), imageLayer, vectorLineLayer, vectorBuildingLayer,
                                 vectorLayer
                             ],
                             view: new ol.View({
@@ -662,7 +672,7 @@
 
                         function buildingStyle(building_data) {
                             var building_data =
-                            building_data; // Assuming this part is correctly handled server-side
+                                building_data; // Assuming this part is correctly handled server-side
 
                             var buildingGisIdSet = new Set();
 
@@ -969,7 +979,8 @@
                                     if (response.success) {
                                         alert('Data saved successfully!');
 
-                                        buildingStyle( ); // Call buildingStyle function with building_data
+                                        buildingStyle
+                                    (); // Call buildingStyle function with building_data
                                         // You can close the modal or do any other action upon success
                                     }
                                 },
