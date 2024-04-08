@@ -777,6 +777,7 @@
                                         document.getElementById('solar_panel').value = "";
                                         document.getElementById('water_connection').value = "";
                                         document.getElementById('phone').value = "";
+                                        document.getElementById('image').value = "";
 
                                         var building_data =
                                             @json($building_data); // Get building data from server-side
