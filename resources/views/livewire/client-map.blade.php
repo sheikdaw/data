@@ -952,11 +952,7 @@
                         success: function(response) {
                             if (response.success) {
                                     alert('Data saved successfully!');
-                                    console.log(response.building_data); // Log the entire building_data object
-                                    // Assuming building_data is an array, you can loop through it and log each item
-                                    response.building_data.forEach(function(item) {
-                                        console.log(item);
-                                    });
+
                                     buildingStyle(response.building_data); // Call buildingStyle function with building_data
                                     // You can close the modal or do any other action upon success
                                 }
