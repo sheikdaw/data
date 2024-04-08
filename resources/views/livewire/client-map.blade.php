@@ -338,7 +338,7 @@
                             <div class="form-group">
                                 <label for="phone">phone_numnber</label>
                                 <input type="text" name="phone" id="phone" class="form-control"
-                                @if (Route::is('seller.*')) readonly @endif>>
+                                @if (Route::is('seller.*')) readonly @endif>
 
                                 <div id="phone_error"></div>
                             </div>
@@ -656,6 +656,7 @@
                             vectorBuildingLayer.setStyle(function(feature) {
                                 var id = feature.get('GIS_ID'); // Extract Id from feature properties
                                 if (buildingGisIdSet.has(id)) {
+                                    console.log(id);
 
                                     return completeLabelStyleFunction(id);
                                 } else {
@@ -773,6 +774,8 @@
                                         document.getElementById('parking').value = "";
                                         document.getElementById('ramp').value = "";
                                         document.getElementById('hoarding').value = "";
+                                        document.getElementById('liftroom').value = "";
+                                        document.getElementById('headroom').value = "";
                                         document.getElementById('cell_tower').value = "";
                                         document.getElementById('percentage').value = "";
                                         document.getElementById('new_address').value = "";
