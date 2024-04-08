@@ -1111,7 +1111,7 @@
                     $('input').removeClass('is-invalid');
 
                     var formData = new FormData(this);
-                    alert(formData.image);
+                    alert(formData);
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('client.buildingdata-upload') }}',
