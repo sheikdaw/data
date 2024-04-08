@@ -769,6 +769,12 @@
                                                 document.getElementById('cell_tower').value =
                                                     selectedBuilding
                                                     .cell_tower;
+                                                    document.getElementById('percentage').value =
+                                                    selectedBuilding
+                                                    .percentage;
+                                                    document.getElementById('new_address').value =
+                                                    selectedBuilding
+                                                    .new_address;
                                                 document.getElementById('solar_panel').value =
                                                     selectedBuilding
                                                     .solar_panel;
