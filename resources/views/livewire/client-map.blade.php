@@ -568,32 +568,18 @@
                             stroke: new ol.style.Stroke({
                                 color: 'yellow', // Set the stroke color to yellow
                                 width: 2 // Set the stroke width as needed
-                            }),
-                            text: new ol.style.Text({
-                                text: function(feature) {
-                                    // You need to access the road name from your feature properties
-                                    // Assuming the road name is stored in a property named 'Road_Name'
-                                    return feature.get('Road_Name') ||
-                                    ''; // Return the road name or an empty string
-                                },
-                                font: '12px Calibri,sans-serif', // Define font style for the text
-                                fill: new ol.style.Fill({
-                                    color: '#000' // Set the text color to black
-                                }),
-                                offsetY: -10, // Adjust the text offset vertically as needed
-                                textAlign: 'center' // Align text to the center of the line
                             })
                         });
 
                         // Create the vector source and layer with the defined style
                         var vectorLineSource = new ol.source.Vector({
-                            features: linefeatures // Assuming linefeatures is an array of features
-                        });
+    features: linefeatures // Assuming linefeatures is an array of features
+});
 
-                        var vectorLineLayer = new ol.layer.Vector({
-                            source: vectorLineSource,
-                            style: lineStyle // Apply the style to the layer
-                        });
+var vectorLineLayer = new ol.layer.Vector({
+    source: vectorLineSource,
+    style: lineStyle // Apply the style to the layer
+});
 
 
 
@@ -995,7 +981,7 @@
                                         alert('Data saved successfully!');
 
                                         buildingStyle
-                                            (); // Call buildingStyle function with building_data
+                                    (); // Call buildingStyle function with building_data
                                         // You can close the modal or do any other action upon success
                                     }
                                 },
