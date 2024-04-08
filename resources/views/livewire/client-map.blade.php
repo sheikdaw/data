@@ -723,7 +723,52 @@
                                         var gisId = properties[
                                             'GIS_ID']; // Get the GIS ID from the clicked feature
                                         document.getElementById('gisIdInput').value =
-                                            gisId; // Set the GIS ID value in the form
+                                          ''; // Set the GIS ID value in the form
+                                            document.getElementById('number_bill').value =
+                                                   "";
+                                                document.getElementById('number_floor').value =
+                                                    "";
+                                                document.getElementById('watet_tax').value =
+                                                    "";
+                                                document.getElementById('eb').value =
+                                                    "";
+                                                document.getElementById('building_name').value =
+                                                   "";
+                                                document.getElementById('building_usage').value =
+                                                  "";
+                                                document.getElementById('construction_type').value =
+                                                  "";
+                                                document.getElementById('road_name').value =
+                                                    "";
+                                                document.getElementById('ugd').value =
+                                                    "";
+                                                document.getElementById('rainwater_harvesting')
+                                                    .value =
+                                                   "";
+                                                document.getElementById('parking').value ="";
+                                                document.getElementById('ramp').value =
+                                                   "";
+                                                document.getElementById('hoarding').value =
+                                                    "";
+                                                document.getElementById('cell_tower').value =
+                                                   "";
+                                                    document.getElementById('percentage').value =
+                                                   "";
+                                                    document.getElementById('new_address').value =
+                                                   "";
+                                                document.getElementById('solar_panel').value =
+                                                    "";
+                                                document.getElementById('water_connection').value =
+                                                  "";
+                                                document.getElementById('phone').value =
+                                                   "";
+                                                document.getElementById('building_img')
+                                                    .setAttribute('src',
+                                                        `/public${selectedBuilding.image}`);
+
+                                                        document.getElementById('image')
+                                                    .setAttribute('src',
+                                                        `/public${selectedBuilding.image}`);
 
                                         var building_data =
                                             @json($building_data); // Get building data from server-side
