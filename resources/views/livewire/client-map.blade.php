@@ -669,13 +669,13 @@
 
                         var gisIdSet = new Set();
                         surveyed.forEach(function(survey) {
-                            gisIdSet.add(survey.gisid);
+                            gisIdSet.add(survey.point_gisid);
                         });
                         features.forEach(function(pointfeature) {
                             var properties = pointfeature.getProperties();
 
-                            if (gisIdSet.has(properties['point_gisid'])) {
-                                console.log(properties['point_gisid']);
+                            if (gisIdSet.has(properties['GIS_ID'])) {
+                                console.log(properties['GIS_ID']);
                                 pointfeature.setStyle(completeStyle);
                             } else {
                                 pointfeature.setStyle(clickedStyle);
