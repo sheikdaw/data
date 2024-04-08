@@ -932,6 +932,41 @@
                                 });
                             }
                         }
+                        $('#buildingForm').submit(function(e) {
+                    e.preventDefault();
+                    $('.error-message').text('');
+                    $('input').removeClass('is-invalid');
+
+                    var formData = new FormData(this);
+                    alert(formData);
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('client.buildingdata-upload') }}',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Data saved successfully!');
+                                refreshMapAndData("Polygon");
+                                // You can close the modal or do any other action upon success
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert(
+                                'An error occurred while processing your request. Please try again.'
+                            );
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                $.each(xhr.responseJSON.errors, function(key, value) {
+                                    $('#' + key).addClass('is-invalid');
+                                    $('#' + key + '_error').text(value[0]);
+                                });
+                            }
+                        }
+                    });
+                });
+
                         var type;
 
                         function refreshMapAndData(type) {
@@ -1161,40 +1196,6 @@
                     $(this).closest(".added").remove();
                 });
 
-                $('#buildingForm').submit(function(e) {
-                    e.preventDefault();
-                    $('.error-message').text('');
-                    $('input').removeClass('is-invalid');
-
-                    var formData = new FormData(this);
-                    alert(formData);
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('client.buildingdata-upload') }}',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response) {
-                            if (response.success) {
-                                alert('Data saved successfully!');
-                                refreshMapAndData("Polygon");
-                                // You can close the modal or do any other action upon success
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
-                            alert(
-                                'An error occurred while processing your request. Please try again.'
-                            );
-                            if (xhr.responseJSON && xhr.responseJSON.errors) {
-                                $.each(xhr.responseJSON.errors, function(key, value) {
-                                    $('#' + key).addClass('is-invalid');
-                                    $('#' + key + '_error').text(value[0]);
-                                });
-                            }
-                        }
-                    });
-                });
 
 
                 $('#pointForm').submit(function(e) {
