@@ -134,7 +134,7 @@
                     <hr>
                     <h4>Feature Form</h4>
                     <form id="buildingForm" enctype="multipart/form-data">
-
+                        @csrf
                         <img src="{{ asset('public/images/2.jpg') }}" name="building_img" id="building_img"
                             alt="" width="300px">
                         <div class="modal-body">
@@ -754,25 +754,7 @@
                                         }
                                         document.getElementById('featurePropertiesList').innerHTML =
                                             content;
-                                        document.getElementById('number_bill').value = "";
-                                        document.getElementById('number_floor').value = "";
-                                        document.getElementById('watet_tax').value = "";
-                                        document.getElementById('eb').value = "";
-                                        document.getElementById('building_name').value = "";
-                                        document.getElementById('building_usage').value = "";
-                                        document.getElementById('construction_type').value = "";
-                                        document.getElementById('road_name').value = "";
-                                        document.getElementById('ugd').value = "";
-                                        document.getElementById('rainwater_harvesting').value = "";
-                                        document.getElementById('parking').value = "";
-                                        document.getElementById('ramp').value = "";
-                                        document.getElementById('hoarding').value = "";
-                                        document.getElementById('cell_tower').value = "";
-                                        document.getElementById('percentage').value = "";
-                                        document.getElementById('new_address').value = "";
-                                        document.getElementById('solar_panel').value = "";
-                                        document.getElementById('water_connection').value = "";
-                                        document.getElementById('phone').value = "";
+
 
 
                                         var gisId = properties[
@@ -1169,9 +1151,7 @@
                     alert(formData);
 
                     $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
+
                         type: 'POST',
                         url: '{{ route('client.buildingdata-upload') }}',
                         data: formData,
