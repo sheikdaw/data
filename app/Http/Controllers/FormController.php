@@ -422,7 +422,7 @@ class FormController extends Controller
 
             $buildingData->save();
         }
-
+        Event::dispatch('buildingDataUploaded');
         return response()->json(['success' => true]);
     }
 

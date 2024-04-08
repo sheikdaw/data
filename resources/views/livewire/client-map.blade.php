@@ -134,7 +134,7 @@
                     <hr>
                     <h4>Feature Form</h4>
 
-                    <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
+                    <form id="buildingForm" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
@@ -221,7 +221,7 @@
                                     id="road_name"
                                     @if (Route::is('seller.*')) readonly @endif>
                                     <option value=""></option>
-                                    @foreach ($road_names as $road)
+                                    @foreach ($road_name as $road)
                                         <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
                                     @endforeach
                                 </select>
