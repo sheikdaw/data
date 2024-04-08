@@ -380,10 +380,12 @@ class AdminController extends Controller
     // Read the GeoJSON file and decode it
     $polygonData = json_decode(file_get_contents(public_path('kovai/building.json')), true);
     $pointData = json_decode(file_get_contents(public_path('kovai/test.json')), true);
+    $lineData = json_decode(file_get_contents(public_path('kovai/line.json')), true);
 
     // Assuming 'features' is an existing array in your JSON data
     $polygonFeatures = $polygonData['features'];
     $pointFeatures = $pointData['features'];
+    $lineFeatures = $lineData['features'];
 
     if ($request->type == "Polygon") {
         // Corrected coordinates structure for Polygon
@@ -506,6 +508,36 @@ private function calculateMidpoint($coordinates) {
 
             // Write the updated JSON data back to the file
             file_put_contents(public_path('kovai/test.json'), json_encode($pointData, JSON_PRETTY_PRINT));
+
+            return response()->json(['message' => 'Point feature added successfully']);
+        }
+        if ($request->type == "line") {
+            // Prepare the new feature
+            $newFeature = [
+                "type" => "Feature",
+                "id" => count($lineFeatures) + 1, // Assigning an ID based on the current number of features
+                "geometry" => [
+                    "type" => "Point",
+                    "coordinates" => [
+                        $request->input('longitude'),
+                        $request->input('latitude')
+                    ]
+                ],
+                "properties" => [
+                    "FID" => count($lineFeatures), // Using the same ID as 'id' for simplicity
+                    "Id" => 0,
+                    "GIS_ID" => count($lineFeatures) + 1
+                ]
+            ];
+
+            // Add the new feature to the existing features array
+            $lineFeatures[] = $newFeature;
+
+            // Update the 'features' array in the JSON data
+            $pointData['features'] = $lineFeatures;
+
+            // Write the updated JSON data back to the file
+            file_put_contents(public_path('kovai/line.json'), json_encode($lineData, JSON_PRETTY_PRINT));
 
             return response()->json(['message' => 'Point feature added successfully']);
         }

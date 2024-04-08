@@ -134,228 +134,228 @@
                     <hr>
                     <h4>Feature Form</h4>
 
-                    <form id="buildingForm" enctype="multipart/form-data"> <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-body">
-                            <div id="alertBox" class="alert alert-danger" style="display: none;">
-                            </div>
-                            <div class="form-group">
-                                <label for="gis">Gis</label>
-                                <input type="text" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif id="gisIdInput" name="gisid"
-                                    readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="number_bill">Number_of_Bill</label>
-                                <input type="text" name="number_bill" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif id="number_bill">
-                                <div id="number_bill_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="number_floor">Number_of_Floor</label>
-                                <input type="text" name="number_floor" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif id="number_floor">
-                                <div id="number_floor_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="Percentage">Percentage</label>
-                                <select name="percentage" id="percentage" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value=""></option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
-                                    <option value="60">60</option>
-                                    <option value="70">70</option>
-                                    <option value="80">80</option>
-                                    <option value="90">90</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="watet_tax">Watet_tax</label>
-                                <input type="text" name="watet_tax" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif id="watet_tax">
-                                <div id="watet_tax_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="eb">Eb_number</label>
-                                <input type="text" name="eb" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif id="eb">
-                                <div id="eb_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="building_name">Building_name</label>
-                                <input type="text" name="building_name" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif id="building_name">
-                                <div id="building_name_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="Building_usage">Building_usage</label>
-                                <select name="building_usage" id="building_usage" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value=""></option>
-                                    <option value="Residential">Residential</option>
-                                    <option value="Commercial">Commercial</option>
-                                    <option value="Mixed">Mixed</option>
-                                </select>
-                                <div id="building_usage_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="construction_type">Construction_type</label>
-                                <select name="construction_type" id="construction_type" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value=""></option>
-                                    <option value="PERMANENT">PERMANENT</option>
-                                    <option value="SEMI-PERMANENT">SEMI-PERMANENT</option>
-                                </select>
-                                <div id="construction_type_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="road_name " >Road_name</label>
+                    <form id="buildingForm" enctype="multipart/form-data">
+                        <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+                                <div id="alertBox" class="alert alert-danger" style="display: none;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="gis">Gis</label>
+                                    <input type="text" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif id="gisIdInput" name="gisid"
+                                        readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="number_bill">Number_of_Bill</label>
+                                    <input type="text" name="number_bill" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif id="number_bill">
+                                    <div id="number_bill_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="number_floor">Number_of_Floor</label>
+                                    <input type="text" name="number_floor" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif id="number_floor">
+                                    <div id="number_floor_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Percentage">Percentage</label>
+                                    <select name="percentage" id="percentage" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value=""></option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                        <option value="60">60</option>
+                                        <option value="70">70</option>
+                                        <option value="80">80</option>
+                                        <option value="90">90</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="watet_tax">Watet_tax</label>
+                                    <input type="text" name="watet_tax" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif id="watet_tax">
+                                    <div id="watet_tax_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="eb">Eb_number</label>
+                                    <input type="text" name="eb" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif id="eb">
+                                    <div id="eb_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="building_name">Building_name</label>
+                                    <input type="text" name="building_name" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif id="building_name">
+                                    <div id="building_name_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Building_usage">Building_usage</label>
+                                    <select name="building_usage" id="building_usage" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value=""></option>
+                                        <option value="Residential">Residential</option>
+                                        <option value="Commercial">Commercial</option>
+                                        <option value="Mixed">Mixed</option>
+                                    </select>
+                                    <div id="building_usage_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="construction_type">Construction_type</label>
+                                    <select name="construction_type" id="construction_type" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value=""></option>
+                                        <option value="PERMANENT">PERMANENT</option>
+                                        <option value="SEMI-PERMANENT">SEMI-PERMANENT</option>
+                                    </select>
+                                    <div id="construction_type_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="road_name ">Road_name</label>
 
 
-                                    <select  class="form-control" name="road_name"
-                                    id="road_name"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value=""></option>
-                                    @foreach ($road_name as $road)
-                                        <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
-                                    @endforeach
-                                </select>
-                                <div id="road_name_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="new_address_select">New Address</label>
-                                <input type="text" name="new_address" id="new_address"  class="form-control"
-                                @if (Route::is('seller.*')) readonly @endif >
+                                    <select class="form-control" name="road_name" id="road_name"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value=""></option>
+                                        @foreach ($road_name as $road)
+                                            <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div id="road_name_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new_address_select">New Address</label>
+                                    <input type="text" name="new_address" id="new_address" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
 
-                                <div id="new_address_div"></div>
-                            </div>
+                                    <div id="new_address_div"></div>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="ugd">UGD</label>
-                                <input type="text" name="ugd" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif id="ugd">
-                                <div id="ugd_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="rainwater_harvesting">Rainwater_harvesting</label>
-                                <select name="rainwater_harvesting" id="rainwater_harvesting" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="rainwater_harvesting_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="parking">Parking</label>
-                                <select name="parking" id="parking" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value=""></option>
-                                    <option value="NO">NO</option>
-                                    <option value="Basement">Basement</option>
-                                    <option value="Ground-Parking">Ground-Parking</option>
-                                </select>
-                                <div id="parking_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="ramp">Ramp</label>
-                                <select name="ramp" id="ramp" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="ramp_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="hoarding">Hoarding</label>
-                                <select name="hoarding" id="hoarding" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="hoarding_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cell_tower">Cell_tower</label>
-                                <select name="cell_tower" id="cell_tower" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="cell_tower_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="overhead_tank">OverHead Tank</label>
-                                <select name="overhead_tank" id="overhead_tank" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="overhead_tank_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="liftroom">LiftRoom</label>
-                                <select name="liftroom" id="liftroom" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="liftroom_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="headroom">Head Room</label>
-                                <select name="headroom" id="headroom" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="headroom_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="solar_panel">Solar_panel</label>
-                                <select name="solar_panel" id="solar_panel" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="solar_panel_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="water_connection">Water_connection</label>
-                                <select name="water_connection" id="water_connection" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="Bore">Bore</option>
-                                    <option value="OPEN-WELL">OPEN-WELL</option>
-                                    <option value="METRO">METRO</option>
-                                </select>
-                                <div id="water_connection_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">phone_numnber</label>
-                                <input type="text" name="phone" id="phone" class="form-control"
-                                @if (Route::is('seller.*')) readonly @endif>
+                                <div class="form-group">
+                                    <label for="ugd">UGD</label>
+                                    <input type="text" name="ugd" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif id="ugd">
+                                    <div id="ugd_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rainwater_harvesting">Rainwater_harvesting</label>
+                                    <select name="rainwater_harvesting" id="rainwater_harvesting"
+                                        class="form-control" @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="YES">YES</option>
+                                    </select>
+                                    <div id="rainwater_harvesting_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="parking">Parking</label>
+                                    <select name="parking" id="parking" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value=""></option>
+                                        <option value="NO">NO</option>
+                                        <option value="Basement">Basement</option>
+                                        <option value="Ground-Parking">Ground-Parking</option>
+                                    </select>
+                                    <div id="parking_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ramp">Ramp</label>
+                                    <select name="ramp" id="ramp" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="YES">YES</option>
+                                    </select>
+                                    <div id="ramp_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hoarding">Hoarding</label>
+                                    <select name="hoarding" id="hoarding" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="YES">YES</option>
+                                    </select>
+                                    <div id="hoarding_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cell_tower">Cell_tower</label>
+                                    <select name="cell_tower" id="cell_tower" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="YES">YES</option>
+                                    </select>
+                                    <div id="cell_tower_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="overhead_tank">OverHead Tank</label>
+                                    <select name="overhead_tank" id="overhead_tank" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="YES">YES</option>
+                                    </select>
+                                    <div id="overhead_tank_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="liftroom">LiftRoom</label>
+                                    <select name="liftroom" id="liftroom" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="YES">YES</option>
+                                    </select>
+                                    <div id="liftroom_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="headroom">Head Room</label>
+                                    <select name="headroom" id="headroom" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="YES">YES</option>
+                                    </select>
+                                    <div id="headroom_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="solar_panel">Solar_panel</label>
+                                    <select name="solar_panel" id="solar_panel" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="YES">YES</option>
+                                    </select>
+                                    <div id="solar_panel_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="water_connection">Water_connection</label>
+                                    <select name="water_connection" id="water_connection" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value="NO">NO</option>
+                                        <option value="Bore">Bore</option>
+                                        <option value="OPEN-WELL">OPEN-WELL</option>
+                                        <option value="METRO">METRO</option>
+                                    </select>
+                                    <div id="water_connection_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">phone_numnber</label>
+                                    <input type="text" name="phone" id="phone" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
 
-                                <div id="phone_error"></div>
+                                    <div id="phone_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="value">Picture</label>
+                                    <input type="file" name="image" id="image" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                    <div id="image_error" class="text-danger"></div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="value">Picture</label>
-                                <input type="file" name="image" id="image" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                <div id="image_error" class="text-danger"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                @if (Route::is('client.*'))
+                                    <button type="submit" id="pointSubmit" class="btn btn-primary">Save</button>
+                                @endif
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            @if (Route::is('client.*'))
-                                <button type="submit" id="pointSubmit" class="btn btn-primary">Save</button>
-                            @endif
-                        </div>
-                    </form>
+                        </form>
 
                 </div>
             </div>
@@ -519,6 +519,7 @@
 
                 var pointpath = "{{ $point }}";
                 var buildingpath = "{{ asset('public/kovai/building.json') }}";
+                var linepath = "{{ asset('public/kovai/line.json') }}";
                 var pngFilePath = "D:\\cloned github\\gis\\png1.png"; // Note the double backslashes to escape correctly
 
                 var pointJsonPromise = fetch(pointpath)
@@ -535,10 +536,18 @@
                         }
                         return response.json();
                     });
-                Promise.all([pointJsonPromise, buildingJsonPromise])
+                    var lineJsonPromise = fetch(buildingpath)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to load GeoJSON file');
+                        }
+                        return response.json();
+                    });
+                Promise.all([pointJsonPromise, buildingJsonPromise,lineJsonPromise])
                     .then(responses => {
                         var pointJsonData = responses[0];
                         var buildingJsonData = responses[1];
+                        var lineJsonPromise = responses[2];
                         var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
                         var buildingfeatures = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
 
@@ -554,6 +563,12 @@
                         });
                         var vectorBuildingLayer = new ol.layer.Vector({
                             source: vectorBuildingSource
+                        });
+                        var vectorLineSource = new ol.source.Vector({
+                            features: linefeatures
+                        });
+                        var vectorLineLayer = new ol.layer.Vector({
+                            source: vectorLineSource
                         });
 
 
@@ -574,7 +589,7 @@
                             layers: [
                                 new ol.layer.Tile({
                                     source: new ol.source.OSM()
-                                }), imageLayer, vectorBuildingLayer,
+                                }), imageLayer,vectorLineLayer, vectorBuildingLayer,
                                 vectorLayer
                             ],
                             view: new ol.View({
@@ -643,16 +658,17 @@
                             });
                         };
 
-                        var building_data
+                        var building_data;
 
                         function buildingStyle(building_data) {
-                            var building_data =  building_data; // Assuming this part is correctly handled server-side
+                            var building_data =
+                            building_data; // Assuming this part is correctly handled server-side
 
-                        var buildingGisIdSet = new Set();
+                            var buildingGisIdSet = new Set();
 
-                        building_data.forEach(function(building) {
-                            buildingGisIdSet.add(building.gisid);
-                        });
+                            building_data.forEach(function(building) {
+                                buildingGisIdSet.add(building.gisid);
+                            });
                             vectorBuildingLayer.setStyle(function(feature) {
                                 var id = feature.get('GIS_ID'); // Extract Id from feature properties
                                 if (buildingGisIdSet.has(id)) {
@@ -937,40 +953,40 @@
                             }
                         }
                         $('#buildingForm').submit(function(e) {
-                    e.preventDefault();
-                    $('.error-message').text('');
-                    $('input').removeClass('is-invalid');
+                            e.preventDefault();
+                            $('.error-message').text('');
+                            $('input').removeClass('is-invalid');
 
-                    var formData = new FormData(this);
-                    alert(formData);
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('client.buildingdata-upload') }}',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response) {
-                            if (response.success) {
-                                    alert('Data saved successfully!');
+                            var formData = new FormData(this);
+                            alert(formData);
+                            $.ajax({
+                                type: 'POST',
+                                url: '{{ route('client.buildingdata-upload') }}',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function(response) {
+                                    if (response.success) {
+                                        alert('Data saved successfully!');
 
-                                    buildingStyle(response.building_data); // Call buildingStyle function with building_data
-                                    // You can close the modal or do any other action upon success
+                                        buildingStyle( ); // Call buildingStyle function with building_data
+                                        // You can close the modal or do any other action upon success
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(xhr.responseText);
+                                    alert(
+                                        'An error occurred while processing your request. Please try again.'
+                                    );
+                                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                        $.each(xhr.responseJSON.errors, function(key, value) {
+                                            $('#' + key).addClass('is-invalid');
+                                            $('#' + key + '_error').text(value[0]);
+                                        });
+                                    }
                                 }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
-                            alert(
-                                'An error occurred while processing your request. Please try again.'
-                            );
-                            if (xhr.responseJSON && xhr.responseJSON.errors) {
-                                $.each(xhr.responseJSON.errors, function(key, value) {
-                                    $('#' + key).addClass('is-invalid');
-                                    $('#' + key + '_error').text(value[0]);
-                                });
-                            }
-                        }
-                    });
-                });
+                            });
+                        });
 
                         var type;
 
@@ -1219,6 +1235,20 @@
                         success: function(response) {
                             if (response.success) {
                                 alert('Data saved successfully!');
+
+                                surveyed.forEach(function(survey) {
+                                    gisIdSet.add(survey.point_gisid);
+                                });
+                                features.forEach(function(pointfeature) {
+                                    var properties = pointfeature.getProperties();
+                                    if (gisIdSet.has(properties['GIS_ID'])) {
+                                        console.log(properties['GIS_ID']);
+                                        pointfeature.setStyle(completeStyle);
+                                    } else {
+                                        pointfeature.setStyle(clickedStyle);
+                                    }
+                                });
+
 
                                 // You can close the modal or do any other action upon success
                                 alert(response.data);
