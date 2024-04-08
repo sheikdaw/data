@@ -126,16 +126,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img src="{{ asset('public/images/2.jpg') }}" id="building_img" alt="" width="300px">
+
                     <h4>Feature Properties</h4>
                     <ul id="featurePropertiesList">
                         <!-- Feature properties will be displayed here -->
                     </ul>
                     <hr>
                     <h4>Feature Form</h4>
-
                     <form id="buildingForm" enctype="multipart/form-data">
                         @csrf
+                        <img src="{{ asset('public/images/2.jpg') }}" name="building_img" id="building_img" alt="" width="300px">
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
                             </div>
