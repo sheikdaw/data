@@ -134,7 +134,7 @@
                     <hr>
                     <h4>Feature Form</h4>
 
-                    <form id="buildingForm" enctype="multipart/form-data">
+                    <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
@@ -221,7 +221,7 @@
                                     id="road_name"
                                     @if (Route::is('seller.*')) readonly @endif>
                                     <option value=""></option>
-                                    @foreach ($road_name as $road)
+                                    @foreach ($road_names as $road)
                                         <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
                                     @endforeach
                                 </select>
@@ -298,13 +298,22 @@
                                 <div id="overhead_tank_error"></div>
                             </div>
                             <div class="form-group">
-                                <label for="liftroom">Head Room</label>
+                                <label for="liftroom">LiftRoom</label>
                                 <select name="liftroom" id="liftroom" class="form-control"
                                     @if (Route::is('seller.*')) readonly @endif>
                                     <option value="NO">NO</option>
                                     <option value="YES">YES</option>
                                 </select>
                                 <div id="liftroom_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="headroom">Head Room</label>
+                                <select name="headroom" id="headroom" class="form-control"
+                                    @if (Route::is('seller.*')) readonly @endif>
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                                <div id="headroom_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="solar_panel">Solar_panel</label>
