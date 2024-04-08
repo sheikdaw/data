@@ -134,7 +134,7 @@
                     <hr>
                     <h4>Feature Form</h4>
 
-                    <form id="buildingForm" enctype="multipart/form-data">
+                    <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div id="alertBox" class="alert alert-danger" style="display: none;">
@@ -214,20 +214,24 @@
                                 <div id="construction_type_error"></div>
                             </div>
                             <div class="form-group">
-                                <label for="road_name">Road_name</label>
-                                <input type="text" name="road_name" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif id="road_name">
-                                <div id="road_name_error"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="new_address_select">New Address</label>
-                                <select name="new_address" id="new_address" class="form-control"
+                                <label for="road_name " >Road_name</label>
+
+
+                                    <select  class="form-control" name="road_name"
+                                    id="road_name"
                                     @if (Route::is('seller.*')) readonly @endif>
                                     <option value=""></option>
                                     @foreach ($road_name as $road)
                                         <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
                                     @endforeach
                                 </select>
+                                <div id="road_name_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="new_address_select">New Address</label>
+                                <input type="text" name="new_address" id="new_address"  class="form-control"
+                                @if (Route::is('seller.*')) readonly @endif >
+
                                 <div id="new_address_div"></div>
                             </div>
 
@@ -294,15 +298,6 @@
                                 <div id="overhead_tank_error"></div>
                             </div>
                             <div class="form-group">
-                                <label for="headroom">Head Room</label>
-                                <select name="headroom" id="headroom" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
-                                <div id="headroom_error"></div>
-                            </div>
-                            <div class="form-group">
                                 <label for="liftroom">Head Room</label>
                                 <select name="liftroom" id="liftroom" class="form-control"
                                     @if (Route::is('seller.*')) readonly @endif>
@@ -333,11 +328,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="phone">phone_numnber</label>
-                                <select name="phone" id="phone" class="form-control"
-                                    @if (Route::is('seller.*')) readonly @endif>
-                                    <option value="NO">NO</option>
-                                    <option value="YES">YES</option>
-                                </select>
+                                <input type="text" name="phone" id="phone" class="form-control"
+                                @if (Route::is('seller.*')) readonly @endif>>
+
                                 <div id="phone_error"></div>
                             </div>
                             <div class="form-group">
@@ -350,7 +343,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             @if (Route::is('client.*'))
-                                <button type="submit" id="pointSubmit" class="btn btn-primary">Save image</button>
+                                <button type="submit" id="pointSubmit" class="btn btn-primary">Save</button>
                             @endif
                         </div>
                     </form>
@@ -1175,6 +1168,7 @@
                         success: function(response) {
                             if (response.success) {
                                 alert('Data saved successfully!');
+                                livewire.emit('clientmap');
                                 // You can close the modal or do any other action upon success
                             }
                         },
