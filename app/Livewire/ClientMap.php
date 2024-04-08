@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\BuildingData;
 use App\Models\PointData;
+use App\Models\mis;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
