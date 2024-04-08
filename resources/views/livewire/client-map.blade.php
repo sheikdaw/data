@@ -1126,13 +1126,16 @@
                         });
 
                         addInteraction();
-                        $("#filterBtn").click(function(e) {
+                        $$("#filterBtn").click(function(e) {
                             e.preventDefault();
                             var gisidvalue = $("#gisidval").val();
                             alert(gisidvalue);
+                            var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+                            var featureToZoom; // Variable to store the feature to zoom to
+
                             // Clear existing features
                             vectorSource.clear();
-                            var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
+
                             features.forEach(function(feature) {
                                 var properties = feature.getProperties();
                                 var newStyle;
@@ -1148,6 +1151,8 @@
                                             })
                                         })
                                     });
+                                    // If the feature matches the filter, store it as the feature to zoom to
+                                    featureToZoom = feature;
                                 } else {
                                     newStyle = new ol.style.Style({
                                         image: new ol.style.Circle({
@@ -1163,9 +1168,18 @@
                                 }
                                 feature.setStyle(newStyle);
                                 vectorSource.addFeature(
-                                    feature); // Add the feature back to the source
+                                feature); // Add the feature back to the source
                             });
+
+                            // Zoom to the feature that matches the filter
+                            if (featureToZoom) {
+                                var extent = featureToZoom.getGeometry().getExtent();
+                                map.getView().fit(extent, {
+                                    duration: 1000
+                                });
+                            }
                         });
+
                     })
                     .catch(error => {
                         console.error('Error loading files:', error);
