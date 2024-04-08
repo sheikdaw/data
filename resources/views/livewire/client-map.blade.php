@@ -463,6 +463,27 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="lineModal" tabindex="-1" aria-labelledby="lineModalLabel" aria-hidden="true">
+        @csrf
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lineModalLabel">Feature Properties</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Feature Properties</h4>
+                    <ul id="featureline">
+                        <!-- Feature properties will be displayed here -->
+                    </ul>
+                    <hr>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
     @push('script')
         <script src="https://cdn.jsdelivr.net/npm/ol@v9.0.0/dist/ol.js"></script>
 
@@ -787,6 +808,19 @@ var vectorLineLayer = new ol.layer.Vector({
                                         document.getElementById('featurepoint').innerHTML = content;
                                         document.getElementById('pointgis').value = properties['GIS_ID'];
                                         $('#pointModal').modal('show');
+                                    }
+                                    else if (geometryType == 'LineString') {
+                                        var content = '';
+                                        for (var key in properties) {
+                                            // alert( key + ':</strong> ' + properties[key]);
+                                            if (key !== 'geometry') {
+                                                content += '<li><strong>' + key + ':</strong> ' +
+                                                    properties[key] +
+                                                    '</li>';
+                                            }
+                                        }
+                                        document.getElementById('featureline').innerHTML = content;
+                                        $('#lineModal').modal('show');
                                     } else if (geometryType == 'Polygon') {
                                         var content = '';
                                         for (var key in properties) {
