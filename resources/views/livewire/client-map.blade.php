@@ -643,11 +643,10 @@
                             });
                         };
 
+                        var building_data
 
-
-                        function buildingStyle() {
-                            var building_data =
-                            @json($building_data); // Assuming this part is correctly handled server-side
+                        function buildingStyle(building_data) {
+                            var building_data =  building_data; // Assuming this part is correctly handled server-side
 
                         var buildingGisIdSet = new Set();
 
@@ -665,7 +664,7 @@
                                 }
                             });
                         }
-                        buildingStyle();
+                        buildingStyle(@json($building_data));
 
 
                         var markerLayer = new ol.layer.Vector({
@@ -953,7 +952,8 @@
                         success: function(response) {
                             if (response.success) {
                                 alert('Data saved successfully!');
-                                refreshMapAndData("Polygon");
+                                console.log(response.building_data);
+                                buildingStyle(@json($building_data));
                                 // You can close the modal or do any other action upon success
                             }
                         },
@@ -1020,7 +1020,7 @@
                                         var features = (new ol.format.GeoJSON()).readFeatures(buildingJsonData);
                                         // Add new features to the vector sourc e
                                         vectorBuildingSource.addFeatures(features);
-                                        buildingStyle();
+                                        buildingStyle(@json($building_data));
 
 
                                     })
