@@ -1129,6 +1129,7 @@
                         $("#filterBtn").click(function(e) {
                             e.preventDefault();
                             var gisidvalue = $("#gisidval").val();
+                            alert(gisidvalue);
                             // Clear existing features
                             vectorSource.clear();
                             var features = (new ol.format.GeoJSON()).readFeatures(pointJsonData);
