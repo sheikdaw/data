@@ -425,7 +425,8 @@ class FormController extends Controller
         }
         Event::dispatch('buildingDataUploaded');
         $building_data = BuildingData::all();
-        return response()->json(['success' => true,'building_data']);
+        return response()->json(['success' => true, 'building_data' => $building_data]);
+
     }
 
 
