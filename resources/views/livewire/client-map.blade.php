@@ -1169,6 +1169,9 @@
                     alert(formData);
 
                     $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
                         type: 'POST',
                         url: '{{ route('client.buildingdata-upload') }}',
                         data: formData,
