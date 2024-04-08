@@ -211,6 +211,7 @@
                             <div class="form-group">
                                 <label for="new_address_select">New Address</label>
                                 <select name="new_address" id="new_address_select" class="form-control"  @if (Route::is('seller.*')) readonly @endif>
+                                    <option value=""></option>
                                     @foreach ($road_name as $road)
                                         <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
                                     @endforeach
@@ -1169,6 +1170,19 @@
                             }
                         }
                     });
+                });
+
+
+
+                $("#image").change(function() {
+                    var input = this;
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $('#building_img').attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
                 });
             });
         </script>
