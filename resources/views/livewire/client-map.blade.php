@@ -221,7 +221,7 @@
                                     id="road_name"
                                     @if (Route::is('seller.*')) readonly @endif>
                                     <option value=""></option>
-                                    @foreach ($road_names as $road)
+                                    @foreach ($road_name as $road)
                                         <option value="{{ $road->road_name }}">{{ $road->road_name }}</option>
                                     @endforeach
                                 </select>
