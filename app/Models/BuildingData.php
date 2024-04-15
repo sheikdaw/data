@@ -33,7 +33,8 @@ class BuildingData extends Model
         'basement',
         'water_connection',
         'phone',
-        'image'
+        'image',
+        'building_type'
         // Add other fillable fields here
     ];
     public function pointData()

@@ -201,8 +201,27 @@
                                         <option value="Residential">Residential</option>
                                         <option value="Commercial">Commercial</option>
                                         <option value="Mixed">Mixed</option>
+                                        <option value="Vacant Land">Vacant Land</option>
+                                        <option value="Others">Others</option>
                                     </select>
                                     <div id="building_usage_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Building_type">Building_type</label>
+                                    <select name="building_type" id="building_type" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif>
+                                        <option value=""></option>
+                                        <option value="Indepentend">Indepentend</option>
+                                        <option value="Flat">Flat</option>
+                                        <option value="Flat-Multistoried">Flat-Multistoried</option>
+                                        <option value="Kalyanamandapam">Kalyanamandapam</option>
+                                        <option value="Hotel/Cinema Theatre">Hotel/Cinema Theatre</option>
+                                        <option value="Central Government">Central Government</option>
+                                        <option value="State Government">State Government</option>
+                                        <option value="Municipality/Corporation">Municipality/Corporation</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                    <div id="building_type_error"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="construction_type">Construction_type</label>

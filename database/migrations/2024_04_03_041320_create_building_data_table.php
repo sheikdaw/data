@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('basement');
             $table->string('water_connection');
             $table->string('phone');
+            $table->string('building_type');
             $table->string('image')->nullable();
             $table->timestamps();
         });
