@@ -31,6 +31,7 @@ class PointData extends Model
         'establishment_remarks',
         'point_gisid', // Assuming gisid is also fillable
         'building_data_id', // Add building_data_id
+        'worker_name',
     ];
     public function buildingData()
     {

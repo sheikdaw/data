@@ -30,6 +30,7 @@ class BuildingData extends Model
         'hoarding',
         'cell_tower',
         'solar_panel',
+        'basement',
         'water_connection',
         'phone',
         'image'

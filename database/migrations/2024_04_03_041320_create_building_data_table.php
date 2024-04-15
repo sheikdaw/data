@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('hoarding');
             $table->string('cell_tower');
             $table->string('solar_panel');
+            $table->string('basement');
             $table->string('water_connection');
             $table->string('phone');
             $table->string('image')->nullable();

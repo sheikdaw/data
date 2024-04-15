@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('point_data', function (Blueprint $table) {
             $table->id();
             $table->string('point_gisid')->nullable();
+            $table->string('worker_name')->nullable();
             $table->string('assessment')->nullable();
             $table->string('old_assessment')->nullable();
             $table->string('floor')->nullable(); // Corrected column name to 'floor'
@@ -37,6 +38,7 @@ return new class extends Migration
             $table->unsignedBigInteger('building_data_id'); // Foreign key column
             $table->foreign('building_data_id')->references('id')->on('building_data')->onDelete('cascade');
             $table->timestamps();
+
         });
     }
 

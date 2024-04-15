@@ -153,7 +153,7 @@
                                     <div id="number_bill_error"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="number_floor">Number_of_Floor</label>
+                                    <label for="number_floor">Maximum_Floor</label>
                                     <input type="text" name="number_floor" class="form-control"
                                         @if (Route::is('seller.*')) readonly @endif id="number_floor">
                                     <div id="number_floor_error"></div>
@@ -240,6 +240,12 @@
                                     <input type="text" name="ugd" class="form-control"
                                         @if (Route::is('seller.*')) readonly @endif id="ugd">
                                     <div id="ugd_error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="basement">Basement</label>
+                                    <input type="text" name="basement" class="form-control"
+                                        @if (Route::is('seller.*')) readonly @endif id="basement">
+                                    <div id="basement_error"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="rainwater_harvesting">Rainwater_harvesting</label>
@@ -453,7 +459,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             @if (Route::is('client.*'))
-                                <button type="submit" id="pointSubmit" class="btn btn-primary">Save image</button>
+                                <button type="submit" id="pointSubmit" class="btn btn-primary">Submit</button>
                             @endif
 
                         </div>
