@@ -446,18 +446,6 @@ class FormController extends Controller
                 'point_gisid' => 'required|exists:building_data,gisid',
                 'old_door_no' => 'required',
                 'new_door_no' => 'required',
-
-                    'shop_floor.*' => 'required',
-                    'shop_name.*' => 'required',
-                    'shop_owner_name.*' => 'required',
-                    'shop_category.*' => 'required',
-                    'shop_mobile.*' => 'required',
-                    'license.*' => 'required',
-                    'professional_tax.*' => 'required',
-                    'gst.*' => 'required',
-                    'number_of_employee.*' => 'required',
-                    'trade_income.*' => 'required',
-                    'establishment_remarks.*' => 'required',
                 ]);
 
             // Retrieve the associated building data
@@ -489,6 +477,21 @@ class FormController extends Controller
                     if ($shopFloor > $buildingData->number_floor) {
                         return response()->json(['success' => false, 'message' => 'Shop floor number for shop ' . ($index + 1) . ' cannot be greater than the total number of floors in the building'], 404);
                     }
+                    $validatedData = $request->validate([
+
+                            'shop_floor.*' => 'required',
+                            'shop_name.*' => 'required',
+                            'shop_owner_name.*' => 'required',
+                            'shop_category.*' => 'required',
+                            'shop_mobile.*' => 'required',
+                            'license.*' => 'required',
+                            'professional_tax.*' => 'required',
+                            'gst.*' => 'required',
+                            'number_of_employee.*' => 'required',
+                            'trade_income.*' => 'required',
+                            'establishment_remarks.*' => 'required',
+                        ]);
+
 
                     // Create a new PointData instance with the current array values
                     $pointData = [
