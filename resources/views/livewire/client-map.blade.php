@@ -890,6 +890,12 @@
                                                     .parking;
                                                 document.getElementById('ramp').value =
                                                     selectedBuilding.ramp;
+                                                document.getElementById('basement').value =
+                                                    selectedBuilding.basement;
+                                                    document.getElementById('liftroom').value =
+                                                    selectedBuilding.liftroom;
+                                                    document.getElementById('headroom').value =
+                                                    selectedBuilding.headroom;
                                                 document.getElementById('hoarding').value =
                                                     selectedBuilding
                                                     .hoarding;
@@ -908,6 +914,8 @@
                                                 document.getElementById('water_connection').value =
                                                     selectedBuilding
                                                     .water_connection;
+                                                document.getElementById('overhead_tank').value =
+                                                    selectedBuilding.overhead_tank;
                                                 document.getElementById('phone').value =
                                                     selectedBuilding.phone;
                                                 document.getElementById('building_img')
