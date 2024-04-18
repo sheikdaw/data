@@ -376,111 +376,92 @@ class AdminController extends Controller
 
 
     public function addFeature(Request $request)
-{
-    // Read the GeoJSON file and decode it
-    $polygonData = json_decode(file_get_contents(public_path('kovai/building.json')), true);
-    $pointData = json_decode(file_get_contents(public_path('kovai/test.json')), true);
-    $lineData = json_decode(file_get_contents(public_path('kovai/line.json')), true);
+    {
+        // Read the GeoJSON file and decode it
+        $polygonData = json_decode(file_get_contents(public_path('kovai/building.json')), true);
+        $pointData = json_decode(file_get_contents(public_path('kovai/test.json')), true);
+        $lineData = json_decode(file_get_contents(public_path('kovai/line.json')), true);
 
-    // Assuming 'features' is an existing array in your JSON data
-    $polygonFeatures = $polygonData['features'];
-    $pointFeatures = $pointData['features'];
-    $lineFeatures = $lineData['features'];
+        // Assuming 'features' is an existing array in your JSON data
+        $polygonFeatures = $polygonData['features'];
+        $pointFeatures = $pointData['features'];
+        $lineFeatures = $lineData['features'];
 
-    if ($request->type == "Polygon") {
-        // Corrected coordinates structure for Polygon
-        $coordinates = $request->input('coordinates');
+        if ($request->type == "Polygon") {
+            // Corrected coordinates structure for Polygon
+            $coordinates = $request->input('coordinates');
 
-        // Calculate the midpoint of the Polygon's coordinates
-        $midpoint = $this->calculateMidpoint($coordinates);
+            // Calculate the midpoint of the Polygon's coordinates
+            $midpoint = $this->calculateMidpoint($coordinates);
 
-        // Get the last feature ID and increment it by 1 for GIS_ID
-        $lastFeatureId = count($polygonFeatures) > 0 ? $polygonFeatures[count($polygonFeatures) - 1]['properties']['OBJECTID'] : 0;
-        $gisId = $lastFeatureId + 1;
+            // Get the last feature ID and increment it by 1 for GIS_ID
+            $lastFeatureId = count($polygonFeatures) > 0 ? $polygonFeatures[count($polygonFeatures) - 1]['properties']['OBJECTID'] : 0;
+            $gisId = $lastFeatureId + 1;
 
-        // Add all the fields from the provided JSON data
-        $properties = [
-            "OBJECTID" => $lastFeatureId + 1,
-            "Corporatio" => "Coimbatore",
-            "Region_Nam" => "Central",
-            "Zone" => "Zone-B",
-            "Ward_Numbe" => "68",
-            "Road_ID" => $lastFeatureId + 1,
-            "Road_Name" => "ANNA STREET",
-            "GIS_ID" => $gisId,
-            // Add other properties here
-        ];
-
-        // Prepare the new feature for Polygon
-        $newPolygonFeature = [
-            "type" => "Feature",
-            "id" => count($polygonFeatures) + 1, // Assigning an ID based on the current number of features
-            "geometry" => [
-                "type" => "Polygon",
-                "coordinates" => $coordinates // Use the provided coordinates
-            ],
-            "properties" => $properties
-        ];
-
-        // Add the new Polygon feature to the existing features array
-        $polygonFeatures[] = $newPolygonFeature;
-
-        // Update the 'features' array in the Polygon JSON data
-        $polygonData['features'] = $polygonFeatures;
-
-        // Write the updated Polygon JSON data back to the file
-        file_put_contents(public_path('kovai/building.json'), json_encode($polygonData, JSON_PRETTY_PRINT));
-
-        // Prepare the new feature for Point
-        $newPointFeature = [
-            "type" => "Feature",
-            "id" => count($pointFeatures) + 1, // Assigning an ID based on the current number of features
-            "geometry" => [
-                "type" => "Point",
-                "coordinates" => $midpoint // Use the calculated midpoint
-            ],
-            "properties" => [
-                "FID" => count($pointFeatures), // Using the same ID as 'id' for simplicity
-                "Id" => 0,
-                "GIS_ID" => $gisId
+            // Add all the fields from the provided JSON data
+            $properties = [
+                "OBJECTID" => $lastFeatureId + 1,
+                "Corporatio" => "Coimbatore",
+                "Region_Nam" => "Central",
+                "Zone" => "Zone-B",
+                "Ward_Numbe" => "68",
+                "Road_ID" => $lastFeatureId + 1,
+                "Road_Name" => "ANNA STREET",
+                "GIS_ID" => $gisId,
                 // Add other properties here
-            ]
-        ];
+            ];
 
-        // Add the new Point feature to the existing features array
-        $pointFeatures[] = $newPointFeature;
+            // Prepare the new feature for Polygon
+            $newPolygonFeature = [
+                "type" => "Feature",
+                "id" => count($polygonFeatures) + 1, // Assigning an ID based on the current number of features
+                "geometry" => [
+                    "type" => "Polygon",
+                    "coordinates" => $coordinates // Use the provided coordinates
+                ],
+                "properties" => $properties
+            ];
 
-        // Update the 'features' array in the Point JSON data
-        $pointData['features'] = $pointFeatures;
+            // Add the new Polygon feature to the existing features array
+            $polygonFeatures[] = $newPolygonFeature;
 
-        // Write the updated Point JSON data back to the file
-        file_put_contents(public_path('kovai/test.json'), json_encode($pointData, JSON_PRETTY_PRINT));
+            // Update the 'features' array in the Polygon JSON data
+            $polygonData['features'] = $polygonFeatures;
 
-        return response()->json(['message' => 'Polygon feature and Point feature added successfully']);
-    }
+            // Write the updated Polygon JSON data back to the file
+            file_put_contents(public_path('kovai/building.json'), json_encode($polygonData, JSON_PRETTY_PRINT));
 
-    // Other code for handling Point features directly can be added here
-}
+            // Prepare the new feature for Point
+            $newPointFeature = [
+                "type" => "Feature",
+                "id" => count($pointFeatures) + 1, // Assigning an ID based on the current number of features
+                "geometry" => [
+                    "type" => "Point",
+                    "coordinates" => $midpoint // Use the calculated midpoint
+                ],
+                "properties" => [
+                    "FID" => count($pointFeatures), // Using the same ID as 'id' for simplicity
+                    "Id" => 0,
+                    "GIS_ID" => $gisId
+                    // Add other properties here
+                ]
+            ];
 
-// Function to calculate the midpoint of Polygon coordinates
-private function calculateMidpoint($coordinates) {
-    $totalPoints = count($coordinates[0]);
-    $midpoint = [0, 0];
+            // Add the new Point feature to the existing features array
+            $pointFeatures[] = $newPointFeature;
 
-    foreach ($coordinates[0] as $point) {
-        $midpoint[0] += $point[0];
-        $midpoint[1] += $point[1];
-    }
+            // Update the 'features' array in the Point JSON data
+            $pointData['features'] = $pointFeatures;
 
-    $midpoint[0] /= $totalPoints;
-    $midpoint[1] /= $totalPoints;
+            // Write the updated Point JSON data back to the file
+            file_put_contents(public_path('kovai/test.json'), json_encode($pointData, JSON_PRETTY_PRINT));
 
-    return $midpoint;
+            return response()->json(['message' => 'Polygon feature and Point feature added successfully']);
+        }
 
-
-
-        // Point
-        if ($request->type == "Point") {
+        // Other code for handling Point features directly can be added here
+         // Point
+         if ($request->type == "Point") {
             // Prepare the new feature
             $newFeature = [
                 "type" => "Feature",
@@ -541,6 +522,22 @@ private function calculateMidpoint($coordinates) {
 
             return response()->json(['message' => 'Point feature added successfully']);
         }
+    }
+
+            // Function to calculate the midpoint of Polygon coordinates
+            private function calculateMidpoint($coordinates) {
+                $totalPoints = count($coordinates[0]);
+                $midpoint = [0, 0];
+
+                foreach ($coordinates[0] as $point) {
+                    $midpoint[0] += $point[0];
+                    $midpoint[1] += $point[1];
+                }
+
+                $midpoint[0] /= $totalPoints;
+                $midpoint[1] /= $totalPoints;
+
+                return $midpoint;
     }
 
 
