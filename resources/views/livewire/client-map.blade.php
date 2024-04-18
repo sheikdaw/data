@@ -219,6 +219,7 @@
                                         <option value="Central Government">Central Government</option>
                                         <option value="State Government">State Government</option>
                                         <option value="Municipality/Corporation">Municipality/Corporation</option>
+                                        <option value="Vacant Land">Vacant Land</option>
                                         <option value="Others">Others</option>
                                     </select>
                                     <div id="building_type_error"></div>
